@@ -1,14 +1,15 @@
-<html data-type="html" data-identifier="b3604a7f-5ae1-4326-b7ec-18c05663e61d" data-title="Minimal Bull Rock Nightfall Opening Page" data-version="4" width="1200" height="700"><head>
+<html data-type="html" data-identifier="b3604a7f-5ae1-4326-b7ec-18c05663e61d" data-title="Permanent Night at Bull Rock" data-version="6" width="1200" height="700"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bull Rock</title>
+  <title>Bull Rock at Night</title>
   <style>
     :root {
-      --sky-top: #01030a;
-      --sky-bottom: #101a2b;
+      --sky-top: #010208;
+      --sky-bottom: #0c1728;
       --rock: #020407;
-      --sea: #040a12;
-      --lantern: #fff3bd;
+      --sea-top: #02050a;
+      --sea-bottom: #000102;
+      --lantern: #fff2b0;
       --white: #f3f6f8;
     }
 
@@ -38,53 +39,27 @@
       isolation: isolate;
       overflow: hidden;
       background:
-        radial-gradient(ellipse at 50% 72%, rgba(118, 69, 87, 0.2), transparent 38%),
-        linear-gradient(180deg, #171a3b 0%, #38365d 48%, #b26e75 82%, #db8b75 100%);
+        radial-gradient(ellipse at 50% 84%, rgba(30, 46, 69, 0.36), transparent 52%),
+        linear-gradient(180deg, var(--sky-top) 0%, #040914 52%, var(--sky-bottom) 100%);
       transition: opacity 700ms ease, visibility 700ms ease;
-    }
-
-    #night-overlay {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      opacity: 0;
-      background:
-        radial-gradient(ellipse at 50% 80%, rgba(31, 47, 71, 0.5), transparent 55%),
-        linear-gradient(180deg, var(--sky-top) 0%, #040914 48%, var(--sky-bottom) 100%);
-      animation: nightfall 8s ease-in-out forwards;
     }
 
     #star-field {
       position: absolute;
       inset: 0 0 24% 0;
-      z-index: 2;
+      z-index: 1;
       width: 100%;
       height: 76%;
-      opacity: 0;
       pointer-events: none;
-      animation: reveal-stars 6s ease 2s forwards;
-    }
-
-    #setting-sun {
-      position: absolute;
-      z-index: 2;
-      left: 50%;
-      top: 51%;
-      width: clamp(42px, 5vw, 68px);
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background: #ffd29c;
-      box-shadow: 0 0 38px rgba(255, 184, 128, 0.22);
-      transform: translate(-50%, -50%);
-      animation: sunset 8s ease-in-out forwards;
     }
 
     #bull-rock {
       position: absolute;
       inset: 0;
-      z-index: 4;
+      z-index: 3;
       width: 100%;
       height: 100%;
+      overflow: visible;
     }
 
     #rock-silhouette,
@@ -97,30 +72,38 @@
       fill: var(--rock);
     }
 
-    #lantern-room {
-      fill: var(--lantern);
-      opacity: 0;
-      filter: drop-shadow(0 0 2px rgba(255, 243, 189, 0.85));
-      animation: lantern-on 900ms ease 6.8s forwards;
-    }
-
     #lighthouse-beam {
       fill: url(#beam-fade);
-      opacity: 0;
-      transform-origin: 656px 225px;
-      animation:
-        lantern-on 900ms ease 7s forwards,
-        sweep-beam 11s ease-in-out 8s infinite alternate;
+      opacity: 0.15;
+      transform-box: view-box;
+      transform-origin: 656px 225.5px;
+      animation: rotate-beam 12s linear infinite;
+      pointer-events: none;
+    }
+
+    #lantern-glow {
+      fill: url(#lantern-glow-gradient);
+      opacity: 0.72;
+    }
+
+    #lantern-room {
+      fill: var(--lantern);
+      filter: drop-shadow(0 0 2px rgba(255, 242, 176, 0.9));
     }
 
     #sea {
       position: absolute;
-      z-index: 5;
+      z-index: 4;
       right: 0;
       bottom: 0;
       left: 0;
       height: 25%;
-      background: var(--sea);
+      background: linear-gradient(
+        180deg,
+        var(--sea-top) 0%,
+        #010308 28%,
+        var(--sea-bottom) 100%
+      );
     }
 
     #sea::before {
@@ -130,17 +113,31 @@
       left: 10%;
       width: 80%;
       height: 1px;
-      background: rgba(156, 187, 215, 0.11);
+      background: rgba(116, 145, 169, 0.055);
+    }
+
+    #sea::after {
+      content: "";
+      position: absolute;
+      top: 23%;
+      left: 28%;
+      width: 44%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(91, 113, 132, 0.025),
+        transparent
+      );
     }
 
     #enter-area {
       position: absolute;
-      z-index: 7;
+      z-index: 6;
       left: 50%;
       bottom: clamp(30px, 5vh, 52px);
-      opacity: 0;
       transform: translateX(-50%);
-      animation: reveal-button 1s ease 7.6s forwards;
+      animation: reveal-button 900ms ease both;
     }
 
     #enter-button {
@@ -203,62 +200,13 @@
       opacity: 1;
     }
 
-    @keyframes nightfall {
-      0%,
-      15% {
-        opacity: 0;
-      }
-
-      100% {
-        opacity: 0.99;
-      }
-    }
-
-    @keyframes reveal-stars {
+    @keyframes rotate-beam {
       from {
-        opacity: 0;
+        transform: rotate(0deg);
       }
 
       to {
-        opacity: 1;
-      }
-    }
-
-    @keyframes sunset {
-      0% {
-        top: 49%;
-        opacity: 1;
-      }
-
-      70% {
-        opacity: 0.75;
-      }
-
-      100% {
-        top: 68%;
-        opacity: 0;
-      }
-    }
-
-    @keyframes lantern-on {
-      to {
-        opacity: 0.78;
-      }
-    }
-
-    @keyframes sweep-beam {
-      0% {
-        opacity: 0.05;
-        transform: rotate(-3deg);
-      }
-
-      50% {
-        opacity: 0.13;
-      }
-
-      100% {
-        opacity: 0.05;
-        transform: rotate(3deg);
+        transform: rotate(360deg);
       }
     }
 
@@ -291,53 +239,42 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      #night-overlay,
-      #star-field,
-      #lantern-room,
-      #lighthouse-beam,
+      #lighthouse-beam {
+        animation-duration: 30s;
+      }
+
       #enter-area {
         animation: none;
-      }
-
-      #night-overlay {
-        opacity: 0.99;
-      }
-
-      #star-field,
-      #enter-area {
-        opacity: 1;
-      }
-
-      #lantern-room {
-        opacity: 0.78;
-      }
-
-      #lighthouse-beam {
-        opacity: 0.07;
-      }
-
-      #setting-sun {
-        display: none;
       }
     }
   </style>
 </head>
 <body>
-  <main id="opening-scene" aria-label="Night falling behind Bull Rock in West Cork">
-    <div id="night-overlay" aria-hidden="true"></div>
+  <main id="opening-scene" aria-label="Bull Rock in West Cork beneath a permanent night sky">
     <canvas id="star-field" aria-hidden="true"></canvas>
-    <div id="setting-sun" aria-hidden="true"></div>
 
-    <svg id="bull-rock" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Minimal silhouette of Bull Rock and its slender lighthouse">
+    <svg id="bull-rock" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Bull Rock silhouette with a rotating lighthouse light">
       <defs>
-        <linearGradient id="beam-fade" x1="0" y1="0.5" x2="1" y2="0.5">
-          <stop offset="0" stop-color="#fff3bd" stop-opacity="0.35"></stop>
-          <stop offset="0.1" stop-color="#fff3bd" stop-opacity="0.12"></stop>
-          <stop offset="1" stop-color="#fff3bd" stop-opacity="0"></stop>
+        <linearGradient id="beam-fade" gradientUnits="userSpaceOnUse" x1="656" y1="225.5" x2="1080" y2="225.5">
+          <stop offset="0" stop-color="#fff2b0" stop-opacity="0.46"></stop>
+          <stop offset="0.08" stop-color="#fff2b0" stop-opacity="0.22"></stop>
+          <stop offset="0.52" stop-color="#fff2b0" stop-opacity="0.07"></stop>
+          <stop offset="1" stop-color="#fff2b0" stop-opacity="0"></stop>
         </linearGradient>
+
+        <radialGradient id="lantern-glow-gradient">
+          <stop offset="0" stop-color="#fff8cf" stop-opacity="0.9"></stop>
+          <stop offset="0.25" stop-color="#fff2b0" stop-opacity="0.35"></stop>
+          <stop offset="1" stop-color="#fff2b0" stop-opacity="0"></stop>
+        </radialGradient>
       </defs>
 
-      <path id="lighthouse-beam" d="M656 225 L1010 194 L1010 256 Z"></path>
+      <path id="lighthouse-beam" d="
+        M656 225.5
+        L1080 207
+        Q1090 225.5 1080 244
+        Z
+      "></path>
 
       <path id="rock-silhouette" fill-rule="evenodd" d="
         M190 530
@@ -375,6 +312,7 @@
         <path id="lighthouse-building" d="M630 247 H646 V258 H629 Z"></path>
         <path id="lighthouse-tower" d="M652 230 H660 L662 258 H650 Z"></path>
         <rect id="lighthouse-rail" x="649" y="227" width="14" height="1"></rect>
+        <circle id="lantern-glow" cx="656" cy="225.5" r="15"></circle>
         <rect id="lantern-room" x="652" y="222" width="8" height="7" rx="0.6"></rect>
         <path id="lighthouse-roof" d="M651 222 L656 217 L661 222 Z"></path>
       </g>
@@ -611,6 +549,7 @@
           shootingStar.velocityX,
           shootingStar.velocityY
         );
+
         const tailX =
           shootingStar.x -
           (shootingStar.velocityX / velocity) * shootingStar.length;
