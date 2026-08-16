@@ -1,16 +1,19 @@
-<html data-type="html" data-identifier="b3604a7f-5ae1-4326-b7ec-18c05663e61d" data-title="Permanent Night at Bull Rock" data-version="6" width="1200" height="700"><head>
+<html data-type="html" data-identifier="b3604a7f-5ae1-4326-b7ec-18c05663e61d" data-title="Bull Rock API Experiment Navigation" data-version="8" width="1200" height="700"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bull Rock at Night</title>
+  <title>API Experiment</title>
   <style>
     :root {
-      --sky-top: #010208;
-      --sky-bottom: #0c1728;
+      --night: #010208;
+      --panel: rgba(8, 14, 25, 0.82);
+      --line: rgba(229, 238, 246, 0.13);
+      --text: #f1f5f7;
+      --muted: #8e9aa7;
+      --accent: #fff0ad;
+      --active: #a9cce3;
       --rock: #020407;
       --sea-top: #02050a;
       --sea-bottom: #000102;
-      --lantern: #fff2b0;
-      --white: #f3f6f8;
     }
 
     * {
@@ -25,28 +28,35 @@
       min-height: 500px;
       margin: 0;
       overflow: hidden;
-      background: var(--sky-top);
-      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: var(--night);
+      font-family: Inter, Arial, Helvetica, sans-serif;
+    }
+
+    button,
+    a {
+      font: inherit;
     }
 
     button {
-      font: inherit;
+      color: inherit;
     }
 
     #opening-scene {
       position: fixed;
       inset: 0;
+      z-index: 10;
       isolation: isolate;
       overflow: hidden;
       background:
-        radial-gradient(ellipse at 50% 84%, rgba(30, 46, 69, 0.36), transparent 52%),
-        linear-gradient(180deg, var(--sky-top) 0%, #040914 52%, var(--sky-bottom) 100%);
+        radial-gradient(ellipse at 50% 84%, rgba(30, 46, 69, 0.32), transparent 52%),
+        linear-gradient(180deg, #010208 0%, #040914 52%, #0c1728 100%);
       transition: opacity 700ms ease, visibility 700ms ease;
     }
 
     #star-field {
       position: absolute;
-      inset: 0 0 24% 0;
+      inset: 0 0 24%;
       z-index: 1;
       width: 100%;
       height: 76%;
@@ -73,8 +83,8 @@
     }
 
     #lighthouse-beam {
-      fill: url(#beam-fade);
-      opacity: 0.15;
+      fill: url("#beam-fade");
+      opacity: 0.14;
       transform-box: view-box;
       transform-origin: 656px 225.5px;
       animation: rotate-beam 12s linear infinite;
@@ -82,13 +92,13 @@
     }
 
     #lantern-glow {
-      fill: url(#lantern-glow-gradient);
-      opacity: 0.72;
+      fill: url("#lantern-glow-gradient");
+      opacity: 0.7;
     }
 
     #lantern-room {
-      fill: var(--lantern);
-      filter: drop-shadow(0 0 2px rgba(255, 242, 176, 0.9));
+      fill: var(--accent);
+      filter: drop-shadow(0 0 2px rgba(255, 240, 173, 0.9));
     }
 
     #sea {
@@ -98,12 +108,7 @@
       bottom: 0;
       left: 0;
       height: 25%;
-      background: linear-gradient(
-        180deg,
-        var(--sea-top) 0%,
-        #010308 28%,
-        var(--sea-bottom) 100%
-      );
+      background: linear-gradient(180deg, var(--sea-top), var(--sea-bottom));
     }
 
     #sea::before {
@@ -113,22 +118,7 @@
       left: 10%;
       width: 80%;
       height: 1px;
-      background: rgba(116, 145, 169, 0.055);
-    }
-
-    #sea::after {
-      content: "";
-      position: absolute;
-      top: 23%;
-      left: 28%;
-      width: 44%;
-      height: 1px;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(91, 113, 132, 0.025),
-        transparent
-      );
+      background: rgba(116, 145, 169, 0.05);
     }
 
     #enter-area {
@@ -137,67 +127,239 @@
       left: 50%;
       bottom: clamp(30px, 5vh, 52px);
       transform: translateX(-50%);
-      animation: reveal-button 900ms ease both;
     }
 
     #enter-button {
       min-width: 118px;
       padding: 11px 25px;
-      border: 1px solid rgba(243, 246, 248, 0.52);
+      border: 1px solid rgba(243, 246, 248, 0.5);
       border-radius: 999px;
-      color: var(--white);
+      color: var(--text);
       background: rgba(2, 5, 10, 0.3);
       font-size: 10px;
       font-weight: 600;
       letter-spacing: 0.24em;
       text-transform: uppercase;
       cursor: pointer;
-      transition:
-        color 180ms ease,
-        background 180ms ease,
-        border-color 180ms ease,
-        transform 180ms ease;
+      transition: color 180ms ease, background 180ms ease, transform 180ms ease;
     }
 
     #enter-button:hover {
       color: var(--rock);
-      background: var(--white);
-      border-color: var(--white);
+      background: var(--text);
       transform: translateY(-2px);
     }
 
-    #enter-button:focus-visible {
-      outline: 2px solid var(--lantern);
-      outline-offset: 5px;
+    #enter-button:focus-visible,
+    #api-project-link:focus-visible,
+    #menu-button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
     }
 
-    #project-content {
+    #project-menu {
       position: fixed;
       inset: 0;
       display: grid;
-      place-items: center;
+      grid-template-columns: 232px minmax(0, 1fr);
       visibility: hidden;
       opacity: 0;
-      color: var(--white);
-      background: var(--sky-top);
+      background:
+        radial-gradient(circle at 82% 12%, rgba(54, 79, 105, 0.13), transparent 31%),
+        var(--night);
       transition: opacity 700ms ease;
-    }
-
-    #project-heading {
-      margin: 0;
-      font-size: clamp(25px, 4vw, 48px);
-      font-weight: 300;
-      letter-spacing: 0.08em;
     }
 
     body.entered #opening-scene {
       visibility: hidden;
       opacity: 0;
+      pointer-events: none;
     }
 
-    body.entered #project-content {
+    body.entered #project-menu {
       visibility: visible;
       opacity: 1;
+    }
+
+    #project-sidebar {
+      display: flex;
+      min-height: 0;
+      flex-direction: column;
+      padding: 42px 26px 28px;
+      border-right: 1px solid var(--line);
+      background: rgba(2, 5, 10, 0.74);
+    }
+
+    #menu-eyebrow {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    #menu-title {
+      margin: 0 0 42px;
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+
+    #active-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 42px;
+      padding: 0 12px;
+      border-radius: 7px;
+      color: var(--text);
+      background: rgba(169, 204, 227, 0.09);
+      font-size: 13px;
+    }
+
+    #active-count {
+      color: #687583;
+      font-size: 10px;
+    }
+
+    #menu-note {
+      margin: auto 0 0;
+      padding-top: 24px;
+      color: #65717d;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    #project-content {
+      min-width: 0;
+      overflow-y: auto;
+      padding: 42px clamp(30px, 6vw, 86px) 60px;
+    }
+
+    #mobile-header {
+      display: none;
+    }
+
+    #content-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 30px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    #section-label {
+      margin: 0 0 10px;
+      color: var(--active);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    #section-title {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 50px);
+      font-weight: 300;
+      letter-spacing: -0.045em;
+    }
+
+    #section-description {
+      max-width: 330px;
+      margin: 0 0 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    #project-list {
+      display: grid;
+      margin-top: 8px;
+    }
+
+    #api-project {
+      display: grid;
+      grid-template-columns: minmax(180px, 1.35fr) minmax(160px, 1fr) 100px 28px;
+      align-items: center;
+      gap: 24px;
+      min-height: 104px;
+      border-bottom: 1px solid var(--line);
+      transition: background 180ms ease, padding 180ms ease;
+    }
+
+    #api-project:hover {
+      margin-inline: -14px;
+      padding-inline: 14px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    #api-project-name {
+      margin: 0 0 7px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    #api-project-type {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    #api-project-summary {
+      margin: 0;
+      color: #a7b1ba;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    #api-project-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    #api-project-status::before {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--active);
+      box-shadow: 0 0 7px rgba(169, 204, 227, 0.45);
+      content: "";
+    }
+
+    #api-project-link {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      border: 1px solid transparent;
+      border-radius: 50%;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 160ms ease, border-color 160ms ease, transform 160ms ease;
+    }
+
+    #api-project:hover #api-project-link {
+      color: var(--text);
+      border-color: rgba(229, 238, 246, 0.32);
+      transform: translateX(2px);
+    }
+
+    #menu-button {
+      display: none;
+      border: 0;
+      color: var(--text);
+      background: transparent;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
     }
 
     @keyframes rotate-beam {
@@ -210,19 +372,7 @@
       }
     }
 
-    @keyframes reveal-button {
-      from {
-        opacity: 0;
-        transform: translateX(-50%) translateY(6px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-      }
-    }
-
-    @media (max-width: 720px) {
+    @media (max-width: 780px) {
       html,
       body {
         min-width: 0;
@@ -236,6 +386,65 @@
       #sea {
         height: 27%;
       }
+
+      #project-menu {
+        display: block;
+      }
+
+      #project-sidebar {
+        position: fixed;
+        inset: 0 auto 0 0;
+        z-index: 3;
+        width: min(280px, 82vw);
+        transform: translateX(-100%);
+        transition: transform 240ms ease;
+      }
+
+      body.menu-open #project-sidebar {
+        transform: translateX(0);
+      }
+
+      #project-content {
+        height: 100%;
+        padding: 24px 22px 44px;
+      }
+
+      #mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 28px;
+      }
+
+      #mobile-label {
+        margin: 0;
+        color: var(--muted);
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      #menu-button {
+        display: block;
+      }
+
+      #content-header {
+        display: block;
+      }
+
+      #section-description {
+        margin-top: 18px;
+      }
+
+      #api-project {
+        grid-template-columns: minmax(0, 1fr) 78px 24px;
+        gap: 12px;
+        padding-block: 20px;
+      }
+
+      #api-project-summary {
+        display: none;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -243,8 +452,12 @@
         animation-duration: 30s;
       }
 
-      #enter-area {
-        animation: none;
+      #opening-scene,
+      #project-menu,
+      #project-sidebar,
+      #api-project,
+      #api-project-link {
+        transition-duration: 0ms;
       }
     }
   </style>
@@ -269,40 +482,15 @@
         </radialGradient>
       </defs>
 
-      <path id="lighthouse-beam" d="
-        M656 225.5
-        L1080 207
-        Q1090 225.5 1080 244
-        Z
-      "></path>
+      <path id="lighthouse-beam" d="M656 225.5 L1080 207 Q1090 225.5 1080 244 Z"></path>
 
       <path id="rock-silhouette" fill-rule="evenodd" d="
-        M190 530
-        L224 491
-        L244 427
-        L270 357
-        L309 320
-        L368 298
-        L428 281
-        L477 253
-        L530 244
-        L572 222
-        L619 229
-        L660 250
-        L701 285
-        L735 324
-        L762 370
-        L798 409
-        L827 459
-        L871 496
-        L922 530
-        Z
-
-        M486 530
-        C490 495 496 467 511 449
-        C527 431 553 431 569 449
-        C584 468 590 496 593 530
-        Z
+        M190 530 L224 491 L244 427 L270 357 L309 320 L368 298
+        L428 281 L477 253 L530 244 L572 222 L619 229 L660 250
+        L701 285 L735 324 L762 370 L798 409 L827 459 L871 496
+        L922 530 Z
+        M486 530 C490 495 496 467 511 449 C527 431 553 431
+        569 449 C584 468 590 496 593 530 Z
       "></path>
 
       <path id="left-stack" d="M66 530 L98 486 L130 466 L160 481 L181 515 L201 530 Z"></path>
@@ -321,310 +509,148 @@
     <div id="sea" aria-hidden="true"></div>
 
     <div id="enter-area">
-      <button id="enter-button" type="button" aria-label="Enter the project">Enter</button>
+      <button id="enter-button" type="button" aria-label="Open the project menu">Enter</button>
     </div>
   </main>
 
-  <section id="project-content" aria-hidden="true">
-    <h1 id="project-heading">Your project begins here</h1>
-  </section>
+  <main id="project-menu" aria-label="Project navigation" aria-hidden="true">
+    <aside id="project-sidebar">
+      <p id="menu-eyebrow">Workspace</p>
+      <h1 id="menu-title">Current Projects</h1>
+
+      <div id="active-label">
+        <span>Active</span>
+        <span id="active-count">01</span>
+      </div>
+
+      <p id="menu-note">The workspace currently contains one active project.</p>
+    </aside>
+
+    <section id="project-content">
+      <header id="mobile-header">
+        <p id="mobile-label">Current Projects</p>
+        <button id="menu-button" type="button" aria-expanded="false" aria-controls="project-sidebar">Menu</button>
+      </header>
+
+      <header id="content-header">
+        <div>
+          <p id="section-label">In progress</p>
+          <h2 id="section-title">Active</h2>
+        </div>
+        <p id="section-description">The project currently in development.</p>
+      </header>
+
+      <div id="project-list">
+        <article id="api-project">
+          <div>
+            <h3 id="api-project-name">API Experiment</h3>
+            <p id="api-project-type">Development experiment</p>
+          </div>
+
+          <p id="api-project-summary">An active experiment exploring API connections, data and interactive behavior.</p>
+
+          <span id="api-project-status">Building</span>
+
+          <a id="api-project-link" href="api-experiment.html" aria-label="Open API Experiment">→</a>
+        </article>
+      </div>
+    </section>
+  </main>
 
   <script>
     (() => {
       const canvas = document.getElementById("star-field");
       const context = canvas.getContext("2d");
       const enterButton = document.getElementById("enter-button");
-      const projectContent = document.getElementById("project-content");
-      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
+      const menuButton = document.getElementById("menu-button");
+      const projectMenu = document.getElementById("project-menu");
       const stars = [];
-      let shootingStar = null;
-      let nextShootingStar = performance.now() + randomBetween(14000, 30000);
-      let previousTime = performance.now();
       let frameId = 0;
 
       function randomBetween(minimum, maximum) {
         return minimum + Math.random() * (maximum - minimum);
       }
 
-      function gaussianRandom() {
-        let first = 0;
-        let second = 0;
-
-        while (first === 0) {
-          first = Math.random();
-        }
-
-        while (second === 0) {
-          second = Math.random();
-        }
-
-        return Math.sqrt(-2 * Math.log(first)) * Math.cos(2 * Math.PI * second);
-      }
-
       function resizeCanvas() {
         const bounds = canvas.getBoundingClientRect();
-        const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+        const ratio = Math.min(window.devicePixelRatio || 1, 2);
 
-        canvas.width = Math.max(1, Math.floor(bounds.width * pixelRatio));
-        canvas.height = Math.max(1, Math.floor(bounds.height * pixelRatio));
-        context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        canvas.width = Math.max(1, Math.floor(bounds.width * ratio));
+        canvas.height = Math.max(1, Math.floor(bounds.height * ratio));
+        context.setTransform(ratio, 0, 0, ratio, 0, 0);
 
-        createSky(bounds.width, bounds.height);
-      }
-
-      function addStar(x, y, radius, alpha, color, glow, flicker) {
-        stars.push({
-          x,
-          y,
-          radius,
-          alpha,
-          color,
-          glow,
-          flicker,
-          phase: Math.random() * Math.PI * 2,
-          speed: randomBetween(0.00008, 0.00022)
-        });
-      }
-
-      function createSky(width, height) {
         stars.length = 0;
 
-        const baseCount = Math.min(
-          1250,
-          Math.max(430, Math.floor((width * height) / 1050))
+        const count = Math.min(
+          1100,
+          Math.max(430, Math.floor((bounds.width * bounds.height) / 1100))
         );
 
-        for (let index = 0; index < baseCount; index += 1) {
-          const yRatio = Math.pow(Math.random(), 1.17);
+        for (let index = 0; index < count; index += 1) {
+          const yRatio = Math.pow(Math.random(), 1.16);
           const sizeRoll = Math.random();
-          const temperatureRoll = Math.random();
+          const temperature = Math.random();
 
-          let radius = randomBetween(0.16, 0.42);
-          let alpha = randomBetween(0.22, 0.72);
-          let color = "235, 241, 250";
-          let glow = false;
-
-          if (sizeRoll > 0.965) {
-            radius = randomBetween(0.55, 0.88);
-            alpha = randomBetween(0.58, 0.92);
-          }
-
-          if (sizeRoll > 0.997) {
-            radius = randomBetween(1, 1.35);
-            alpha = randomBetween(0.78, 0.98);
-            glow = true;
-          }
-
-          if (temperatureRoll < 0.07) {
-            color = "194, 216, 255";
-          } else if (temperatureRoll > 0.91) {
-            color = "255, 225, 188";
-          } else if (temperatureRoll > 0.985) {
-            color = "255, 197, 158";
-          }
-
-          addStar(
-            Math.random() * width,
-            yRatio * height * 0.98,
-            radius,
-            alpha * (1 - yRatio * 0.32),
-            color,
-            glow,
-            sizeRoll > 0.97
-          );
-        }
-
-        const bandStars = Math.floor(baseCount * 0.22);
-
-        for (let index = 0; index < bandStars; index += 1) {
-          const xRatio = Math.random();
-          const bandCenter = height * (0.1 + xRatio * 0.5);
-          const y = bandCenter + gaussianRandom() * height * 0.09;
-
-          if (y < 0 || y > height * 0.88) {
-            continue;
-          }
-
-          addStar(
-            xRatio * width,
-            y,
-            randomBetween(0.12, 0.38),
-            randomBetween(0.12, 0.48),
-            Math.random() > 0.85 ? "213, 225, 255" : "232, 237, 245",
-            false,
-            false
-          );
-        }
-
-        const prominentStars = [
-          { x: 0.13, y: 0.18, radius: 1.45, color: "201, 221, 255" },
-          { x: 0.29, y: 0.35, radius: 1.2, color: "255, 224, 184" },
-          { x: 0.73, y: 0.2, radius: 1.55, color: "235, 242, 255" },
-          { x: 0.86, y: 0.42, radius: 1.3, color: "255, 205, 165" }
-        ];
-
-        prominentStars.forEach((star) => {
-          addStar(
-            width * star.x,
-            height * star.y,
-            star.radius,
-            0.94,
-            star.color,
-            true,
-            true
-          );
-        });
-      }
-
-      function drawStar(star, time) {
-        const variation =
-          star.flicker && !reducedMotion.matches
-            ? 0.97 + Math.sin(time * star.speed + star.phase) * 0.03
-            : 1;
-
-        const alpha = star.alpha * variation;
-
-        if (star.glow) {
-          const halo = context.createRadialGradient(
-            star.x,
-            star.y,
-            0,
-            star.x,
-            star.y,
-            star.radius * 4.5
-          );
-
-          halo.addColorStop(0, `rgba(${star.color}, ${alpha * 0.45})`);
-          halo.addColorStop(0.3, `rgba(${star.color}, ${alpha * 0.14})`);
-          halo.addColorStop(1, `rgba(${star.color}, 0)`);
-
-          context.fillStyle = halo;
-          context.beginPath();
-          context.arc(star.x, star.y, star.radius * 4.5, 0, Math.PI * 2);
-          context.fill();
-        }
-
-        context.fillStyle = `rgba(${star.color}, ${alpha})`;
-        context.beginPath();
-        context.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        context.fill();
-      }
-
-      function drawSky(time, width, height) {
-        context.clearRect(0, 0, width, height);
-
-        for (const star of stars) {
-          drawStar(star, time);
+          stars.push({
+            x: Math.random() * bounds.width,
+            y: yRatio * bounds.height * 0.97,
+            radius:
+              sizeRoll > 0.995
+                ? randomBetween(1, 1.35)
+                : sizeRoll > 0.96
+                  ? randomBetween(0.5, 0.82)
+                  : randomBetween(0.15, 0.4),
+            alpha: randomBetween(0.24, 0.86) * (1 - yRatio * 0.3),
+            color:
+              temperature < 0.07
+                ? "194,216,255"
+                : temperature > 0.93
+                  ? "255,224,188"
+                  : "235,241,250",
+            phase: Math.random() * Math.PI * 2,
+            speed: randomBetween(0.00008, 0.0002)
+          });
         }
       }
 
-      function createShootingStar(width, height) {
-        const angle = randomBetween(0.4, 0.55);
-        const speed = randomBetween(0.48, 0.62);
-
-        shootingStar = {
-          x: randomBetween(width * 0.12, width * 0.65),
-          y: randomBetween(height * 0.08, height * 0.3),
-          velocityX: Math.cos(angle) * speed,
-          velocityY: Math.sin(angle) * speed,
-          length: randomBetween(65, 105),
-          age: 0,
-          lifetime: randomBetween(500, 760)
-        };
-      }
-
-      function drawShootingStar(delta) {
-        if (!shootingStar) {
-          return;
-        }
-
-        shootingStar.age += delta;
-        shootingStar.x += shootingStar.velocityX * delta;
-        shootingStar.y += shootingStar.velocityY * delta;
-
-        const progress = shootingStar.age / shootingStar.lifetime;
-        const opacity = Math.sin(Math.min(progress, 1) * Math.PI);
-        const velocity = Math.hypot(
-          shootingStar.velocityX,
-          shootingStar.velocityY
-        );
-
-        const tailX =
-          shootingStar.x -
-          (shootingStar.velocityX / velocity) * shootingStar.length;
-        const tailY =
-          shootingStar.y -
-          (shootingStar.velocityY / velocity) * shootingStar.length;
-
-        const trail = context.createLinearGradient(
-          tailX,
-          tailY,
-          shootingStar.x,
-          shootingStar.y
-        );
-
-        trail.addColorStop(0, "rgba(220, 232, 250, 0)");
-        trail.addColorStop(0.82, `rgba(232, 241, 255, ${opacity * 0.24})`);
-        trail.addColorStop(1, `rgba(255, 255, 255, ${opacity * 0.9})`);
-
-        context.strokeStyle = trail;
-        context.lineWidth = 1;
-        context.lineCap = "round";
-        context.beginPath();
-        context.moveTo(tailX, tailY);
-        context.lineTo(shootingStar.x, shootingStar.y);
-        context.stroke();
-
-        if (shootingStar.age >= shootingStar.lifetime) {
-          shootingStar = null;
-          nextShootingStar = performance.now() + randomBetween(14000, 30000);
-        }
-      }
-
-      function animate(time) {
+      function drawStars(time) {
         const bounds = canvas.getBoundingClientRect();
-        const delta = Math.min(32, time - previousTime || 16);
-        previousTime = time;
+        context.clearRect(0, 0, bounds.width, bounds.height);
 
-        drawSky(time, bounds.width, bounds.height);
+        stars.forEach((star) => {
+          const alpha =
+            star.alpha *
+            (0.98 + Math.sin(time * star.speed + star.phase) * 0.02);
 
-        if (
-          !reducedMotion.matches &&
-          !shootingStar &&
-          time >= nextShootingStar
-        ) {
-          createShootingStar(bounds.width, bounds.height);
-        }
-
-        if (!reducedMotion.matches) {
-          drawShootingStar(delta);
-        }
-
-        frameId = requestAnimationFrame(animate);
-      }
-
-      function enterProject() {
-        const enterEvent = new CustomEvent("bullrock:enter", {
-          cancelable: true
+          context.fillStyle = `rgba(${star.color},${alpha})`;
+          context.beginPath();
+          context.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+          context.fill();
         });
 
-        if (!window.dispatchEvent(enterEvent)) {
-          return;
-        }
-
-        document.body.classList.add("entered");
-        projectContent.setAttribute("aria-hidden", "false");
+        frameId = requestAnimationFrame(drawStars);
       }
 
-      enterButton.addEventListener("click", enterProject);
+      function openProjects() {
+        document.body.classList.add("entered");
+        projectMenu.setAttribute("aria-hidden", "false");
+      }
+
+      function toggleMobileMenu() {
+        const isOpen = document.body.classList.toggle("menu-open");
+        menuButton.setAttribute("aria-expanded", String(isOpen));
+      }
+
+      enterButton.addEventListener("click", openProjects);
+      menuButton.addEventListener("click", toggleMobileMenu);
       window.addEventListener("resize", resizeCanvas);
+
       window.addEventListener("pagehide", () => {
         cancelAnimationFrame(frameId);
       });
 
       resizeCanvas();
-      frameId = requestAnimationFrame(animate);
+      frameId = requestAnimationFrame(drawStars);
     })();
   </script>
 
