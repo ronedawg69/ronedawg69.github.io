@@ -1,657 +1,327 @@
-<html data-type="html" data-identifier="b3604a7f-5ae1-4326-b7ec-18c05663e61d" data-title="Bull Rock API Experiment Navigation" data-version="8" width="1200" height="700"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API Experiment</title>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A collection of experiments, ideas and things built while learning.">
+  <title>Ronan's Project Rooms</title>
   <style>
     :root {
-      --night: #010208;
-      --panel: rgba(8, 14, 25, 0.82);
-      --line: rgba(229, 238, 246, 0.13);
-      --text: #f1f5f7;
-      --muted: #8e9aa7;
-      --accent: #fff0ad;
-      --active: #a9cce3;
-      --rock: #020407;
-      --sea-top: #02050a;
-      --sea-bottom: #000102;
+      color-scheme: dark;
+      --night: #050609;
+      --ink: #101114;
+      --paper: #eee9df;
+      --muted: #9b968e;
+      --gold: #d6b36a;
+      --glow: rgba(237, 196, 105, 0.32);
+      --line: rgba(238, 233, 223, 0.13);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html,
+    html { background: var(--night); }
+
     body {
-      width: 100%;
-      height: 100%;
-      min-width: 600px;
-      min-height: 500px;
+      min-width: 320px;
+      min-height: 100vh;
       margin: 0;
-      overflow: hidden;
-      color: var(--text);
-      background: var(--night);
-      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--paper);
+      background:
+        radial-gradient(circle at 50% 35%, rgba(42, 45, 52, 0.3), transparent 38%),
+        linear-gradient(145deg, #090a0e, #020305 70%);
+      font-family: Georgia, "Times New Roman", serif;
     }
 
-    button,
-    a {
-      font: inherit;
-    }
+    button, a { font: inherit; }
 
-    button {
-      color: inherit;
-    }
-
-    #opening-scene {
+    .entrance {
       position: fixed;
       inset: 0;
       z-index: 10;
-      isolation: isolate;
+      display: grid;
+      place-items: center;
       overflow: hidden;
       background:
-        radial-gradient(ellipse at 50% 84%, rgba(30, 46, 69, 0.32), transparent 52%),
-        linear-gradient(180deg, #010208 0%, #040914 52%, #0c1728 100%);
-      transition: opacity 700ms ease, visibility 700ms ease;
+        radial-gradient(ellipse at 50% 72%, rgba(44, 50, 59, 0.42), transparent 42%),
+        linear-gradient(#030407, #0a0d12 68%, #020304);
+      transition: opacity 900ms ease, visibility 900ms ease;
     }
 
-    #star-field {
-      position: absolute;
-      inset: 0 0 24%;
-      z-index: 1;
-      width: 100%;
-      height: 76%;
-      pointer-events: none;
-    }
-
-    #bull-rock {
+    .entrance::before {
       position: absolute;
       inset: 0;
-      z-index: 3;
-      width: 100%;
-      height: 100%;
-      overflow: visible;
-    }
-
-    #rock-silhouette,
-    #left-stack,
-    #right-stack,
-    #lighthouse-building,
-    #lighthouse-tower,
-    #lighthouse-roof,
-    #lighthouse-rail {
-      fill: var(--rock);
-    }
-
-    #lighthouse-beam {
-      fill: url("#beam-fade");
       opacity: 0.14;
-      transform-box: view-box;
-      transform-origin: 656px 225.5px;
-      animation: rotate-beam 12s linear infinite;
-      pointer-events: none;
-    }
-
-    #lantern-glow {
-      fill: url("#lantern-glow-gradient");
-      opacity: 0.7;
-    }
-
-    #lantern-room {
-      fill: var(--accent);
-      filter: drop-shadow(0 0 2px rgba(255, 240, 173, 0.9));
-    }
-
-    #sea {
-      position: absolute;
-      z-index: 4;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      height: 25%;
-      background: linear-gradient(180deg, var(--sea-top), var(--sea-bottom));
-    }
-
-    #sea::before {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
       content: "";
-      position: absolute;
-      top: 0;
-      left: 10%;
-      width: 80%;
-      height: 1px;
-      background: rgba(116, 145, 169, 0.05);
-    }
-
-    #enter-area {
-      position: absolute;
-      z-index: 6;
-      left: 50%;
-      bottom: clamp(30px, 5vh, 52px);
-      transform: translateX(-50%);
-    }
-
-    #enter-button {
-      min-width: 118px;
-      padding: 11px 25px;
-      border: 1px solid rgba(243, 246, 248, 0.5);
-      border-radius: 999px;
-      color: var(--text);
-      background: rgba(2, 5, 10, 0.3);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: color 180ms ease, background 180ms ease, transform 180ms ease;
-    }
-
-    #enter-button:hover {
-      color: var(--rock);
-      background: var(--text);
-      transform: translateY(-2px);
-    }
-
-    #enter-button:focus-visible,
-    #api-project-link:focus-visible,
-    #menu-button:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 4px;
-    }
-
-    #project-menu {
-      position: fixed;
-      inset: 0;
-      display: grid;
-      grid-template-columns: 232px minmax(0, 1fr);
-      visibility: hidden;
-      opacity: 0;
-      background:
-        radial-gradient(circle at 82% 12%, rgba(54, 79, 105, 0.13), transparent 31%),
-        var(--night);
-      transition: opacity 700ms ease;
-    }
-
-    body.entered #opening-scene {
-      visibility: hidden;
-      opacity: 0;
       pointer-events: none;
     }
 
-    body.entered #project-menu {
-      visibility: visible;
-      opacity: 1;
+    .entrance__content {
+      position: relative;
+      display: grid;
+      justify-items: center;
+      gap: 32px;
+      animation: appear 1.8s both;
     }
 
-    #project-sidebar {
-      display: flex;
-      min-height: 0;
-      flex-direction: column;
-      padding: 42px 26px 28px;
-      border-right: 1px solid var(--line);
-      background: rgba(2, 5, 10, 0.74);
-    }
-
-    #menu-eyebrow {
-      margin: 0 0 10px;
+    .entrance__eyebrow, .gallery__eyebrow {
+      margin: 0;
       color: var(--muted);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.32em;
       text-transform: uppercase;
     }
 
-    #menu-title {
-      margin: 0 0 42px;
-      font-size: 20px;
-      font-weight: 400;
-      letter-spacing: -0.02em;
+    .entrance-door {
+      position: relative;
+      width: clamp(128px, 15vw, 172px);
+      aspect-ratio: 0.58;
+      padding: 0;
+      border: 1px solid rgba(232, 221, 198, 0.42);
+      border-radius: 2px 2px 0 0;
+      color: inherit;
+      background: #111216;
+      box-shadow: 0 28px 65px #000, 0 0 45px var(--glow);
+      cursor: pointer;
+      perspective: 900px;
     }
 
-    #active-label {
+    .entrance-door::before {
+      position: absolute;
+      inset: -9px -10px -5px;
+      z-index: -1;
+      border: 2px solid #24262b;
+      border-bottom: 0;
+      content: "";
+    }
+
+    .entrance-door__light {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 54%, rgba(255, 222, 145, 0.3));
+    }
+
+    .entrance-door__handle, .project-door__handle {
+      position: absolute;
+      top: 52%;
+      right: 12%;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 8px rgba(214, 179, 106, 0.6);
+    }
+
+    .entrance-door:hover { box-shadow: 0 28px 65px #000, 0 0 80px rgba(237, 196, 105, 0.46); }
+    .entrance-door:hover .entrance-door__light { background: linear-gradient(100deg, transparent 35%, rgba(255, 222, 145, 0.42)); }
+
+    .entrance__instruction {
+      margin: 0;
+      color: #c7c1b8;
+      font-size: 0.9rem;
+      font-style: italic;
+      letter-spacing: 0.06em;
+    }
+
+    .gallery {
+      width: min(1120px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 72px 0 100px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 900ms 250ms ease, transform 900ms 250ms ease;
+    }
+
+    body.entered .entrance { visibility: hidden; opacity: 0; pointer-events: none; }
+    body.entered .gallery { opacity: 1; transform: none; }
+
+    .gallery__header {
       display: flex;
-      align-items: center;
+      align-items: end;
       justify-content: space-between;
-      min-height: 42px;
-      padding: 0 12px;
-      border-radius: 7px;
-      color: var(--text);
-      background: rgba(169, 204, 227, 0.09);
-      font-size: 13px;
+      gap: 32px;
+      margin-bottom: 54px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--line);
     }
 
-    #active-count {
-      color: #687583;
-      font-size: 10px;
+    .gallery h1 {
+      margin: 9px 0 0;
+      font-size: clamp(2rem, 5vw, 4.6rem);
+      font-weight: 400;
+      letter-spacing: -0.055em;
+      line-height: 0.95;
     }
 
-    #menu-note {
-      margin: auto 0 0;
-      padding-top: 24px;
-      color: #65717d;
-      font-size: 11px;
+    .gallery__note {
+      max-width: 285px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.88rem;
       line-height: 1.6;
     }
 
-    #project-content {
+    .doors {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(28px, 5vw, 62px) clamp(18px, 4vw, 48px);
+      counter-reset: room;
+    }
+
+    .room {
+      counter-increment: room;
+      display: grid;
+      justify-items: center;
+      gap: 15px;
       min-width: 0;
-      overflow-y: auto;
-      padding: 42px clamp(30px, 6vw, 86px) 60px;
     }
 
-    #mobile-header {
-      display: none;
+    .project-door {
+      position: relative;
+      display: block;
+      width: min(100%, 150px);
+      aspect-ratio: 0.62;
+      border: 1px solid #292a2e;
+      border-radius: 2px 2px 0 0;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.025), transparent 20% 80%, rgba(0,0,0,.22)),
+        #111216;
+      box-shadow: 0 18px 30px rgba(0, 0, 0, 0.48);
+      text-decoration: none;
+      transition: border-color 240ms ease, box-shadow 240ms ease, transform 240ms ease;
     }
 
-    #content-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 30px;
-      padding-bottom: 28px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    #section-label {
-      margin: 0 0 10px;
-      color: var(--active);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    #section-title {
-      margin: 0;
-      font-size: clamp(30px, 4vw, 50px);
-      font-weight: 300;
-      letter-spacing: -0.045em;
-    }
-
-    #section-description {
-      max-width: 330px;
-      margin: 0 0 4px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-    #project-list {
-      display: grid;
-      margin-top: 8px;
-    }
-
-    #api-project {
-      display: grid;
-      grid-template-columns: minmax(180px, 1.35fr) minmax(160px, 1fr) 100px 28px;
-      align-items: center;
-      gap: 24px;
-      min-height: 104px;
-      border-bottom: 1px solid var(--line);
-      transition: background 180ms ease, padding 180ms ease;
-    }
-
-    #api-project:hover {
-      margin-inline: -14px;
-      padding-inline: 14px;
-      background: rgba(255, 255, 255, 0.025);
-    }
-
-    #api-project-name {
-      margin: 0 0 7px;
-      font-size: 16px;
-      font-weight: 500;
-    }
-
-    #api-project-type {
-      margin: 0;
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    #api-project-summary {
-      margin: 0;
-      color: #a7b1ba;
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
-    #api-project-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      color: var(--muted);
-      font-size: 10px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    #api-project-status::before {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--active);
-      box-shadow: 0 0 7px rgba(169, 204, 227, 0.45);
+    .project-door::before {
+      position: absolute;
+      inset: 8% 11% 52%;
+      border: 1px solid rgba(238, 233, 223, 0.06);
       content: "";
     }
 
-    #api-project-link {
-      display: grid;
-      width: 28px;
-      height: 28px;
-      place-items: center;
-      border: 1px solid transparent;
-      border-radius: 50%;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 160ms ease, border-color 160ms ease, transform 160ms ease;
+    .project-door::after {
+      position: absolute;
+      inset: 52% 11% 8%;
+      border: 1px solid rgba(238, 233, 223, 0.06);
+      content: "";
     }
 
-    #api-project:hover #api-project-link {
-      color: var(--text);
-      border-color: rgba(229, 238, 246, 0.32);
-      transform: translateX(2px);
+    .room__number {
+      color: #65625d;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
     }
 
-    #menu-button {
-      display: none;
-      border: 0;
-      color: var(--text);
-      background: transparent;
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      cursor: pointer;
+    .room__number::before { content: counter(room, decimal-leading-zero); }
+
+    .room--active .project-door {
+      border-color: rgba(214, 179, 106, 0.7);
+      background:
+        linear-gradient(115deg, rgba(244, 206, 123, 0.08), transparent 52%),
+        #171512;
+      box-shadow: 0 18px 34px #000, 0 0 38px rgba(214, 179, 106, 0.17);
     }
 
-    @keyframes rotate-beam {
-      from {
-        transform: rotate(0deg);
-      }
-
-      to {
-        transform: rotate(360deg);
-      }
+    .room--active .project-door:hover,
+    .room--active .project-door:focus-visible {
+      border-color: var(--gold);
+      box-shadow: 0 22px 42px #000, 0 0 54px rgba(214, 179, 106, 0.28);
+      outline: none;
+      transform: translateY(-5px);
     }
 
-    @media (max-width: 780px) {
-      html,
-      body {
-        min-width: 0;
-      }
+    .room--active .room__number { color: var(--gold); }
 
-      #bull-rock {
-        left: -25%;
-        width: 150%;
-      }
+    .project-door__title {
+      position: absolute;
+      right: 10px;
+      bottom: 13px;
+      left: 10px;
+      z-index: 1;
+      color: var(--paper);
+      font-size: clamp(0.68rem, 1.3vw, 0.86rem);
+      line-height: 1.2;
+      text-align: center;
+    }
 
-      #sea {
-        height: 27%;
-      }
+    .project-door--locked { cursor: not-allowed; opacity: 0.52; }
+    .project-door--locked .project-door__handle { background: #4a4947; box-shadow: none; }
 
-      #project-menu {
-        display: block;
-      }
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: none; }
+    }
 
-      #project-sidebar {
-        position: fixed;
-        inset: 0 auto 0 0;
-        z-index: 3;
-        width: min(280px, 82vw);
-        transform: translateX(-100%);
-        transition: transform 240ms ease;
-      }
-
-      body.menu-open #project-sidebar {
-        transform: translateX(0);
-      }
-
-      #project-content {
-        height: 100%;
-        padding: 24px 22px 44px;
-      }
-
-      #mobile-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding-bottom: 28px;
-      }
-
-      #mobile-label {
-        margin: 0;
-        color: var(--muted);
-        font-size: 10px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-      }
-
-      #menu-button {
-        display: block;
-      }
-
-      #content-header {
-        display: block;
-      }
-
-      #section-description {
-        margin-top: 18px;
-      }
-
-      #api-project {
-        grid-template-columns: minmax(0, 1fr) 78px 24px;
-        gap: 12px;
-        padding-block: 20px;
-      }
-
-      #api-project-summary {
-        display: none;
-      }
+    @media (max-width: 700px) {
+      .gallery { width: min(560px, calc(100% - 32px)); padding-top: 42px; }
+      .gallery__header { display: block; margin-bottom: 38px; }
+      .gallery__note { margin-top: 18px; }
+      .doors { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      #lighthouse-beam {
-        animation-duration: 30s;
-      }
-
-      #opening-scene,
-      #project-menu,
-      #project-sidebar,
-      #api-project,
-      #api-project-link {
-        transition-duration: 0ms;
-      }
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
   </style>
 </head>
 <body>
-  <main id="opening-scene" aria-label="Bull Rock in West Cork beneath a permanent night sky">
-    <canvas id="star-field" aria-hidden="true"></canvas>
-
-    <svg id="bull-rock" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Bull Rock silhouette with a rotating lighthouse light">
-      <defs>
-        <linearGradient id="beam-fade" gradientUnits="userSpaceOnUse" x1="656" y1="225.5" x2="1080" y2="225.5">
-          <stop offset="0" stop-color="#fff2b0" stop-opacity="0.46"></stop>
-          <stop offset="0.08" stop-color="#fff2b0" stop-opacity="0.22"></stop>
-          <stop offset="0.52" stop-color="#fff2b0" stop-opacity="0.07"></stop>
-          <stop offset="1" stop-color="#fff2b0" stop-opacity="0"></stop>
-        </linearGradient>
-
-        <radialGradient id="lantern-glow-gradient">
-          <stop offset="0" stop-color="#fff8cf" stop-opacity="0.9"></stop>
-          <stop offset="0.25" stop-color="#fff2b0" stop-opacity="0.35"></stop>
-          <stop offset="1" stop-color="#fff2b0" stop-opacity="0"></stop>
-        </radialGradient>
-      </defs>
-
-      <path id="lighthouse-beam" d="M656 225.5 L1080 207 Q1090 225.5 1080 244 Z"></path>
-
-      <path id="rock-silhouette" fill-rule="evenodd" d="
-        M190 530 L224 491 L244 427 L270 357 L309 320 L368 298
-        L428 281 L477 253 L530 244 L572 222 L619 229 L660 250
-        L701 285 L735 324 L762 370 L798 409 L827 459 L871 496
-        L922 530 Z
-        M486 530 C490 495 496 467 511 449 C527 431 553 431
-        569 449 C584 468 590 496 593 530 Z
-      "></path>
-
-      <path id="left-stack" d="M66 530 L98 486 L130 466 L160 481 L181 515 L201 530 Z"></path>
-      <path id="right-stack" d="M920 530 L958 510 L985 477 L1012 465 L1037 493 L1072 530 Z"></path>
-
-      <g id="lighthouse">
-        <path id="lighthouse-building" d="M630 247 H646 V258 H629 Z"></path>
-        <path id="lighthouse-tower" d="M652 230 H660 L662 258 H650 Z"></path>
-        <rect id="lighthouse-rail" x="649" y="227" width="14" height="1"></rect>
-        <circle id="lantern-glow" cx="656" cy="225.5" r="15"></circle>
-        <rect id="lantern-room" x="652" y="222" width="8" height="7" rx="0.6"></rect>
-        <path id="lighthouse-roof" d="M651 222 L656 217 L661 222 Z"></path>
-      </g>
-    </svg>
-
-    <div id="sea" aria-hidden="true"></div>
-
-    <div id="enter-area">
-      <button id="enter-button" type="button" aria-label="Open the project menu">Enter</button>
-    </div>
-  </main>
-
-  <main id="project-menu" aria-label="Project navigation" aria-hidden="true">
-    <aside id="project-sidebar">
-      <p id="menu-eyebrow">Workspace</p>
-      <h1 id="menu-title">Current Projects</h1>
-
-      <div id="active-label">
-        <span>Active</span>
-        <span id="active-count">01</span>
+  <main>
+    <section class="entrance" aria-labelledby="entrance-title">
+      <div class="entrance__content">
+        <p class="entrance__eyebrow" id="entrance-title">An archive of things made</p>
+        <button class="entrance-door" id="enter-button" type="button" aria-label="Open the door to the project rooms">
+          <span class="entrance-door__light" aria-hidden="true"></span>
+          <span class="entrance-door__handle" aria-hidden="true"></span>
+        </button>
+        <p class="entrance__instruction">There is more on the other side.</p>
       </div>
+    </section>
 
-      <p id="menu-note">The workspace currently contains one active project.</p>
-    </aside>
-
-    <section id="project-content">
-      <header id="mobile-header">
-        <p id="mobile-label">Current Projects</p>
-        <button id="menu-button" type="button" aria-expanded="false" aria-controls="project-sidebar">Menu</button>
-      </header>
-
-      <header id="content-header">
+    <section class="gallery" id="project-gallery" aria-labelledby="gallery-title">
+      <header class="gallery__header">
         <div>
-          <p id="section-label">In progress</p>
-          <h2 id="section-title">Active</h2>
+          <p class="gallery__eyebrow">The project rooms</p>
+          <h1 id="gallery-title">Choose a door.</h1>
         </div>
-        <p id="section-description">The project currently in development.</p>
+        <p class="gallery__note">One room is open. The others are waiting for whatever comes next.</p>
       </header>
 
-      <div id="project-list">
-        <article id="api-project">
-          <div>
-            <h3 id="api-project-name">API Experiment</h3>
-            <p id="api-project-type">Development experiment</p>
-          </div>
-
-          <p id="api-project-summary">An active experiment exploring API connections, data and interactive behavior.</p>
-
-          <span id="api-project-status">Building</span>
-
-          <a id="api-project-link" href="api-experiment.html" aria-label="Open API Experiment">→</a>
+      <div class="doors" aria-label="Projects">
+        <article class="room room--active">
+          <a class="project-door" href="api-experiment.html" aria-label="Open Cycle Signals, project 1">
+            <span class="entrance-door__handle" aria-hidden="true"></span>
+            <span class="project-door__title">Cycle Signals</span>
+          </a>
+          <span class="room__number" aria-label="Project 1"></span>
         </article>
+        <article class="room"><span class="project-door project-door--locked" aria-hidden="true"><span class="project-door__handle"></span></span><span class="room__number" aria-label="Project 2"></span></article>
+        <article class="room"><span class="project-door project-door--locked" aria-hidden="true"><span class="project-door__handle"></span></span><span class="room__number" aria-label="Project 3"></span></article>
+        <article class="room"><span class="project-door project-door--locked" aria-hidden="true"><span class="project-door__handle"></span></span><span class="room__number" aria-label="Project 4"></span></article>
+        <article class="room"><span class="project-door project-door--locked" aria-hidden="true"><span class="project-door__handle"></span></span><span class="room__number" aria-label="Project 5"></span></article>
+        <article class="room"><span class="project-door project-door--locked" aria-hidden="true"><span class="project-door__handle"></span></span><span class="room__number" aria-label="Project 6"></span></article>
+        <article class="room"><span class="project-door project-door--locked" aria-hidden="true"><span class="project-door__handle"></span></span><span class="room__number" aria-label="Project 7"></span></article>
+        <article class="room"><span class="project-door project-door--locked" aria-hidden="true"><span class="project-door__handle"></span></span><span class="room__number" aria-label="Project 8"></span></article>
+        <article class="room"><span class="project-door project-door--locked" aria-hidden="true"><span class="project-door__handle"></span></span><span class="room__number" aria-label="Project 9"></span></article>
+        <article class="room"><span class="project-door project-door--locked" aria-hidden="true"><span class="project-door__handle"></span></span><span class="room__number" aria-label="Project 10"></span></article>
+        <article class="room"><span class="project-door project-door--locked" aria-hidden="true"><span class="project-door__handle"></span></span><span class="room__number" aria-label="Project 11"></span></article>
+        <article class="room"><span class="project-door project-door--locked" aria-hidden="true"><span class="project-door__handle"></span></span><span class="room__number" aria-label="Project 12"></span></article>
+        <article class="room"><span class="project-door project-door--locked" aria-hidden="true"><span class="project-door__handle"></span></span><span class="room__number" aria-label="Project 13"></span></article>
+        <article class="room"><span class="project-door project-door--locked" aria-hidden="true"><span class="project-door__handle"></span></span><span class="room__number" aria-label="Project 14"></span></article>
+        <article class="room"><span class="project-door project-door--locked" aria-hidden="true"><span class="project-door__handle"></span></span><span class="room__number" aria-label="Project 15"></span></article>
+        <article class="room"><span class="project-door project-door--locked" aria-hidden="true"><span class="project-door__handle"></span></span><span class="room__number" aria-label="Project 16"></span></article>
       </div>
     </section>
   </main>
 
   <script>
-    (() => {
-      const canvas = document.getElementById("star-field");
-      const context = canvas.getContext("2d");
-      const enterButton = document.getElementById("enter-button");
-      const menuButton = document.getElementById("menu-button");
-      const projectMenu = document.getElementById("project-menu");
-      const stars = [];
-      let frameId = 0;
+    const enterButton = document.querySelector("#enter-button");
+    const projectGallery = document.querySelector("#project-gallery");
 
-      function randomBetween(minimum, maximum) {
-        return minimum + Math.random() * (maximum - minimum);
-      }
-
-      function resizeCanvas() {
-        const bounds = canvas.getBoundingClientRect();
-        const ratio = Math.min(window.devicePixelRatio || 1, 2);
-
-        canvas.width = Math.max(1, Math.floor(bounds.width * ratio));
-        canvas.height = Math.max(1, Math.floor(bounds.height * ratio));
-        context.setTransform(ratio, 0, 0, ratio, 0, 0);
-
-        stars.length = 0;
-
-        const count = Math.min(
-          1100,
-          Math.max(430, Math.floor((bounds.width * bounds.height) / 1100))
-        );
-
-        for (let index = 0; index < count; index += 1) {
-          const yRatio = Math.pow(Math.random(), 1.16);
-          const sizeRoll = Math.random();
-          const temperature = Math.random();
-
-          stars.push({
-            x: Math.random() * bounds.width,
-            y: yRatio * bounds.height * 0.97,
-            radius:
-              sizeRoll > 0.995
-                ? randomBetween(1, 1.35)
-                : sizeRoll > 0.96
-                  ? randomBetween(0.5, 0.82)
-                  : randomBetween(0.15, 0.4),
-            alpha: randomBetween(0.24, 0.86) * (1 - yRatio * 0.3),
-            color:
-              temperature < 0.07
-                ? "194,216,255"
-                : temperature > 0.93
-                  ? "255,224,188"
-                  : "235,241,250",
-            phase: Math.random() * Math.PI * 2,
-            speed: randomBetween(0.00008, 0.0002)
-          });
-        }
-      }
-
-      function drawStars(time) {
-        const bounds = canvas.getBoundingClientRect();
-        context.clearRect(0, 0, bounds.width, bounds.height);
-
-        stars.forEach((star) => {
-          const alpha =
-            star.alpha *
-            (0.98 + Math.sin(time * star.speed + star.phase) * 0.02);
-
-          context.fillStyle = `rgba(${star.color},${alpha})`;
-          context.beginPath();
-          context.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-          context.fill();
-        });
-
-        frameId = requestAnimationFrame(drawStars);
-      }
-
-      function openProjects() {
-        document.body.classList.add("entered");
-        projectMenu.setAttribute("aria-hidden", "false");
-      }
-
-      function toggleMobileMenu() {
-        const isOpen = document.body.classList.toggle("menu-open");
-        menuButton.setAttribute("aria-expanded", String(isOpen));
-      }
-
-      enterButton.addEventListener("click", openProjects);
-      menuButton.addEventListener("click", toggleMobileMenu);
-      window.addEventListener("resize", resizeCanvas);
-
-      window.addEventListener("pagehide", () => {
-        cancelAnimationFrame(frameId);
-      });
-
-      resizeCanvas();
-      frameId = requestAnimationFrame(drawStars);
-    })();
+    enterButton.addEventListener("click", () => {
+      document.body.classList.add("entered");
+      window.setTimeout(() => projectGallery.querySelector("a").focus(), 950);
+    });
   </script>
-
-</body></html>
+</body>
+</html>
