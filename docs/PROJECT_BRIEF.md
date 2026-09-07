@@ -1,8 +1,8 @@
 # Cycle Signals project brief
 
-**Status:** Discovery and teaching setup  
+**Status:** Lesson 1 weather card implemented; live verification pending
 **Current branch:** `work`  
-**Current gate:** Lesson 1 Phase B is active. Ronan supplied current official Open-Meteo forecast documentation from his browser on 2026-09-07, verifying the candidate fields, default units, generated URL, and API-key requirement for the standard non-commercial endpoint. Attribution, usage limits, cost conditions, and relevant terms must still be verified before implementation.
+**Current gate:** Lesson 1 Phase B is active. Current official Open-Meteo forecast, pricing, terms, privacy, and licence information was supplied from Ronan's browser on 2026-09-07. The weather card is implemented and passes local static and mocked-state checks; live GitHub Pages verification remains required before completing the lesson.
 
 ## Purpose
 
@@ -27,7 +27,9 @@ This is a direction for discussion, not an approved implementation.
 5. If any selected source requires a credential or receives sensitive inputs, place the request behind a minimal server-side/serverless adapter that reads secrets from environment variables. Never expose secrets in browser code.
 6. Keep personal observations local by default; do not add persistence or analytics without a separate privacy review and explicit approval.
 
-No provider or hosting product is selected. Product availability, pricing, quotas, data handling, and terms remain unverified.
+Open-Meteo is selected only for Lesson 1's credential-free, generic London weather
+request after the documented first-party checks. No provider or hosting product is
+selected for later private ingestion, storage, or automation.
 
 ## Curriculum and gates
 
@@ -71,4 +73,7 @@ Repository-safe material includes source code, synthetic fixtures, coarse fictio
 
 ## Source-verification status
 
-No provider has been selected and no provider product, price, quota, privacy, or terms claim has been verified. Current architecture and cost statements are internal planning assumptions only.
+Open-Meteo forecast, pricing, terms, privacy/logging, and licence details relevant
+to Lesson 1 were supplied from current first-party pages and recorded in
+`docs/CODEBOOK.md` on 2026-09-07. Later providers and current static-hosting cost
+conditions remain unverified.

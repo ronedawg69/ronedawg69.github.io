@@ -4,9 +4,9 @@
 
 - **Learner:** Ronan
 - **Lesson:** 1 — First real London weather request
-- **Phase:** B — provider verification
-- **Status:** Request shape verified from supplied official documentation; usage conditions still awaiting verification
-- **Rule:** Do not change `api-experiment.html` until current first-party documentation also confirms attribution, usage limits, cost conditions, and relevant terms.
+- **Phase:** B — implementation and testing
+- **Status:** Weather card implemented and locally checked; live verification pending
+- **Rule:** Do not mark Lesson 1 complete or begin Lesson 2 until Ronan verifies the live request and visible states.
 
 ## Lesson 1 objective
 
@@ -56,7 +56,7 @@ is required.
 
 | Lesson | Status |
 | --- | --- |
-| 1. First real London weather request | In progress — Phase B request verified; usage conditions still required |
+| 1. First real London weather request | In progress — Phase B implementation complete; live verification pending |
 | 2. Shape a synthetic dataset | Not started |
 | 3. Render one signal | Not started |
 | 4. Handle failure | Not started |
