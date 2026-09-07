@@ -2,7 +2,7 @@
 
 **Status:** Discovery and teaching setup  
 **Current branch:** `work`  
-**Current gate:** Lesson 1, Phase A is waiting for Ronan's comprehension answers. No application code change is authorized yet.
+**Current gate:** Lesson 1 Phase B is active. Ronan supplied current official Open-Meteo forecast documentation from his browser on 2026-09-07, verifying the candidate fields, default units, generated URL, and API-key requirement for the standard non-commercial endpoint. Attribution, usage limits, cost conditions, and relevant terms must still be verified before implementation.
 
 ## Purpose
 

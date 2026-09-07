@@ -33,12 +33,54 @@ These names are discussion aids only; Lesson 2 will decide the actual fixture.
 
 | Topic | Provider/source | Status | Verified on | Notes |
 | --- | --- | --- | --- | --- |
-| Weather product availability | Not selected | Unverified | — | Do not make a product claim. |
-| Authentication requirements | Not selected | Unverified | — | Architecture remains conditional. |
+| Weather product availability | Open-Meteo forecast API candidate | Partially verified | 2026-09-07 | Official forecast documentation supplied from Ronan's browser describes current conditions based on 15-minute model data and permits hourly variables as current conditions. |
+| Authentication requirements | Open-Meteo standard non-commercial API candidate | Verified for candidate endpoint | 2026-09-07 | Supplied official documentation says no API key is required; `apikey` is optional and is required for commercial access to reserved customer resources. |
 | Pricing and free allowance | Not selected | Unverified | — | Intended $0 fixture path is an internal goal, not provider pricing. |
 | Quotas and rate limits | Not selected | Unverified | — | Define caps only after first-party review. |
 | Privacy, retention, and terms | Not selected | Unverified | — | Document data flow before selection. |
 | Static hosting behavior/cost | Not assessed | Unverified | — | Current repository context does not establish current hosting terms. |
+
+### Verification attempt: 2026-09-07
+
+The following first-party Open-Meteo locations were requested from the Codex
+environment:
+
+- <https://open-meteo.com/en/docs>
+- <https://open-meteo.com/en/terms>
+- <https://open-meteo.com/en/licence>
+- `https://api.open-meteo.com/v1/forecast` with coarse central-London coordinates,
+  current weather fields, `Europe/London`, and one forecast day
+
+The documentation tool returned HTTP `401 Unauthorized`, while direct HTTPS
+requests through the environment proxy returned `403 Forbidden` before reaching
+the pages. These results establish an environment-access limitation only. They do
+**not** verify product availability, browser access, authentication, fields,
+units, attribution, limits, price, privacy, retention, or terms. No provider has
+therefore been selected and no live request has been added to the application.
+
+### Official forecast documentation supplied: 2026-09-07
+
+Ronan accessed and transcribed the relevant portion of the current first-party
+<https://open-meteo.com/en/docs> page because the Codex environment could not load
+it directly. The supplied documentation supports these limited conclusions:
+
+- Current conditions are based on 15-minute weather-model data; they are modelled
+  conditions, not a street-level sensor reading.
+- The proposed request uses a generic central-London point (`51.5072`, `-0.1276`),
+  requests only `temperature_2m`, `apparent_temperature`, `precipitation`,
+  `weather_code`, `wind_speed_10m`, and `wind_direction_10m`, and asks for
+  `Europe/London` time.
+- Default units are degrees Celsius for both temperatures, millimetres for the
+  preceding 15-minute precipitation total, kilometres per hour for 10-metre wind
+  speed, degrees for wind-from direction, and a WMO code for weather condition.
+- The standard non-commercial endpoint does not require an API key. The optional
+  `apikey` parameter applies to commercial access using reserved customer servers.
+- The example URL is generated from selected documentation controls rather than
+  being a single fixed example printed for all users.
+
+This supplied excerpt does not establish attribution requirements, request quotas,
+price conditions, retention/privacy details, or all relevant terms. Those remain
+unverified, so Open-Meteo remains a candidate rather than a selected provider.
 
 When verification begins, record the exact first-party page, access date, relevant fact in paraphrase, and any uncertainty. Re-check before implementation because provider details can change.
 
@@ -47,3 +89,18 @@ When verification begins, record the exact first-party page, access date, releva
 - Examples must be unmistakably fictional and must not encode a real route, home/work location, timestamp sequence, ride, sleep, activity, or health record.
 - Use placeholders for environment-variable names, never credential-shaped sample values.
 - Keep secret values out of source, Git history, browser storage, logs, screenshots, and documentation.
+
+## Lesson 1 clarification: public code and secrets
+
+- Code sent to a visitor's browser can be inspected, including JavaScript that is
+  not written directly in the HTML file.
+- A browser-visible API key is not secret. A private repository alone does not
+  protect a key after that key is delivered as part of a public website.
+- When a future provider requires a secret, a server-side component can hold the
+  credential, make the provider request, and return only an approved result.
+- Protecting a credential helps prevent unauthorized access and unexpected usage,
+  but server-side storage must still be designed and reviewed rather than assumed
+  safe automatically.
+- Provider suitability includes more than feature scope: verify eligibility,
+  authentication, available fields, quotas, price, privacy, retention, and terms
+  against current official documentation before implementation.

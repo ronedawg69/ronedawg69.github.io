@@ -2,19 +2,28 @@
 
 ## Stop point
 
-Lesson 1 Phase A is waiting for Ronan's comprehension answers. The repository is intentionally at a documentation-only checkpoint, and `api-experiment.html` has not been changed in this phase.
+Lesson 1 Phase B is active. On 2026-09-07, Ronan supplied the relevant current
+forecast-documentation content from the official Open-Meteo page. The request
+fields, default units, generated central-London URL, current-condition basis, and
+standard non-commercial API-key requirement are now recorded. The application
+remains unchanged because attribution, usage limits, cost conditions, and relevant
+terms are still unverified.
 
 ## Single next action
 
-Ask Ronan to answer the five questions already listed in `docs/LEARNING_TRACKER.md`. Do not introduce Phase B, design the fixture, select a provider, or edit application code in the same step.
+Ask Ronan to paste the current official Open-Meteo text covering attribution,
+free/non-commercial usage limits, cost conditions, and the relevant usage terms.
+Do not request the already supplied forecast-field material again, and do not
+implement from remembered or third-party claims.
 
 ## After answers arrive
 
-1. Record the answers faithfully without adding private details.
-2. Assess each answer briefly and correct misconceptions in plain language.
-3. Ask Ronan to confirm readiness before advancing.
-4. Update the learning and application trackers.
-5. Only then identify the single next lesson phase.
+1. Change the trackers to Lesson 1 Phase B.
+2. Verify the proposed public weather service using current official sources.
+3. Implement only the first real London weather display, including loading,
+   failure, and last-updated states.
+4. Test, explain, and document that single implementation step.
+5. Stop before Lesson 2.
 
 ## Guardrails for the next session
 
