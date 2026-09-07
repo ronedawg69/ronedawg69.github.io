@@ -97,14 +97,8 @@
     .door.live:hover::before { box-shadow: inset 0 0 50px rgba(232, 196, 109, .05), 0 0 32px rgba(232, 196, 109, .04); }
     .door.live:hover::after { background: var(--gold); box-shadow: 0 0 18px rgba(232,196,109,.45); }
     .door:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
-    .gallery-footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 62px; }
-    .status { display: flex; align-items: center; gap: 9px; color: #77746c; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+    .status { display: flex; align-items: center; gap: 9px; margin-top: 62px; color: #77746c; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
     .status::before { width: 24px; height: 1px; content: ""; background: var(--gold); opacity: .7; }
-    .singularity-link { color: var(--muted); font-size: 11px; letter-spacing: .08em; text-decoration: none; text-transform: uppercase; transition: color .2s ease; }
-    .singularity-link span { display: inline-block; margin-left: 8px; color: var(--gold); transition: transform .2s ease; }
-    .singularity-link:hover { color: var(--ink); }
-    .singularity-link:hover span { transform: translateX(3px); }
-    .singularity-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; }
 
     @media (max-width: 760px) {
       .shell { width: min(100% - 32px, 560px); padding-top: 44px; }
@@ -117,7 +111,6 @@
       .door p { display: none; }
       .door::after { right: 13px; width: 4px; height: 4px; }
       .number { font-size: 8px; letter-spacing: .08em; }
-      .gallery-footer { align-items: flex-start; flex-direction: column; }
     }
 
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
@@ -148,10 +141,7 @@
       <div class="door"><span class="door-content"><span class="number"></span><h2>Unoccupied</h2><p>Awaiting an idea.</p></span></div>
       <div class="door"><span class="door-content"><span class="number"></span><h2>Unoccupied</h2><p>Awaiting an idea.</p></span></div>
     </section>
-    <footer class="gallery-footer">
-      <div class="status">1 of 16 rooms open</div>
-      <a class="singularity-link" href="index.html">View the singularity again <span aria-hidden="true">→</span></a>
-    </footer>
+    <div class="status">1 of 16 rooms open</div>
   </main>
 </body>
 </html>
