@@ -13,7 +13,11 @@ These rules apply to the entire repository and to future sessions.
 
 - Keep exactly one lesson phase active. Do not begin the next phase or lesson until Ronan answers the current comprehension questions and confirms he is ready.
 - Keep `docs/NEXT_SESSION.md` aligned with the single next action and `docs/LEARNING_TRACKER.md` aligned with current progress.
-- Lesson 1 Phase A is the current stopping point until its answers are received.
+- Lesson 1 Phase B is active. Ronan confirmed readiness. Official Open-Meteo
+  forecast and usage-condition documentation was supplied from Ronan's browser on
+  2026-09-07. The first weather card is implemented and passes static and mocked
+  success/failure checks. Do not mark Lesson 1 complete or begin Lesson 2 until the
+  request and visible states are verified on the live GitHub Pages site.
 
 ## Privacy and data
 
