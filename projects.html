@@ -38,6 +38,23 @@
     }
 
     a { color: inherit; }
+    .return-link {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+      padding: 10px 13px;
+      border: 1px solid rgba(232, 196, 109, .28);
+      color: var(--gold);
+      background: rgba(5, 5, 5, .9);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color .25s ease, border-color .25s ease, background .25s ease;
+    }
+    .return-link:hover { color: #fff8e3; border-color: rgba(232, 196, 109, .62); background: #11100d; }
+    .return-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
     .shell { position: relative; width: min(1180px, calc(100% - 48px)); margin: 0 auto; padding: 72px 0 88px; }
     .masthead { display: flex; align-items: end; justify-content: space-between; gap: 32px; margin-bottom: 54px; }
     .eyebrow { margin: 0 0 13px; color: var(--gold); font-size: 12px; letter-spacing: .22em; text-transform: uppercase; }
@@ -117,6 +134,7 @@
   </style>
 </head>
 <body>
+  <a class="return-link" href="./index.html">← Return to singularity</a>
   <main class="shell">
     <header class="masthead">
       <div><p class="eyebrow">Beyond the singularity</p><h1>Project rooms</h1></div>
