@@ -2,19 +2,32 @@
 
 ## Stop point
 
-Lesson 1 Phase A is waiting for Ronan's comprehension answers. The repository is intentionally at a documentation-only checkpoint, and `api-experiment.html` has not been changed in this phase.
+Lesson 1 Phase B implementation and testing are active. On 2026-09-07, Ronan
+supplied current official Open-Meteo forecast, pricing, terms, privacy, and licence
+information. `api-experiment.html` now contains the first real weather card with
+loading, validated success, honest failure, retry, weather-time, last-updated, and
+linked attribution states. Static checks and mocked success/HTTP-failure tests pass.
+Ronan confirmed that the initial live card works and displays values. On
+2026-09-08, he supplied the official WMO table and correctly explained both the
+seconds-to-minutes calculation and JavaScript translation. The refinement now
+shows a readable condition and minutes locally. It still needs deployment, then a
+Network trace and failure-state check.
 
 ## Single next action
 
-Ask Ronan to answer the five questions already listed in `docs/LEARNING_TRACKER.md`. Do not introduce Phase B, design the fixture, select a provider, or edit application code in the same step.
+Get the refinement commit onto `main` and verify that the live card shows a readable
+condition and `15 minutes`. Then guide Ronan through tracing the raw weather code
+and interval in the successful Network JSON and deliberately testing the failure
+state. Do not begin Lesson 2.
 
-## After answers arrive
+## After the updated page is available
 
-1. Record the answers faithfully without adding private details.
-2. Assess each answer briefly and correct misconceptions in plain language.
-3. Ask Ronan to confirm readiness before advancing.
-4. Update the learning and application trackers.
-5. Only then identify the single next lesson phase.
+1. Open `api-experiment.html` through the GitHub Pages URL.
+2. Confirm the real values and linked attribution are visible.
+3. Use browser developer tools to trace a displayed value to the successful JSON
+   response.
+4. Temporarily test the documented shutoff or an offline failure, then restore it.
+5. Record the results, finish the Lesson 1 recap, and stop before Lesson 2.
 
 ## Guardrails for the next session
 
@@ -27,6 +40,7 @@ Ask Ronan to answer the five questions already listed in `docs/LEARNING_TRACKER.
 ## Current facts to preserve
 
 - Branch: `work`.
-- Architecture: provisional static client plus synthetic fixtures; a server-side boundary is conditional, not selected.
+- Architecture: static client calling Open-Meteo directly for the credential-free
+  Lesson 1 request; a server-side boundary is conditional for later private data.
 - Intended fixture-stage infrastructure spend: $0; future live-source cost is unknown and unverified.
 - Provider selection and source verification: not started.
