@@ -9,15 +9,29 @@ These rules apply to the entire repository and to future sessions.
 - Ask short comprehension questions at the end of each lesson. Record the learner's answers and any misconceptions in `docs/LEARNING_TRACKER.md` before starting the next lesson.
 - Do not complete an exercise on Ronan's behalf until he has attempted it, unless he explicitly asks for a worked example.
 
+## Communication and pull requests
+
+- End every learner-facing message with a `**Next Steps:**` section that states the
+  single immediate action, or says explicitly that no action is required.
+- Tell Ronan exactly when to create a pull request: only after the agreed changes
+  are complete, the relevant checks pass, and the changes are committed. At that
+  point, say clearly that the branch is ready for a pull request and identify what
+  Ronan should review.
+- Do not tell Ronan to merge a pull request until its checks pass and the documented
+  lesson gate allows the change. State separately when it is ready to review and
+  when it is ready to merge.
+
 ## One lesson at a time
 
-- Keep exactly one lesson phase active. Do not begin the next phase or lesson until Ronan answers the current comprehension questions and confirms he is ready.
+- Keep exactly one lesson phase active while lesson work is underway. Between lessons,
+  keep the completed lesson closed and do not activate the next lesson until its
+  opening explanation and readiness check are complete.
 - Keep `docs/NEXT_SESSION.md` aligned with the single next action and `docs/LEARNING_TRACKER.md` aligned with current progress.
-- Lesson 1 Phase B is active. Ronan confirmed readiness. Official Open-Meteo
-  forecast and usage-condition documentation was supplied from Ronan's browser on
-  2026-09-07. The first weather card is implemented and passes static and mocked
-  success/failure checks. Do not mark Lesson 1 complete or begin Lesson 2 until the
-  request and visible states are verified on the live GitHub Pages site.
+- Lesson 1 Phase B and Lesson 1 are complete. The weather-card readability
+  refinement from PR #11 is merged, deployed, and verified on the live GitHub
+  Pages site. Lesson 2 has not started. The single next action is to explain Lesson
+  2 Phase A and ask Ronan whether he is ready to begin it; do not start its schema
+  or application work before that readiness confirmation.
 
 ## Privacy and data
 
@@ -37,5 +51,6 @@ These rules apply to the entire repository and to future sessions.
 ## Change control
 
 - Keep lesson work documentation-only until the active gate is cleared.
-- Do not change `api-experiment.html` while Lesson 1 Phase A is waiting for answers.
+- Do not change `api-experiment.html` or begin Lesson 2 schema work before Lesson 2
+  Phase A has been explained and Ronan confirms readiness.
 - Update the project brief, application tracker, learning tracker, codebook, and next-session handoff when a decision changes their recorded state.

@@ -2,27 +2,24 @@
 
 ## Stop point
 
-Lesson 1 Phase B implementation and testing are active. The initial Open-Meteo
-weather card is deployed and working. The small readability refinement now names
-known WMO conditions, reports unknown codes honestly, and displays the API interval
-in minutes. The existing request, states, timestamps, attribution, privacy boundary,
-and shutoff remain intact. Local static and mocked-state checks pass; the refinement
-is not yet verified on GitHub Pages.
+Lesson 1 Phase B and Lesson 1 are complete. PR #11's weather-card readability
+refinement is merged, deployed, and working. Ronan verified the live request and
+visible weather condition through the browser Network panel, explained the honest
+error state and browser/server secret boundary, and confirmed readiness to finish
+Lesson 1. Lesson 2 has not started.
 
 ## Single next action
 
-Merge and deploy the refinement, then guide Ronan through one browser verification
-of the readable weather condition and minute interval while confirming the preserved
-states and attribution. Do not begin Lesson 2.
+Explain Lesson 2 Phase A in plain language, then ask Ronan whether he is ready to
+begin it. Do not start a Lesson 2 schema or any application work during that
+explanation and readiness check.
 
-## After the updated page is available
+## Opening Lesson 2
 
-1. Open `api-experiment.html` through the GitHub Pages URL after deployment.
-2. Confirm the named condition, minute interval, timestamps, and linked attribution.
-3. Use browser developer tools to trace the displayed condition and interval to the
-   successful JSON response.
-4. Reconfirm the retry/failure state without changing the permanent shutoff setting.
-5. Record the results, finish the Lesson 1 recap, and stop before Lesson 2.
+1. Explain the purpose and boundaries of Lesson 2 Phase A without drafting a schema.
+2. Ask Ronan whether he is ready to begin Phase A.
+3. Record his answer before activating the phase or doing any exercise or
+   application work.
 
 ## Guardrails for the next session
 
@@ -30,7 +27,7 @@ states and attribution. Do not begin Lesson 2.
 - No precise personal locations or real ride, rest, activity, or health records.
 - No provider product, price, quota, privacy, or terms claim unless it is verified against a current first-party source and logged in the codebook.
 - No spending or paid-service activation without explicit approval and documented limits.
-- One lesson phase at a time.
+- One lesson phase at a time; no Lesson 2 phase is active yet.
 
 ## Current facts to preserve
 
