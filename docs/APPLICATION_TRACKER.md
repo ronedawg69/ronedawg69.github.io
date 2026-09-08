@@ -5,21 +5,21 @@
 - **Branch:** `work`
 - **Application:** Cycle Signals (`api-experiment.html`)
 - **Stage:** First live-data card implemented
-- **Release status:** Built and locally checked; not verified as deployed
+- **Release status:** Initial live card deployed and working; readability refinement locally checked
 - **Active gate:** Lesson 1 Phase B — live GitHub Pages request and display verification
 
 ## Component inventory
 
 | Area | Current state | Next eligible action | Blocker |
 | --- | --- | --- | --- |
-| Presentation | Accessible London weather card with loading, success, failure, retry, timestamps, and attribution | Verify the visible card on GitHub Pages | Updated commit is not connected to a remote in this environment |
+| Presentation | Accessible London weather card with named WMO conditions, minute intervals, loading, success, failure, retry, timestamps, and attribution | Verify the refined labels on GitHub Pages | Refinement is not deployed yet |
 | Data model | Not defined | Draft a minimal synthetic schema | Complete Lesson 1 |
-| Browser logic | One request on page load, response/status validation, safe text rendering, and manual retry | Inspect the live Network request and exercise failure handling | Live page not available from this checkout |
+| Browser logic | One request on page load, response/status validation, safe text rendering, WMO fallback, interval conversion, and manual retry | Recheck the live Network request and visible known/unknown states | Refined branch is not deployed yet |
 | External data | Open-Meteo forecast endpoint using generic central-London coordinates | Confirm real returned values on the live page | Runtime provider access is blocked in this environment |
 | Secret boundary | Not needed for the credential-free weather request | Design a proxy only when a later selected source needs credentials or receives sensitive data | No private provider selected |
 | Persistence | None | Keep local by default; reconsider only with explicit need and privacy review | No approved use case |
-| Testing | HTML parsing, JavaScript syntax, and mocked success/HTTP-failure checks pass | Complete live browser checks | No browser engine or provider access in this environment |
-| Deployment | Existing GitHub Pages project, but this checkout has no configured remote | Get commit onto a GitHub branch and verify Pages | Cannot push or create a linked PR from this checkout |
+| Testing | HTML parsing, JavaScript syntax, and mocked known-code, unknown-code, interval, success, and HTTP-failure checks pass | Confirm the refined display on GitHub Pages | Live refinement check requires deployment |
+| Deployment | Initial weather card is deployed and working on GitHub Pages | Publish this refinement through a fresh pull request | Pull request and Pages deployment pending |
 
 ## Decision log
 
@@ -29,6 +29,7 @@
 | 2026-09-07 | Use synthetic fixtures before evaluating a live source. | Provisional, governed by lesson gates |
 | 2026-09-07 | Treat real commute, rest, activity, location, and health-adjacent data as outside the repository privacy boundary. | Active |
 | 2026-09-07 | Make no provider selection or current product/pricing claim without first-party verification. | Active |
+| 2026-09-08 | Preserve the deployed request and states while translating WMO codes and seconds into readable display text. | Active |
 
 ## Change checklist
 
@@ -45,4 +46,6 @@
 - [x] Implement the Lesson 1 weather card.
 - [x] Validate HTML structure and JavaScript syntax.
 - [x] Test success and HTTP-failure states with a mocked API response.
-- [ ] Verify the real request, displayed values, attribution, and failure state on the live GitHub Pages URL.
+- [x] Verify the initial real request and weather card on the live GitHub Pages URL.
+- [x] Test known and unknown WMO codes and singular/plural minute conversion locally.
+- [ ] Verify the refined condition and interval text on the live GitHub Pages URL.

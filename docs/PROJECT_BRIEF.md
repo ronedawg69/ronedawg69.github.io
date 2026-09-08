@@ -1,8 +1,8 @@
 # Cycle Signals project brief
 
-**Status:** Lesson 1 weather card implemented; live verification pending
+**Status:** Initial Lesson 1 weather card deployed; readability refinement pending live verification
 **Current branch:** `work`  
-**Current gate:** Lesson 1 Phase B is active. Current official Open-Meteo forecast, pricing, terms, privacy, and licence information was supplied from Ronan's browser on 2026-09-07. The weather card is implemented and passes local static and mocked-state checks; live GitHub Pages verification remains required before completing the lesson.
+**Current gate:** Lesson 1 Phase B is active. Current official Open-Meteo forecast, pricing, terms, privacy, and licence information was supplied from Ronan's browser on 2026-09-07. The initial card is deployed and working; its condition-name and minute-interval refinement must pass local checks and live GitHub Pages verification before completing the lesson.
 
 ## Purpose
 
@@ -13,8 +13,10 @@ Cycle Signals is currently a static concept page for learning how a small web ap
 - The repository is a small, dependency-free static website.
 - `index.html` is the main site, `projects.html` is a project-room gallery, and `api-experiment.html` is the Cycle Signals placeholder.
 - There is no package manifest, build step, automated test suite, application backend, data store, or continuous-integration configuration in the current tree.
-- The current page contains presentation-only HTML and CSS. It makes no network requests and stores no data.
-- The repository has no configured Git remote in the current environment.
+- The current page contains HTML, CSS, and browser JavaScript. It makes one
+  credential-free weather request on load, supports deliberate retry, and stores no data.
+- The initial page is deployed through GitHub Pages; this checkout has no configured
+  Git remote.
 
 ## Provisional architecture
 

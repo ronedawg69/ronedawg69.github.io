@@ -5,8 +5,8 @@
 - **Learner:** Ronan
 - **Lesson:** 1 — First real London weather request
 - **Phase:** B — implementation and testing
-- **Status:** Weather card implemented and locally checked; live verification pending
-- **Rule:** Do not mark Lesson 1 complete or begin Lesson 2 until Ronan verifies the live request and visible states.
+- **Status:** Initial live card verified; readability refinement implementation and testing active
+- **Rule:** Do not mark Lesson 1 complete or begin Lesson 2 until Ronan verifies the refined visible states on the live site.
 
 ## Lesson 1 objective
 
@@ -56,7 +56,7 @@ is required.
 
 | Lesson | Status |
 | --- | --- |
-| 1. First real London weather request | In progress — Phase B implementation complete; live verification pending |
+| 1. First real London weather request | In progress — initial live card works; refined condition and interval display pending live verification |
 | 2. Shape a synthetic dataset | Not started |
 | 3. Render one signal | Not started |
 | 4. Handle failure | Not started |
