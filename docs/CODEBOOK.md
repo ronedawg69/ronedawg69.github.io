@@ -176,3 +176,17 @@ When verification begins, record the exact first-party page, access date, releva
 - Provider suitability includes more than feature scope: verify eligibility,
   authentication, available fields, quotas, price, privacy, retention, and terms
   against current official documentation before implementation.
+
+## Lesson 1 closeout: 2026-09-08
+
+- PR #11's readability refinement is merged, deployed, and working. In the live
+  browser check, the Open-Meteo JSON in the Network panel matched the rendered
+  weather condition. An empty HTML element alone would show only that JavaScript
+  inserts a value; it would not prove that the value came from the live response.
+- The card's error state deliberately avoids presenting fabricated values as live
+  data.
+- The current Open-Meteo request can run in the browser because it contains no
+  secret API key. A future request involving a secret or sensitive data may need a
+  server-side boundary, subject to a separate design and privacy review.
+- Lesson 1 is complete. Lesson 2 has not started, and no Lesson 2 schema or
+  application work is authorized by this closeout.
