@@ -1,8 +1,8 @@
 # Cycle Signals project brief
 
-**Status:** Initial Lesson 1 weather card deployed; readability refinement pending live verification
+**Status:** Lesson 1 complete; Lesson 2 not started
 **Current branch:** `work`  
-**Current gate:** Lesson 1 Phase B is active. Current official Open-Meteo forecast, pricing, terms, privacy, and licence information was supplied from Ronan's browser on 2026-09-07. The initial card is deployed and working; its condition-name and minute-interval refinement must pass local checks and live GitHub Pages verification before completing the lesson.
+**Current gate:** Lesson 1 Phase B and Lesson 1 are complete. PR #11's readability refinement is merged, deployed, and working, and Ronan completed the final teach-back. Lesson 2 has not started; explain Lesson 2 Phase A and ask whether Ronan is ready before starting schema or application work.
 
 ## Purpose
 
@@ -37,7 +37,7 @@ selected for later private ingestion, storage, or automation.
 
 | Lesson | Outcome | Gate |
 | --- | --- | --- |
-| 1. Data and trust boundaries | Explain client/server roles, API requests, secrets, sensitive data, and why fixtures come first. | Phase A questions must be answered before any code change. |
+| 1. Data and trust boundaries | Complete: Ronan explained live-response verification, honest errors, and when browser or server-side requests are appropriate. | Satisfied: Phase A, implementation, live verification, and final teach-back are complete. |
 | 2. Shape a synthetic dataset | Read and describe a minimal fictional weather/ride/rest fixture and its units. | Ronan validates the schema and privacy choices. |
 | 3. Render one signal | Use accessible HTML and JavaScript to display one fixture-derived value. | Ronan explains the data flow and tests it locally. |
 | 4. Handle failure | Add loading, empty, and error states using controlled fixture scenarios. | Ronan can predict each state. |
@@ -46,7 +46,9 @@ selected for later private ingestion, storage, or automation.
 | 7. Compare signals responsibly | Explore correlations without implying causation or health conclusions. | Language and visualization review pass. |
 | 8. Harden and publish | Add tests, accessibility checks, operational limits, and a rollback/shutoff procedure. | Ronan completes a final teach-back. |
 
-Only one lesson is active at a time. Later lessons are a provisional roadmap, not permission to begin them.
+Only one lesson is active at a time. No lesson phase is active during this closeout:
+Lesson 2 remains a provisional next step, not permission to begin its schema or
+application work.
 
 ## Planning estimates
 

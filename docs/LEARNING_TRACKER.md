@@ -3,10 +3,10 @@
 ## Current position
 
 - **Learner:** Ronan
-- **Lesson:** 1 — First real London weather request
-- **Phase:** B — implementation and testing
-- **Status:** Initial live card verified; readability refinement implementation and testing active
-- **Rule:** Do not mark Lesson 1 complete or begin Lesson 2 until Ronan verifies the refined visible states on the live site.
+- **Lesson:** Between Lessons 1 and 2
+- **Phase:** No active lesson phase; Lesson 2 Phase A awaits its explanation and readiness check
+- **Status:** Lesson 1 Phase B complete; Lesson 1 complete; Lesson 2 not started
+- **Rule:** Explain Lesson 2 Phase A and ask whether Ronan is ready before starting any Lesson 2 schema or application work.
 
 ## Lesson 1 objective
 
@@ -52,11 +52,23 @@ is required.
 | 4 | Verify that provider details fall within the required scope. | Good principle. Specifically verify current eligibility, fields, authentication, quotas, price, privacy, retention, and terms using official sources. | Apply during provider evaluation. |
 | 5 | Review security rules when gathering information from external sources. | Sensible security practice. The intended answer was “do not change the application before the Phase A gate is cleared,” but that procedural answer was not taught and should not count as a misconception. | No corrective exercise required. |
 
+## Final Lesson 1 teach-back
+
+On 2026-09-08, after PR #11 was merged, deployed, and confirmed working, Ronan
+completed the final teach-back and confirmed that he was ready to finish Lesson 1.
+
+| Topic | Ronan's understanding | Assessment / misconception | Follow-up |
+| --- | --- | --- | --- |
+| Proving a displayed value is live | An empty HTML element shows only that JavaScript inserts the value. Proof requires matching the API JSON in the browser Network panel to the rendered weather condition. | Correct; no misconception recorded. | Reinforce when tracing later data flows. |
+| Honest error state | The error state avoids presenting fabricated data as live. | Correct; no misconception recorded. | Preserve this rule in later interfaces. |
+| Browser and server boundary | The current Open-Meteo request can run in the browser because it has no secret API key. A future secret-bearing or sensitive request may require a server-side boundary. | Correct; no misconception recorded. | Revisit before any credentialed or sensitive integration. |
+| Readiness | Ronan confirmed that he is ready to finish Lesson 1. | Lesson 1 closeout gate satisfied. | Explain Lesson 2 Phase A, then ask whether he is ready to begin it. |
+
 ## Provisional curriculum progress
 
 | Lesson | Status |
 | --- | --- |
-| 1. First real London weather request | In progress — initial live card works; refined condition and interval display pending live verification |
+| 1. First real London weather request | Complete — Phase B, live verification, and final teach-back complete |
 | 2. Shape a synthetic dataset | Not started |
 | 3. Render one signal | Not started |
 | 4. Handle failure | Not started |
