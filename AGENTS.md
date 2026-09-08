@@ -9,6 +9,18 @@ These rules apply to the entire repository and to future sessions.
 - Ask short comprehension questions at the end of each lesson. Record the learner's answers and any misconceptions in `docs/LEARNING_TRACKER.md` before starting the next lesson.
 - Do not complete an exercise on Ronan's behalf until he has attempted it, unless he explicitly asks for a worked example.
 
+## Communication and pull requests
+
+- End every learner-facing message with a `**Next Steps:**` section that states the
+  single immediate action, or says explicitly that no action is required.
+- Tell Ronan exactly when to create a pull request: only after the agreed changes
+  are complete, the relevant checks pass, and the changes are committed. At that
+  point, say clearly that the branch is ready for a pull request and identify what
+  Ronan should review.
+- Do not tell Ronan to merge a pull request until its checks pass and the documented
+  lesson gate allows the change. State separately when it is ready to review and
+  when it is ready to merge.
+
 ## One lesson at a time
 
 - Keep exactly one lesson phase active while lesson work is underway. Between lessons,
