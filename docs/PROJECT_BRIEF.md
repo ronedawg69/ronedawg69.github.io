@@ -1,22 +1,24 @@
 # Cycle Signals project brief
 
+> Review note (2026-09-09): This file was reviewed from an uploaded snapshot, without the live repository, GitHub state, application source, or test output. Historical implementation, PR, deployment and test claims below are retained as prior records, not independently verified current facts. Follow `AGENTS.md` before relying on them. Lesson progress is preserved; technical uncertainty does not reset completed learning.
+
 **Status:** Lesson 1 complete; Lesson 2 not started
-**Current branch:** `work`  
-**Current gate:** Lesson 1 Phase B and Lesson 1 are complete. PR #11's readability refinement is merged, deployed, and working, and Ronan completed the final teach-back. Lesson 2 has not started; explain Lesson 2 Phase A and ask whether Ronan is ready before starting schema or application work.
+**Last recorded branch (not current verification):** `work`  
+**Current gate:** Lesson 1 Phase B and Lesson 1 are complete. Earlier notes report PR #11's readability refinement as merged, deployed, and working; its hosted state requires verification, and Ronan completed the final teach-back. Lesson 2 has not started; explain Lesson 2 Phase A and ask whether Ronan is ready before starting schema or application work.
 
 ## Purpose
 
 Cycle Signals is currently a static concept page for learning how a small web application can combine weather and synthetic ride/rest signals. The teaching goal is more important than shipping quickly: Ronan should understand each layer before the next one is added.
 
-## Repository assessment
+## Previously recorded repository assessment
 
 - The repository is a small, dependency-free static website.
 - `index.html` is the main site, `projects.html` is a project-room gallery, and `api-experiment.html` is the Cycle Signals placeholder.
 - There is no package manifest, build step, automated test suite, application backend, data store, or continuous-integration configuration in the current tree.
 - The current page contains HTML, CSS, and browser JavaScript. It makes one
   credential-free weather request on load, supports deliberate retry, and stores no data.
-- The initial page is deployed through GitHub Pages; this checkout has no configured
-  Git remote.
+- The initial page is deployed through GitHub Pages; the earlier checkout was recorded as having no configured
+  Git remote. This does not establish the current environment or integration capabilities.
 
 ## Provisional architecture
 
