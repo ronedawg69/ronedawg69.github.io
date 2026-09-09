@@ -1,5 +1,7 @@
 # Cycle Signals codebook
 
+> Review note (2026-09-09): This file was reviewed from an uploaded snapshot, without the live repository, GitHub state, application source, or test output. Historical implementation, PR, deployment and test claims below are retained as prior records, not independently verified current facts. Follow `AGENTS.md` before relying on them. Lesson progress is preserved; technical uncertainty does not reset completed learning.
+
 This codebook defines project language and records claims that require current first-party verification.
 
 ## Terms and boundaries
@@ -179,7 +181,7 @@ When verification begins, record the exact first-party page, access date, releva
 
 ## Lesson 1 closeout: 2026-09-08
 
-- PR #11's readability refinement is merged, deployed, and working. In the live
+- Earlier notes report PR #11's readability refinement as merged, deployed, and working; its hosted state requires verification. In the live
   browser check, the Open-Meteo JSON in the Network panel matched the rendered
   weather condition. An empty HTML element alone would show only that JavaScript
   inserts a value; it would not prove that the value came from the live response.
@@ -190,3 +192,20 @@ When verification begins, record the exact first-party page, access date, releva
   server-side boundary, subject to a separate design and privacy review.
 - Lesson 1 is complete. Lesson 2 has not started, and no Lesson 2 schema or
   application work is authorized by this closeout.
+
+## Git and publication vocabulary
+
+| Term | What it establishes |
+| --- | --- |
+| Local edit | File bytes changed in this checkout; no commit or upload implied |
+| Local commit | A snapshot exists in local Git history; no remote copy implied |
+| Push confirmed | The intended commit reached a named remote branch |
+| PR text prepared | A title/body exists; no hosted PR implied |
+| Hosted PR, including a draft | GitHub returned an actual PR identity for a specific repository, head and base |
+| Merged | Hosted evidence confirms integration into the named base; no deployment implied |
+| Deployed | Deployment evidence identifies a published version; behavior still needs checking |
+| Live behavior verified | A stated check was performed against the identified live URL; attribute user reports |
+| Unknown / unavailable | Evidence cannot currently establish the state; does not mean absent or failed |
+| No checks configured | Verified absence of configured checks; not the same as checks passing |
+
+Incident reviewed 2026-09-09: the supplied transcript shows PR metadata being described as a created PR, followed by instructions to review inaccessible checks. Do not repeat this inference. Provider notes above remain dated historical records, not a fresh verification of provider terms in this review.
