@@ -1,5 +1,7 @@
 # Learning tracker
 
+> Review note (2026-09-09): The recorded answers, assessments, quiz exemption and Lesson 1 completion below are preserved from the supplied tracker. They establish the recorded learning stop point, not current GitHub or deployment state. Follow `AGENTS.md` for technical verification and `docs/APPLICATION_TRACKER.md` for technical evidence. Do not reopen completed learning gates because publication is unverified.
+
 ## Current position
 
 - **Learner:** Ronan
@@ -54,8 +56,11 @@ is required.
 
 ## Final Lesson 1 teach-back
 
-On 2026-09-08, after PR #11 was merged, deployed, and confirmed working, Ronan
-completed the final teach-back and confirmed that he was ready to finish Lesson 1.
+The supplied record dated 2026-09-08 says Ronan completed the final teach-back
+and confirmed that he was ready to finish Lesson 1. It also attributes the release
+to PR #11 and reports it merged, deployed, and working; those technical claims
+have not been independently verified in this review. The learning closeout
+remains recorded as complete.
 
 | Topic | Ronan's understanding | Assessment / misconception | Follow-up |
 | --- | --- | --- | --- |
@@ -68,7 +73,7 @@ completed the final teach-back and confirmed that he was ready to finish Lesson 
 
 | Lesson | Status |
 | --- | --- |
-| 1. First real London weather request | Complete — Phase B, live verification, and final teach-back complete |
+| 1. First real London weather request | Complete in the learning record — Phase B and final teach-back complete; earlier live verification recorded, current release state tracked separately |
 | 2. Shape a synthetic dataset | Not started |
 | 3. Render one signal | Not started |
 | 4. Handle failure | Not started |
@@ -76,3 +81,4 @@ completed the final teach-back and confirmed that he was ready to finish Lesson 
 | 6. Connect safely | Not started |
 | 7. Compare signals responsibly | Not started |
 | 8. Harden and publish | Not started |
+
