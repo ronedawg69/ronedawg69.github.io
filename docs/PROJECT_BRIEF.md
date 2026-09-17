@@ -2,9 +2,9 @@
 
 > Review note (2026-09-09): This file was reviewed from an uploaded snapshot, without the live repository, GitHub state, application source, or test output. Historical implementation, PR, deployment and test claims below are retained as prior records, not independently verified current facts. Follow `AGENTS.md` before relying on them. Lesson progress is preserved; technical uncertainty does not reset completed learning.
 
-**Status:** Lesson 1 complete; Lesson 2 not started
+**Status:** Lessons 1 and 2 complete; Lesson 3 not started
 **Last recorded branch (not current verification):** `work`  
-**Current gate:** Lesson 1 Phase B and Lesson 1 are complete. Earlier notes report PR #11's readability refinement as merged, deployed, and working; its hosted state requires verification, and Ronan completed the final teach-back. Lesson 2 has not started; explain Lesson 2 Phase A and ask whether Ronan is ready before starting schema or application work.
+**Current gate:** Lesson 2 learning is complete, but GitHub's public API confirmed that commit `a271852` is not hosted. Do not open Lesson 3 until the completed Lesson 2 branch is published through a verified GitHub connection; after publication, explain Lesson 3 and obtain readiness before presentation work.
 
 ## Purpose
 
@@ -40,7 +40,7 @@ selected for later private ingestion, storage, or automation.
 | Lesson | Outcome | Gate |
 | --- | --- | --- |
 | 1. Data and trust boundaries | Complete: Ronan explained live-response verification, honest errors, and when browser or server-side requests are appropriate. | Satisfied: Phase A, implementation, live verification, and final teach-back are complete. |
-| 2. Shape a synthetic dataset | Read and describe a minimal fictional weather/ride/rest fixture and its units. | Ronan validates the schema and privacy choices. |
+| 2. Shape a synthetic dataset | Complete: Ronan authored, read, and described a minimal fictional weather/ride/rest fixture and its units. | Satisfied: schema, privacy, syntax, values, units, and final description validated. |
 | 3. Render one signal | Use accessible HTML and JavaScript to display one fixture-derived value. | Ronan explains the data flow and tests it locally. |
 | 4. Handle failure | Add loading, empty, and error states using controlled fixture scenarios. | Ronan can predict each state. |
 | 5. Evaluate a live source | Verify first-party documentation, data flow, terms, limits, and cost controls. | Explicit provider choice and approval are recorded. |
@@ -48,9 +48,11 @@ selected for later private ingestion, storage, or automation.
 | 7. Compare signals responsibly | Explore correlations without implying causation or health conclusions. | Language and visualization review pass. |
 | 8. Harden and publish | Add tests, accessibility checks, operational limits, and a rollback/shutoff procedure. | Ronan completes a final teach-back. |
 
-Only one lesson is active at a time. No lesson phase is active during this closeout:
-Lesson 2 remains a provisional next step, not permission to begin its schema or
-application work.
+No lesson phase is currently active. Lesson 2 is complete: Ronan validated the
+schema and privacy choices, authored the fixture, and correctly described its
+values, units, synthetic marker, and derived weather meaning. The fixture remains
+unloaded by the page. Explain Lesson 3 and obtain readiness before presentation
+work begins.
 
 ## Planning estimates
 
