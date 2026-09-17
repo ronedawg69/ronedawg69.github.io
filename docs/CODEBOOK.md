@@ -18,18 +18,113 @@ This codebook defines project language and records claims that require current f
 | Data minimization | Collect, transmit, retain, and display only what is necessary for the stated lesson or feature. |
 | Provider | A third party that supplies data, infrastructure, hosting, or another service. Open-Meteo is selected only for Lesson 1's public weather request; later private-data providers remain undecided. |
 | Planning estimate | A rough internal forecast for scope, time, or intended spend; not a provider quote, promise, or verified price. |
+| Record | One item in a dataset, containing related values that describe one fictional observation. |
+| Schema | The shared rules for a dataset's records: field names, meanings, accepted value types or categories, units, and which fields are required. It defines the structure before example values are written. |
+| Unified record | One observation that places a deliberately selected cycling signal, health-adjacent signal, and weather signal in the same fictional period. It does not mean copying all fields from several providers. |
+| Numeric validation rule | A rule defining which numbers a field accepts, such as whether values may include decimals, whether zero is meaningful, or whether a numeric code must be recognized. |
+| JavaScript object | A value between `{` and `}` that groups named properties. Each property uses a name, a colon, and a value; commas separate properties. |
+| JavaScript array | An ordered collection between `[` and `]`. Items are separated by commas; a fixture array can contain one or more record objects. |
+| `const` declaration | A JavaScript statement that gives a value a name using `const name = value;`. The name cannot later be assigned a different value. |
 
-## Provisional synthetic fields
+## Approved synthetic fixture schema
 
-These names are discussion aids only; Lesson 2 will decide the actual fixture.
+Ronan approved this minimal schema and its privacy rules on 2026-09-17. No fixture
+records have been written. Phase B is active, and Ronan will first choose the
+values for `sample-01`. The schema combines ride duration, prior-night sleep
+duration, and weather condition as the minimum signals. The weather signal is
+stored as the numeric WMO code already used by the application; its readable
+condition is derived by the existing display mapping. The schema fields below
+have validated meanings, units, numeric rules, and privacy constraints.
 
 | Field | Meaning | Example constraints |
 | --- | --- | --- |
 | `period` | A fictional, non-identifying time bucket | Date-free label such as `sample-01` |
-| `weather_band` | Coarse fictional condition category | Controlled labels; no coordinates |
-| `ride_effort` | Unitless synthetic exercise value | Small documented scale; no real record |
-| `rest_band` | Coarse synthetic rest category | Category, not clinical or device data |
+| `ride_duration_seconds` | Elapsed time of a fictional ride | Positive whole number of seconds; zero and decimals are invalid |
+| `sleep_duration_hours` | Fictional duration slept during the preceding night | Positive whole or decimal number of hours; zero is invalid; not proof of tiredness or causation |
+| `weather_code` | Synthetic numeric WMO weather code | Integer recognized by the existing mapping in normal fixtures; unitless; readable condition is derived |
 | `is_synthetic` | Explicit fixture marker | Always `true` in checked-in examples |
+
+### Approved fixture privacy rules
+
+- Use invented values, never altered copies of real observations.
+- Set `is_synthetic` to `true` in every record.
+- Use only date-free fictional `period` labels.
+- Include no actual sleep history, ride duration, route, commute pattern,
+  timestamp, or precise location.
+- Do not pair fictional weather codes with Ronan's real activity history.
+
+### Validated `sample-01` values
+
+| Field | Validated fictional value |
+| --- | --- |
+| `period` | `sample-01` |
+| `ride_duration_seconds` | `1440` |
+| `sleep_duration_hours` | `7.9` |
+| `weather_code` | `61` (mapped by the application to “Slight rain”) |
+| `is_synthetic` | `true` |
+
+Ronan correctly represented these values as a JavaScript object:
+
+```js
+{
+  period: "sample-01",
+  ride_duration_seconds: 1440,
+  sleep_duration_hours: 7.9,
+  weather_code: 61,
+  is_synthetic: true
+}
+```
+
+Ronan then correctly placed the object inside a one-item JavaScript array:
+
+```js
+[
+  {
+    period: "sample-01",
+    ride_duration_seconds: 1440,
+    sleep_duration_hours: 7.9,
+    weather_code: 61,
+    is_synthetic: true
+  }
+]
+```
+
+The array has not yet been named or written into the repository as fixture data.
+At that point, Ronan's next exercise was a `const` declaration named
+`cycleSignalsFixture`; the resulting attempt is assessed below.
+
+### `const` declaration correction
+
+The declaration order is `const`, identifier, `=`, value, then `;`. Ronan's first
+attempt reversed the identifier and `=` as `const = cycleSignalsFixture`. The
+correct beginning is `const cycleSignalsFixture = [`. The existing array contents
+and closing `];` remained valid; the complete declaration then awaited his retry.
+
+Ronan's corrected retry used the required declaration order. His learner-authored
+array is now stored, with consistent indentation, in
+`fixtures/cycle-signals-fixture.js`. It is deliberately not loaded by the page;
+rendering fixture data remains Lesson 3 work.
+
+### Lesson 2 closeout
+
+Ronan described `sample-01` as a fictional period containing a 1440-second ride,
+7.9 hours of preceding-night sleep, WMO code `61` mapped to “Slight rain,” and an
+explicit `is_synthetic: true` marker showing that the data are invented. He
+initially called code `61` clear conditions and immediately corrected himself; no
+misconception remains. Lesson 2 is complete, and the page still does not load or
+render the fixture.
+
+### Lesson 2 weather-field correction
+
+The application already requests, validates, maps, and renders `weather_code`.
+The earlier proposal to store a manually chosen `weather_condition` label and ask
+Ronan to invent a controlled vocabulary duplicated that existing data flow and
+departed from the lesson plan. It has been withdrawn; no application code change
+is needed for this correction.
+
+The normal-fixture recognized-code rule does not replace the application's
+unknown-code fallback. A later controlled failure scenario may use an unknown code
+specifically to exercise that existing behavior.
 
 ## Source-verification register
 

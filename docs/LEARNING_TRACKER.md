@@ -5,10 +5,219 @@
 ## Current position
 
 - **Learner:** Ronan
-- **Lesson:** Between Lessons 1 and 2
-- **Phase:** No active lesson phase; Lesson 2 Phase A awaits its explanation and readiness check
-- **Status:** Lesson 1 Phase B complete; Lesson 1 complete; Lesson 2 not started
-- **Rule:** Explain Lesson 2 Phase A and ask whether Ronan is ready before starting any Lesson 2 schema or application work.
+- **Lesson:** Between Lessons 2 and 3
+- **Phase:** No active phase; Lesson 2 complete and Lesson 3 awaits its explanation and readiness check
+- **Status:** Fixture written and described correctly; Lesson 2 complete
+- **Rule:** Explain Lesson 3 and obtain Ronan's readiness confirmation before changing presentation code or rendering a fixture-derived signal.
+
+## Lesson 2 opening record
+
+On 2026-09-17, Ronan received the Phase A explanation: a dataset is a collection
+of records, while a schema defines the shared fields, meanings, value rules, and
+units for those records. The explanation covered why consistent meaning matters
+and established the synthetic-data, data-minimization, privacy, credential, and
+no-cost boundaries. Ronan replied “Lets go,” confirming readiness to begin.
+
+### Record-purpose exercise
+
+On 2026-09-17, Ronan said one record should communicate “a combination of the
+Strava data, google health data and weather data unified.” This establishes the
+intended purpose: bring fictional cycling, health-adjacent, and weather signals
+into one comparable observation.
+
+The answer identifies the three intended signal categories. The refinement is
+that “unified” does not mean copying every field offered by those named services.
+For this fixture lesson it means choosing the minimum invented values that refer
+to the same fictional period and can be compared safely. No live provider is
+being connected or selected by this answer.
+
+### Minimum-signal exercise
+
+On 2026-09-17, Ronan selected:
+
+1. ride length in seconds, to see how long a ride took;
+2. hours slept the night before, to consider whether tiredness may be relevant;
+3. weather condition, to consider whether conditions were harsh.
+
+All three categories are represented and each signal has a purpose. “Ride length”
+is refined to **ride duration** because seconds measure elapsed time rather than
+distance. Sleep duration may be compared with other signals, but it cannot by
+itself establish that sleep caused tiredness or a ride outcome. “Weather
+condition” remains ambiguous: an observed condition and an interpreted severity
+such as “harsh” are different meanings.
+
+Candidate field names were initially recorded as `ride_duration_seconds`,
+`sleep_duration_hours`, and `weather_condition`. The weather field was later
+corrected to match the existing numeric WMO-code flow described below.
+
+### Weather-meaning decision
+
+On 2026-09-17, Ronan clarified that he does not intend to categorize weather
+manually. Open-Meteo returns a numeric WMO weather code, and Cycle Signals already
+maps that code to its human-readable condition. Inspection of
+`api-experiment.html` confirmed that the request includes `weather_code`, numeric
+validation includes that field, `describeWeatherCode` performs the existing
+mapping with an unknown-code fallback, and rendering uses the mapped description.
+
+The candidate fixture field is therefore `weather_code`, containing a synthetic
+numeric WMO code. The readable condition remains derived display text rather than
+duplicated fixture data. Asking Ronan to invent a separate controlled vocabulary
+was a tutoring error that departed from Lesson 2's minimal-fixture plan; it was not
+a learner misconception. The invented-vocabulary exercise is withdrawn.
+
+No schema or application change is approved yet. Ronan next needs to validate the
+three corrected candidate field definitions and units, followed by their numeric
+rules and privacy choices.
+
+### Field-and-unit validation
+
+On 2026-09-17, Ronan confirmed all three candidate definitions and units:
+
+- `ride_duration_seconds` is elapsed fictional ride duration in seconds;
+- `sleep_duration_hours` is fictional preceding-night sleep duration in hours;
+- `weather_code` is a unitless numeric WMO code interpreted by the existing
+  display mapping.
+
+No misconception was recorded. This validates meaning and units, but it does not
+yet approve the schema. Ronan must next decide the numeric rules: whether duration
+values accept whole numbers or decimals, whether zero is meaningful, and whether
+normal fixture records accept only WMO codes recognized by the existing mapping.
+Privacy validation follows those decisions.
+
+### Numeric-rule validation
+
+On 2026-09-17, Ronan defined these rules:
+
+- `ride_duration_seconds` accepts whole seconds only and must be greater than
+  zero;
+- `sleep_duration_hours` accepts whole or decimal hours and must be greater than
+  zero;
+- a normal fixture's `weather_code` must be an integer code recognized by the
+  existing WMO mapping.
+
+These rules are consistent with the validated meanings and units. The recognized
+code rule applies to ordinary fixture records; it does not remove the
+application's existing unknown-code fallback or prevent a later failure-handling
+lesson from exercising that fallback deliberately. No misconception was
+recorded.
+
+The remaining Phase A checkpoint is privacy validation. Before schema approval,
+Ronan must confirm that checked-in records are explicitly synthetic, use a
+date-free fictional period, and contain no actual sleep, ride, timestamp, route,
+or precise-location data.
+
+### Privacy validation and Phase A closeout
+
+On 2026-09-17, Ronan approved all five fixture privacy rules:
+
+1. values are invented rather than altered copies of real observations;
+2. `is_synthetic` is always `true`;
+3. `period` uses a date-free fictional label such as `sample-01`;
+4. records contain no actual sleep history, ride duration, route, commute
+   pattern, timestamp, or precise location;
+5. fictional weather codes are not paired with Ronan's real activity history.
+
+This approval completes the Lesson 2 Phase A gate. The schema's purpose, fields,
+meanings, units, numeric rules, WMO-code boundary, and privacy choices are now
+validated. No fixture has been written and no application code has changed.
+Phase B must be explained and Ronan must confirm readiness before fixture work
+starts.
+
+### Phase B opening
+
+On 2026-09-17, Ronan received the Phase B explanation: turn the approved schema
+into a small, fixed set of checked-in synthetic records; validate every record;
+and read and describe the values and units. Phase B excludes real personal data,
+live provider connections, duplicated WMO descriptions, and presentation changes.
+Ronan replied “Okay lets go,” confirming readiness.
+
+Phase B is now active. Before any fixture is written, Ronan's first exercise is to
+choose fictional `ride_duration_seconds`, `sleep_duration_hours`, and a recognized
+`weather_code` for `sample-01`. The fixed privacy fields are `period: sample-01`
+and `is_synthetic: true`. Code syntax will be introduced only after the values
+pass the approved schema rules.
+
+### First-record value validation
+
+On 2026-09-17, Ronan chose these fictional values for `sample-01`:
+
+- `ride_duration_seconds: 1440`;
+- `sleep_duration_hours: 7.9`;
+- `weather_code: 61`.
+
+All values pass the approved rules: `1440` is a positive whole number, `7.9` is a
+positive decimal, and WMO code `61` is recognized by the existing application
+mapping as “Slight rain.” Together with the fixed `period: sample-01` and
+`is_synthetic: true` fields, the values comply with the approved privacy boundary.
+No misconception was recorded.
+
+The record has not been written into a fixture. Ronan must next learn JavaScript
+object syntax and attempt to represent the validated record himself.
+
+### First-record object validation
+
+On 2026-09-17, Ronan represented `sample-01` as a JavaScript object with all five
+required properties. The text value was quoted, the numeric and Boolean values
+were unquoted, and the braces, colons, and commas were valid. A space after the
+`weather_code` comma has no effect on JavaScript. No misconception was recorded.
+
+The object is valid but has not been written into the application. Because a
+fixture is a collection of records, Ronan must next learn JavaScript array syntax
+and attempt to place this object inside an array.
+
+### First fixture-array validation
+
+On 2026-09-17, Ronan placed the validated `sample-01` object inside square
+brackets. The result is a valid one-item JavaScript array: the brackets enclose
+the collection and no item-separating comma is required. The indentation is
+readable enough for assessment and has no effect on program behavior. No
+misconception was recorded.
+
+The validated array is not yet named or written into the repository as fixture
+data. Ronan must next learn a `const` declaration and attempt to bind the array to
+the suggested descriptive name `cycleSignalsFixture`.
+
+### First named-declaration attempt
+
+On 2026-09-17, Ronan retained the correct array and terminating semicolon but
+started the declaration with `const = cycleSignalsFixture`. The identifier and
+assignment operator were reversed. In a JavaScript declaration, the required
+order is `const`, identifier, `=`, then the value; the corrected beginning is
+`const cycleSignalsFixture = [`.
+
+This is a syntax misconception, not a schema or privacy error. Ronan must retry
+the complete declaration before any fixture is written into the repository.
+
+### Corrected declaration and fixture
+
+On 2026-09-17, Ronan retried with `const cycleSignalsFixture =` followed by the
+validated array and terminating semicolon. The identifier now precedes `=`, so the
+declaration is valid and the earlier syntax misconception is resolved. A line
+break after `=` is permitted whitespace and does not change the statement.
+
+After Ronan completed the exercise, his declaration was formatted consistently
+and written to `fixtures/cycle-signals-fixture.js`. The fixture is not loaded by
+the page and makes no presentation change. Ronan must next read and describe the
+record's values, units, synthetic marker, and derived weather meaning.
+
+### Record description and Lesson 2 closeout
+
+On 2026-09-17, Ronan described the checked-in record as follows:
+
+1. `sample-01` represents the period;
+2. `1440` is the ride duration in seconds;
+3. `7.9` is the hours slept the night before;
+4. `61` is the WMO weather code and maps to “Slight rain”;
+5. `is_synthetic: true` shows that the record is not real data.
+
+For precision, `sample-01` is a fictional period identifier rather than a real
+time or date. Ronan initially called code `61` clear conditions, then immediately
+self-corrected it to “Slight rain.” No weather-code misconception remains.
+
+Ronan can read the fixture, identify each value and unit, distinguish the stored
+WMO code from its derived description, and explain the synthetic-data marker.
+This satisfies the Lesson 2 outcome. Lesson 2 is complete; Lesson 3 must be
+explained and its readiness gate completed before presentation work begins.
 
 ## Lesson 1 objective
 
@@ -74,11 +283,10 @@ remains recorded as complete.
 | Lesson | Status |
 | --- | --- |
 | 1. First real London weather request | Complete in the learning record — Phase B and final teach-back complete; earlier live verification recorded, current release state tracked separately |
-| 2. Shape a synthetic dataset | Not started |
+| 2. Shape a synthetic dataset | Complete — learner-authored fixture written; schema, privacy, syntax, values, units, and final description validated |
 | 3. Render one signal | Not started |
 | 4. Handle failure | Not started |
 | 5. Evaluate a live source | Not started |
 | 6. Connect safely | Not started |
 | 7. Compare signals responsibly | Not started |
 | 8. Harden and publish | Not started |
-
