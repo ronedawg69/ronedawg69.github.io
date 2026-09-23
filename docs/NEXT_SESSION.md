@@ -2,13 +2,13 @@
 
 ## Stop point
 
-Lessons 1 and 2 are complete. The Lesson 2 fixture and documentation were merged into `main` by PR #14 on 2026-09-17. GitHub's API confirmed `main` at `af99001fdb493ce2c57f65ab6dd8be4e455d3859` and the fixture at `fixtures/cycle-signals-fixture.js` on 2026-09-23.
+Lessons 1 and 2 are complete. The Lesson 2 fixture and documentation are merged into `main`. On 2026-09-23, Ronan asked to start Lesson 3 and confirmed readiness. Lesson 3 is active; no application code has changed yet.
 
-The fixture contains invented values and is not loaded by the page. No Lesson 3 work has started.
+The fixture contains invented values and is not loaded by the page.
 
 ## Single next action
 
-Explain Lesson 3, “Render one signal,” and ask Ronan whether he is ready. Do not change presentation code or render fixture data until he confirms.
+Continue Lesson 3: let Ronan attempt the first exercise by proposing an HTML element with a unique `id` for the ride-duration value. Assess his attempt, then teach the next small step. Do not implement the exercise on his behalf before he attempts it.
 
 ## Guardrails
 
