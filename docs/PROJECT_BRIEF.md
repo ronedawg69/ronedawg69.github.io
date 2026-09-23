@@ -28,19 +28,23 @@ This is a direction for discussion, not an approved implementation.
 
 Open-Meteo is selected only for Lesson 1's generic public weather request. No provider is selected for later private-data ingestion, storage, or automation.
 
+## How lessons should run
+
+Each lesson should stay anchored to its outcome: explain the necessary ideas together, apply them in one practical task, and check the finished result once. Use a smaller example when it helps, but do not turn every new word or line of code into a separate exercise. Pause for more teaching when Ronan asks or when his attempt reveals a real gap.
+
 ## Curriculum and gates
 
-| Lesson | Outcome | Gate |
+| Lesson | What you will do | Done when |
 | --- | --- | --- |
-| 1. Data and trust boundaries | Complete: understand live-response checks, honest errors, and browser/server request boundaries. | Complete |
-| 2. Shape a synthetic dataset | Complete: define, write, and explain a fictional fixture and its units. | Complete; fixture and notes are merged into `main`. |
-| 3. Render one signal | Complete: display one fixture-derived value accessibly. | Complete; Ronan explained the data flow and the signal was tested locally. |
-| 4. Handle failure | Add loading, empty, and error states with controlled fixture scenarios. | Ronan predicts each state. |
-| 5. Evaluate a live source | Check first-party documentation, data flow, terms, limits, and cost controls. | Record an explicit provider choice and approval. |
-| 6. Connect safely | Add the smallest approved integration, with a proxy if credentials or sensitive data require it. | Privacy and spend checks pass. |
-| 7. Compare signals responsibly | Explore correlations without implying causation or health conclusions. | Review language and visualizations. |
-| 8. Harden and publish | Add appropriate tests, accessibility checks, operational limits, and rollback/shutoff steps. | Complete a final teach-back. |
-
+| 1. Data and trust boundaries | Understand how the weather request works, how to check its result, and what belongs in the browser or server. | Explain the main data and safety boundaries. |
+| 2. Shape a synthetic dataset | Choose a few fictional signals, define what they mean, and create the fixture. | The fixture follows the agreed structure and uses invented data. |
+| 3. Render one signal | Read one value from the fixture and show it in the page. | The value appears with a clear label and unit, and you can describe the flow. |
+| 4. Handle failure | Show an honest page state when data is loading, missing, or unavailable. | The page communicates the situation without showing made-up data as real. |
+| 5. Evaluate a live source | Check an outside data source and what using it would mean. | A source is chosen only after its data, terms, limits, and cost are checked and approved. |
+| 6. Connect safely | Add only an approved connection, keeping secrets out of browser code. | The data flow, privacy, and cost controls are reviewed. |
+| 7. Compare signals responsibly | Explore how signals vary together without claiming one caused another. | The comparison is presented accurately and without health claims. |
+| 8. Harden and publish | Check accessibility, reliability, operating limits, and recovery steps before release. | The release checks and shutoff or rollback plan are understood. |
+|
 No lesson phase is active. Lesson 3 is complete; the next session must explain Lesson 4 and obtain readiness before beginning its exercise.
 
 ## Planning estimates
