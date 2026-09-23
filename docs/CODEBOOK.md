@@ -28,13 +28,13 @@ This codebook defines project language and records claims that require current f
 
 ## Approved synthetic fixture schema
 
-Ronan approved this minimal schema and its privacy rules on 2026-09-17. No fixture
-records have been written. Phase B is active, and Ronan will first choose the
-values for `sample-01`. The schema combines ride duration, prior-night sleep
-duration, and weather condition as the minimum signals. The weather signal is
-stored as the numeric WMO code already used by the application; its readable
-condition is derived by the existing display mapping. The schema fields below
-have validated meanings, units, numeric rules, and privacy constraints.
+Ronan approved this minimal schema and its privacy rules on 2026-09-17. Lesson 2
+is complete, and the learner-authored synthetic record is stored in
+`fixtures/cycle-signals-fixture.js`. The schema combines ride duration,
+prior-night sleep duration, and weather code as the minimum signals. The readable
+weather condition is derived by the application's existing display mapping. The
+schema fields below have validated meanings, units, numeric rules, and privacy
+constraints.
 
 | Field | Meaning | Example constraints |
 | --- | --- | --- |
@@ -89,9 +89,9 @@ Ronan then correctly placed the object inside a one-item JavaScript array:
 ]
 ```
 
-The array has not yet been named or written into the repository as fixture data.
-At that point, Ronan's next exercise was a `const` declaration named
-`cycleSignalsFixture`; the resulting attempt is assessed below.
+This was the array before Ronan named it and wrote it into the repository. The
+declaration exercise and correction are recorded below; the completed fixture is
+now stored in `fixtures/cycle-signals-fixture.js`.
 
 ### `const` declaration correction
 
