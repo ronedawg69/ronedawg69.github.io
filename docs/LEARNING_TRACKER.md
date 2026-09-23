@@ -5,10 +5,10 @@
 ## Current position
 
 - **Learner:** Ronan
-- **Lesson:** Between Lessons 2 and 3
-- **Phase:** No active phase; Lesson 2 complete and Lesson 3 awaits its explanation and readiness check
-- **Status:** Fixture written and described correctly; Lesson 2 complete
-- **Rule:** Explain Lesson 3 and obtain Ronan's readiness confirmation before changing presentation code or rendering a fixture-derived signal.
+- **Lesson:** Between Lessons 3 and 4
+- **Phase:** No active phase; Lesson 3 complete and Lesson 4 awaits its explanation and readiness check
+- **Status:** One fixture-derived signal is implemented, locally verified, and explained by Ronan; Lesson 3 complete
+- **Rule:** Do not open Lesson 4 or begin its failure-state exercise before explaining the lesson and obtaining readiness confirmation.
 
 ## Lesson 2 opening record
 
@@ -278,13 +278,288 @@ remains recorded as complete.
 | Browser and server boundary | The current Open-Meteo request can run in the browser because it has no secret API key. A future secret-bearing or sensitive request may require a server-side boundary. | Correct; no misconception recorded. | Revisit before any credentialed or sensitive integration. |
 | Readiness | Ronan confirmed that he is ready to finish Lesson 1. | Lesson 1 closeout gate satisfied. | Explain Lesson 2 Phase A, then ask whether he is ready to begin it. |
 
+## Lesson 3 opening
+
+On 2026-09-23, Ronan asked to start Lesson 3, confirming readiness to begin. The
+lesson goal is to display one value from the synthetic fixture on the page. The
+current page has HTML elements that JavaScript can target by `id`; the fixture is
+a separate JavaScript file and is not loaded by the page. No application code has
+changed. The opening explanation and first exercise are underway. Do not
+implement the exercise before Ronan attempts it.
+
+The first exercise is to propose one HTML element with a unique `id` that could
+hold the ride duration. No value is to be rendered yet; first identify the page
+location JavaScript will later fill.
+
+### HTML-target exercise
+
+Ronan proposed `<p id="ride_duration_seconds"></p>`. This is a valid target: a
+paragraph can contain the short displayed value, the `id` is unique on the
+current page, and its name describes the ride-duration signal. No misconception
+was recorded.
+
+The matching spelling does not automatically connect the HTML `id` to the
+fixture property. The next step is to select the data explicitly.
+
+### Data-selection teaching correction
+
+When asked to write the fixture-value expression, Ronan correctly challenged
+whether that syntax had first been taught. It had not been taught adequately:
+the prior response named `[0]` and `.ride_duration_seconds`, then immediately
+asked him to combine them. The tracker also effectively disclosed the completed
+Cycle Signals expression. This was a tutoring error, not a learner misconception.
+
+The corrected explanation uses a separate fictional example. In
+`const snacks = [{ name: "banana" }];`, `snacks` names the array, `[0]` selects
+the first item because JavaScript array positions begin at zero, and `.name`
+reads the property named `name` from that item. Read left to right, the combined
+expression means “from `snacks`, take the first item, then read its `name`.”
+
+Before returning to the Cycle Signals expression, Ronan must explain in his own
+words what `[0]` and `.name` each do in this separate example. No application
+code should change during this comprehension check.
+
+### Data-selection comprehension answer
+
+Ronan explained that `[0]` means getting the first item in the array and `.name`
+means getting the object's `name` property. Both parts are correct: the index
+selects an array item, then dot notation reads a property from that selected
+object. No misconception was recorded, so the comprehension gate is complete.
+
+Ronan must next apply the same left-to-right pattern to write the expression that
+reads `ride_duration_seconds` from the first record in `cycleSignalsFixture`.
+The completed expression has not been supplied in this exercise, and no
+application code should change before his attempt is assessed.
+
+### Fixture-value expression
+
+Ronan wrote `cycleSignalsFixture[0].ride_duration_seconds`. This is correct:
+`[0]` selects the fixture's first record, then `.ride_duration_seconds` reads that
+record's ride-duration value, `1440`. No misconception was recorded.
+
+### DOM-selection explanation
+
+The Document Object Model (DOM) is the browser's JavaScript representation of the
+HTML page. `document.getElementById("snack-name")` asks that model for the one
+element whose `id` is `snack-name`. The quoted argument contains the exact HTML
+`id`; it does not include the `#` used in a CSS ID selector. This operation finds
+an element but does not change its text.
+
+Ronan must next apply this method to write an expression selecting his
+`ride_duration_seconds` paragraph. The completed Cycle Signals DOM-selection
+expression has not been supplied, and no application code should change before
+his attempt is assessed.
+
+Ronan acknowledged the explanation with “Okay nice” and asked what comes next.
+This confirms the explanation was received, but it is not an attempt at the
+DOM-selection exercise. The lesson therefore remains at the same gate: Ronan
+must write the `document.getElementById(...)` expression that selects his
+`ride_duration_seconds` paragraph before text insertion is taught. No
+misconception was recorded.
+
+### DOM-target selection
+
+Ronan wrote `document.getElementById("ride_duration_seconds")`. This is correct:
+the quoted string exactly matches the paragraph's `id`, and the expression asks
+the DOM for that element without changing it. No misconception was recorded.
+
+### Text-insertion explanation
+
+The `textContent` property represents an element's plain-text contents. In the
+separate example
+`document.getElementById("snack-name").textContent = "banana";`, the expression
+to the left of `=` identifies the element and its `textContent` property, while
+the value to the right of `=` is the text assigned to that property. After the
+statement runs, the selected element displays `banana`. The semicolon ends the
+statement. This changes text, not HTML markup.
+
+Before combining the Cycle Signals expressions, Ronan must explain which side of
+the example assignment identifies where the text goes and which side supplies
+the displayed text. No application code should change during this comprehension
+check.
+
+Ronan said the explanation sounded good and asked to keep going. This records
+readiness to continue, but it does not answer the target-versus-value question.
+The comprehension gate therefore remains open with no misconception recorded;
+the next action is still to identify what the left and right sides of the
+separate example assignment do.
+
+### Text-assignment comprehension answer
+
+Ronan explained that the left-hand side says where the text goes and the
+right-hand side says what text gets displayed. This is correct: assignment takes
+the value on the right and stores it in the destination property on the left.
+No misconception was recorded, so the comprehension gate is complete.
+
+Ronan also asked that educational material and its immediate question may be
+given in the same response. This preference is now recorded in `AGENTS.md`.
+
+The next exercise is to combine the validated DOM-target expression on the left,
+its `.textContent` property, the assignment operator, and the validated fixture-
+value expression on the right, ending with a semicolon. This first combined
+statement will display the numeric value; adding a readable unit remains a later
+step. No application code should change before Ronan's attempt is assessed.
+
+### First combined-assignment attempt
+
+Ronan wrote
+`document.getElementById("ride_duration_seconds")=cycleSignalsFixture[0].ride_duration_seconds;`.
+The selected element, assignment operator, fixture-value expression, and ending
+semicolon are present. The left-hand side stops at the selected element instead
+of naming the element property that should receive the value. The missing
+destination is `.textContent`, which belongs immediately after the closing `)`
+and before `=`.
+
+This is a text-assignment misconception, not a DOM-selection or data-selection
+error. Ronan must retry the complete statement with the property included. Unit
+formatting and application changes remain out of scope until the retry passes.
+
+### Second combined-assignment attempt
+
+Ronan wrote
+`document.getElementById("ride_duration_seconds").textContext=cycleSignalsFixture[0].ride_duration_seconds;`.
+The property is now in the correct position, and the DOM selection, fixture value,
+assignment operator, and semicolon remain correct. However, the property name is
+`textContent`, not `textContext`. JavaScript property names must match exactly;
+assigning to `textContext` would not update the element's displayed text.
+
+This narrows the remaining misconception to the property spelling. Ronan must
+retry the complete statement with `Content` in the property name. Unit formatting
+and application changes remain out of scope until the retry passes.
+
+### Corrected combined assignment
+
+Ronan wrote
+`document.getElementById("ride_duration_seconds").textContent=cycleSignalsFixture[0].ride_duration_seconds;`.
+This statement correctly selects the paragraph, targets its `textContent`, reads
+the first fixture record's ride-duration value, assigns that value, and ends with
+a semicolon. The earlier property-placement and property-spelling misconceptions
+are resolved.
+
+### Unit-formatting explanation
+
+Displaying only `1440` leaves its meaning unclear. A readable signal should carry
+its unit. In JavaScript, when `+` joins a number and a string, it performs string
+concatenation: it converts the number to text and joins the pieces. For example,
+`5 + " minutes"` produces the text `5 minutes`. The leading space inside
+`" minutes"` keeps the number and unit separated.
+
+Before revising the Cycle Signals statement, Ronan must state what text
+`12 + " seconds"` produces and why the space matters. No application code should
+change during this comprehension check.
+
+### Unit-formatting comprehension answer
+
+Ronan answered that `12 + " seconds"` produces `12 seconds` and that without the
+leading space it would produce `12seconds`. Both parts are correct. He understands
+that concatenation joins the pieces exactly as written and that the space belongs
+inside the unit string. No misconception was recorded.
+
+Ronan must next revise his validated Cycle Signals assignment by concatenating
+the string `" seconds"` after the fixture-value expression and before the ending
+semicolon. No application code should change before his attempt is assessed.
+
+### Unit-formatted assignment
+
+Ronan wrote:
+
+```js
+document.getElementById("ride_duration_seconds").textContent =
+  cycleSignalsFixture[0].ride_duration_seconds + " seconds";
+```
+
+This is correct. It preserves the validated DOM target and fixture access, adds
+the readable seconds unit with its leading space, and would display
+`1440 seconds`. No misconception was recorded.
+
+### Script-order explanation
+
+The page does not currently load `fixtures/cycle-signals-fixture.js`. A browser
+runs ordinary script elements in document order. The fixture script must
+therefore appear before the page script that reads `cycleSignalsFixture`: the
+first script creates the binding, and the later script consumes it. Reversing the
+order would make the page code try to read the name before it exists. The target
+paragraph must also appear in the HTML before the assignment runs; the page's
+scripts are already at the bottom of the body, after its visible markup.
+
+Before application code changes, Ronan must identify which script should load
+first—the fixture script or the page's rendering script—and explain why.
+
+### First script-order answer
+
+Ronan explained that the fixture script defines the JavaScript data, whereas the
+rendering script reads and displays it. This correctly identifies the dependency:
+the consumer needs the value created by the defining script. The answer did not
+explicitly state which script should appear first in the HTML, so the
+comprehension check remains open. This omission is not recorded as a misconception.
+
+Ronan must now answer only the remaining choice: fixture script first or
+rendering script first.
+
+### Completed script-order answer
+
+Ronan answered “Fixture then rendering” and explained that the defining script
+must run before its dependent script. This is the correct order. His final phrase
+said “before a script that defines it,” but his immediately preceding answer had
+already correctly described the rendering script as the reader and displayer.
+The repeated word is treated as a wording slip, not a misconception. The
+script-order comprehension gate is complete.
+
+### Minimal implementation plan
+
+The reviewed implementation has three small changes in `api-experiment.html`:
+
+1. add Ronan's `<p id="ride_duration_seconds"></p>` target to the visible markup;
+2. load `fixtures/cycle-signals-fixture.js` before the existing inline page script;
+3. place Ronan's validated unit-formatted `textContent` assignment inside the
+   later page script.
+
+This loads only the existing synthetic fixture, displays one signal, adds no
+external service or persistence, and keeps the existing weather behavior. Ronan
+must confirm readiness for this exact plan before application code changes.
+
+### Readiness and implementation
+
+Ronan replied “Ready,” satisfying the implementation-readiness gate. The reviewed
+three changes were then applied to `api-experiment.html`: the paragraph target was
+added, the existing synthetic fixture was loaded before the inline page script,
+and Ronan's unit-formatted assignment was added to that later script.
+
+Local checks on 2026-09-23 confirmed that the target `id` is unique, the fixture
+script precedes the rendering script, both JavaScript sources parse, and a
+controlled DOM check produces `1440 seconds`. A local Chromium capture at
+`http://127.0.0.1:4173/api-experiment.html` also showed `1440 seconds`. The weather
+request reached its existing honest error state in that browser run, while the
+fixture-derived signal still rendered. This is local evidence only; it is not
+deployment or live-site verification.
+
+The final Lesson 3 teach-back is for Ronan to trace, in his own words, how the
+stored `1440` becomes the displayed `1440 seconds`, including script order, array
+and property selection, unit formatting, and the DOM target. Lesson 3 remains
+active until that answer is assessed.
+
+### Final Lesson 3 teach-back and closeout
+
+Ronan explained that the fixture script must load first because it creates
+`cycleSignalsFixture`, after which the rendering script can read the value and put
+it into the HTML element. Together with his already validated fixture selection,
+DOM selection, unit-formatted assignment, and the locally observed
+`1440 seconds` result, this demonstrates the complete fixture-to-page flow. No
+misconception remains, and Lesson 3 is complete.
+
+Ronan also reported that the lesson was split into too many tiny steps. He asked
+that remaining work focus on putting the essential pieces together and checking
+the result, without extra comprehension checks on details unnecessary to the
+task. This feedback is recorded as a standing teaching rule in `AGENTS.md` and
+does not reopen any completed gate.
+
 ## Provisional curriculum progress
 
 | Lesson | Status |
 | --- | --- |
 | 1. First real London weather request | Complete in the learning record — Phase B and final teach-back complete; earlier live verification recorded, current release state tracked separately |
 | 2. Shape a synthetic dataset | Complete — learner-authored fixture written; schema, privacy, syntax, values, units, and final description validated |
-| 3. Render one signal | Not started |
+| 3. Render one signal | Complete — one fixture-derived signal implemented, locally verified, and explained in the final teach-back |
 | 4. Handle failure | Not started |
 | 5. Evaluate a live source | Not started |
 | 6. Connect safely | Not started |
