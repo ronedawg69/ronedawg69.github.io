@@ -1,87 +1,73 @@
 # Cycle Signals project brief
 
-> Review note (2026-09-09): This file was reviewed from an uploaded snapshot, without the live repository, GitHub state, application source, or test output. Historical implementation, PR, deployment and test claims below are retained as prior records, not independently verified current facts. Follow `AGENTS.md` before relying on them. Lesson progress is preserved; technical uncertainty does not reset completed learning.
-
-**Status:** Lessons 1 and 2 complete; Lesson 3 not started
-**Last recorded branch (not current verification):** `work`  
-**Current gate:** Lesson 2 learning is complete, but GitHub's public API confirmed that commit `a271852` is not hosted. Do not open Lesson 3 until the completed Lesson 2 branch is published through a verified GitHub connection; after publication, explain Lesson 3 and obtain readiness before presentation work.
+**Status:** Lessons 1 and 2 complete; Lesson 3 has not started  
+**Current gate:** The Lesson 2 fixture is merged into `main`. Explain Lesson 3 and get Ronan's readiness confirmation before changing presentation code or rendering a fixture-derived signal.
 
 ## Purpose
 
-Cycle Signals is currently a static concept page for learning how a small web application can combine weather and synthetic ride/rest signals. The teaching goal is more important than shipping quickly: Ronan should understand each layer before the next one is added.
+Cycle Signals is a small static website used to learn how a web application can combine weather with fictional cycling and sleep signals. The teaching goal is for Ronan to understand each layer before adding the next one.
 
-## Previously recorded repository assessment
+## Current project state
 
-- The repository is a small, dependency-free static website.
-- `index.html` is the main site, `projects.html` is a project-room gallery, and `api-experiment.html` is the Cycle Signals placeholder.
-- There is no package manifest, build step, automated test suite, application backend, data store, or continuous-integration configuration in the current tree.
-- The current page contains HTML, CSS, and browser JavaScript. It makes one
-  credential-free weather request on load, supports deliberate retry, and stores no data.
-- The initial page is deployed through GitHub Pages; the earlier checkout was recorded as having no configured
-  Git remote. This does not establish the current environment or integration capabilities.
+- `index.html` is the main site; `projects.html` is a project gallery; `api-experiment.html` is the Cycle Signals page.
+- The site uses HTML, CSS, and browser JavaScript. It has no package manifest, build step, backend, database, or automated test suite.
+- The Cycle Signals page requests public weather data. The synthetic fixture is checked in at `fixtures/cycle-signals-fixture.js`, but the page does not load or render it yet.
+- Lesson 2 documentation and fixture were merged into `main` by PR #14 on 2026-09-17. See `docs/APPLICATION_TRACKER.md` for the latest GitHub verification.
+- There is no approved personal-data integration, persistence, analytics, or paid service.
 
 ## Provisional architecture
 
 This is a direction for discussion, not an approved implementation.
 
-1. Keep the existing static HTML/CSS/JavaScript site as the presentation layer.
-2. Begin with checked-in synthetic fixtures so lessons are deterministic, private, and free.
-3. Add a small browser-side data-normalization module only after the fixture model is understood.
-4. If a public, credential-free source is later selected, fetch only coarse weather observations needed for the exercise.
-5. If any selected source requires a credential or receives sensitive inputs, place the request behind a minimal server-side/serverless adapter that reads secrets from environment variables. Never expose secrets in browser code.
-6. Keep personal observations local by default; do not add persistence or analytics without a separate privacy review and explicit approval.
+1. Keep the existing static site as the presentation layer.
+2. Use synthetic fixtures for deterministic, private, no-cost learning.
+3. Add browser-side data handling only after the fixture model is understood.
+4. If a public, credential-free source is selected, request only coarse data needed for the lesson.
+5. If a future source needs credentials or receives sensitive inputs, use a minimal server-side adapter with secrets kept in environment variables.
+6. Keep personal observations local by default. Any persistence or analytics needs a separate privacy review and explicit approval.
 
-Open-Meteo is selected only for Lesson 1's credential-free, generic London weather
-request after the documented first-party checks. No provider or hosting product is
-selected for later private ingestion, storage, or automation.
+Open-Meteo is selected only for Lesson 1's generic public weather request. No provider is selected for later private-data ingestion, storage, or automation.
 
 ## Curriculum and gates
 
 | Lesson | Outcome | Gate |
 | --- | --- | --- |
-| 1. Data and trust boundaries | Complete: Ronan explained live-response verification, honest errors, and when browser or server-side requests are appropriate. | Satisfied: Phase A, implementation, live verification, and final teach-back are complete. |
-| 2. Shape a synthetic dataset | Complete: Ronan authored, read, and described a minimal fictional weather/ride/rest fixture and its units. | Satisfied: schema, privacy, syntax, values, units, and final description validated. |
-| 3. Render one signal | Use accessible HTML and JavaScript to display one fixture-derived value. | Ronan explains the data flow and tests it locally. |
-| 4. Handle failure | Add loading, empty, and error states using controlled fixture scenarios. | Ronan can predict each state. |
-| 5. Evaluate a live source | Verify first-party documentation, data flow, terms, limits, and cost controls. | Explicit provider choice and approval are recorded. |
-| 6. Connect safely | Add the smallest approved integration, with a proxy if secrets or sensitive inputs require it. | Privacy and spend checks pass. |
-| 7. Compare signals responsibly | Explore correlations without implying causation or health conclusions. | Language and visualization review pass. |
-| 8. Harden and publish | Add tests, accessibility checks, operational limits, and a rollback/shutoff procedure. | Ronan completes a final teach-back. |
+| 1. Data and trust boundaries | Complete: understand live-response checks, honest errors, and browser/server request boundaries. | Complete |
+| 2. Shape a synthetic dataset | Complete: define, write, and explain a fictional fixture and its units. | Complete; fixture and notes are merged into `main`. |
+| 3. Render one signal | Display one fixture-derived value accessibly. | Explain the lesson and get readiness confirmation before presentation work; Ronan explains the data flow and tests it locally. |
+| 4. Handle failure | Add loading, empty, and error states with controlled fixture scenarios. | Ronan predicts each state. |
+| 5. Evaluate a live source | Check first-party documentation, data flow, terms, limits, and cost controls. | Record an explicit provider choice and approval. |
+| 6. Connect safely | Add the smallest approved integration, with a proxy if credentials or sensitive data require it. | Privacy and spend checks pass. |
+| 7. Compare signals responsibly | Explore correlations without implying causation or health conclusions. | Review language and visualizations. |
+| 8. Harden and publish | Add appropriate tests, accessibility checks, operational limits, and rollback/shutoff steps. | Complete a final teach-back. |
 
-No lesson phase is currently active. Lesson 2 is complete: Ronan validated the
-schema and privacy choices, authored the fixture, and correctly described its
-values, units, synthetic marker, and derived weather meaning. The fixture remains
-unloaded by the page. Explain Lesson 3 and obtain readiness before presentation
-work begins.
+No lesson phase is active. Lesson 2 is complete; the fixture remains unloaded. Lesson 3 must be explained and opened with Ronan's readiness confirmation before presentation work begins.
 
 ## Planning estimates
 
 These are rough learning-effort estimates, not promises or provider prices.
 
-- Lessons 1–4: about 4–8 focused sessions, depending on comprehension and practice time.
+- Lessons 1–4: about 4–8 focused sessions.
 - Provider evaluation and safe integration: about 2–5 sessions after a source is chosen.
 - Hardening and publish review: about 1–3 sessions.
 - Fixture-first prototype: intended infrastructure spend of **$0**.
-- Live-source spend: **unknown until verified**; the project should remain at $0 unless Ronan explicitly approves a documented cap and shutoff path.
+- Live-source spend: **unknown until verified**. Keep the project at $0 unless Ronan explicitly approves a documented cap and shutoff path.
 
 ## Risks and controls
 
 | Risk | Control |
 | --- | --- |
-| A credential leaks through client code or Git history | Use no credential during fixture lessons; later use environment variables behind a server boundary. |
+| A credential leaks through client code or Git history | Use no credential during fixture lessons; later keep secrets behind a server boundary. |
 | Personal routines or health-adjacent data identify someone | Use synthetic/coarse data, collect the minimum, and keep personal inputs local by default. |
-| Unexpected metered usage | Verify first-party terms, set a budget/cap where supported, cache, rate-limit, and document shutoff before activation. |
-| A provider claim becomes outdated | Date and link first-party verification in the codebook; label all current claims unverified until then. |
-| Correlation is presented as health or causal advice | Use neutral educational language and explicitly distinguish correlation from causation. |
-| Scope outruns learning | Enforce one lesson and one phase at a time. |
+| Unexpected metered usage | Verify first-party terms and define caps, caching, rate limits, and a shutoff path before activation. |
+| Provider claims become outdated | Date and link first-party checks in the codebook; mark unverified claims clearly. |
+| Correlation is presented as health or causal advice | Use neutral educational language and distinguish correlation from causation. |
+| Scope outruns learning | Work through one lesson and phase at a time. |
 
 ## Privacy boundary
 
-Repository-safe material includes source code, synthetic fixtures, coarse fictional examples, schemas, and non-sensitive documentation. Outside the repository boundary are credentials, precise personal locations, real routes, real ride/rest/health records, and identifiable timestamps. External transmission of even synthetic data must be documented before an integration is enabled.
+Repository-safe material includes source code, synthetic fixtures, coarse fictional examples, schemas, and non-sensitive documentation. Keep credentials, precise personal locations, real routes, real ride/sleep/health records, and identifiable timestamps out of the repository. Document external data flows before enabling an integration.
 
 ## Source-verification status
 
-Open-Meteo forecast, pricing, terms, privacy/logging, and licence details relevant
-to Lesson 1 were supplied from current first-party pages and recorded in
-`docs/CODEBOOK.md` on 2026-09-07. Later providers and current static-hosting cost
-conditions remain unverified.
+First-party Open-Meteo details relevant to Lesson 1 were recorded in `docs/CODEBOOK.md` on 2026-09-07. Later providers and current hosting cost conditions have not been verified.
