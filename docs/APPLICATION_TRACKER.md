@@ -1,21 +1,18 @@
 # Application tracker
 
-## Current local snapshot
+## Current verified GitHub state
 
-- **Checked on:** 2026-09-17
-- **Repository:** `/workspace/ronedawg69.github.io`
-- **Branch:** `work`
-- **HEAD before this publication check:** `a2718529e212dace7a5efdf2b7409f2a0f896c54`
-- **Working tree at session start:** Clean
-- **Configured Git remote:** `origin` = verified public repository `https://github.com/ronedawg69/ronedawg69.github.io.git`
-- **Locally known remote branches:** Unavailable; direct `git fetch` returned HTTP 403
-- **Application:** Cycle Signals (`api-experiment.html`)
-- **Learning stage:** Lessons 1 and 2 complete; Lesson 3 not started
-- **Application impact:** The learner-authored synthetic fixture is checked in but not loaded by the page; presentation behavior is unchanged
-- **Hosted status:** GitHub public API verified on 2026-09-17 that `main` is at `991e47f534ee99bffcca0ab77a5d9c2837656fbc`, Lesson 2 commit `a2718529e212dace7a5efdf2b7409f2a0f896c54` is absent, and no pull requests are open
-- **Publication blocker:** GitHub CLI is unauthenticated, no authenticated hosted integration is available, direct fetch returned HTTP 403, and push could not obtain credentials non-interactively
+- **Checked on:** 2026-09-23
+- **Repository:** [ronedawg69/ronedawg69.github.io](https://github.com/ronedawg69/ronedawg69.github.io)
+- **Default branch:** `main`
+- **Verified main commit:** `af99001fdb493ce2c57f65ab6dd8be4e455d3859` (merge of PR #14, 2026-09-17)
+- **Lesson 2 publication:** PR #14 merged; `fixtures/cycle-signals-fixture.js` is present on `main`.
+- **Learning stage:** Lessons 1 and 2 complete; Lesson 3 not started.
+- **Current gate:** Explain Lesson 3 and get readiness confirmation before presentation work.
+- **Application impact:** The fixture is checked in but is not loaded by the page. No presentation behavior changed in Lesson 2.
+- **Current test/deployment status:** Not rechecked for this documentation update. Historical checks below are not current verification.
 
-> Review note (2026-09-09): This file was reviewed from an uploaded snapshot, without the live repository, GitHub state, application source, or test output. Historical implementation, PR, deployment and test claims below are retained as prior records, not independently verified current facts. Follow `AGENTS.md` before relying on them. Lesson progress is preserved; technical uncertainty does not reset completed learning.
+This section records hosted GitHub state only. It does not describe a local checkout or prove current live-site behavior.
 
 ## Historical snapshot (not a current verification)
 
