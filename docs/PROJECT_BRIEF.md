@@ -1,7 +1,7 @@
 # Cycle Signals project brief
 
-**Status:** Lessons 1 and 2 complete; Lesson 3 has not started  
-**Current gate:** The Lesson 2 fixture is merged into `main`. Explain Lesson 3 and get Ronan's readiness confirmation before changing presentation code or rendering a fixture-derived signal.
+**Status:** Lessons 1 and 2 complete; Lesson 3 is active  
+**Current gate:** Ronan confirmed readiness to begin Lesson 3 on 2026-09-23. The opening and first exercise are underway; do not change presentation code until he attempts the exercise.
 
 ## Purpose
 
@@ -41,7 +41,7 @@ Open-Meteo is selected only for Lesson 1's generic public weather request. No pr
 | 7. Compare signals responsibly | Explore correlations without implying causation or health conclusions. | Review language and visualizations. |
 | 8. Harden and publish | Add appropriate tests, accessibility checks, operational limits, and rollback/shutoff steps. | Complete a final teach-back. |
 
-No lesson phase is active. Lesson 2 is complete; the fixture remains unloaded. Lesson 3 must be explained and opened with Ronan's readiness confirmation before presentation work begins.
+Lesson 3 is active. The fixture remains unloaded. Ronan is first identifying the HTML element that JavaScript can later fill; no application code has changed.
 
 ## Planning estimates
 
