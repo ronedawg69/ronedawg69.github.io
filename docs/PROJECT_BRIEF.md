@@ -1,7 +1,7 @@
 # Cycle Signals project brief
 
-**Status:** Lessons 1 and 2 complete; Lesson 3 has not started  
-**Current gate:** The Lesson 2 fixture is merged into `main`. Explain Lesson 3 and get Ronan's readiness confirmation before changing presentation code or rendering a fixture-derived signal.
+**Status:** Lessons 1, 2, and 3 complete; Lesson 4 has not started
+**Current gate:** Explain Lesson 4 and get Ronan's readiness confirmation before beginning a failure-state exercise or changing application code.
 
 ## Purpose
 
@@ -11,7 +11,7 @@ Cycle Signals is a small static website used to learn how a web application can 
 
 - `index.html` is the main site; `projects.html` is a project gallery; `api-experiment.html` is the Cycle Signals page.
 - The site uses HTML, CSS, and browser JavaScript. It has no package manifest, build step, backend, database, or automated test suite.
-- The Cycle Signals page requests public weather data. The synthetic fixture is checked in at `fixtures/cycle-signals-fixture.js`, but the page does not load or render it yet.
+- The Cycle Signals page requests public weather data and loads `fixtures/cycle-signals-fixture.js` before its inline script to render the synthetic ride duration as `1440 seconds`.
 - Lesson 2 documentation and fixture were merged into `main` by PR #14 on 2026-09-17. See `docs/APPLICATION_TRACKER.md` for the latest GitHub verification.
 - There is no approved personal-data integration, persistence, analytics, or paid service.
 
@@ -34,14 +34,14 @@ Open-Meteo is selected only for Lesson 1's generic public weather request. No pr
 | --- | --- | --- |
 | 1. Data and trust boundaries | Complete: understand live-response checks, honest errors, and browser/server request boundaries. | Complete |
 | 2. Shape a synthetic dataset | Complete: define, write, and explain a fictional fixture and its units. | Complete; fixture and notes are merged into `main`. |
-| 3. Render one signal | Display one fixture-derived value accessibly. | Explain the lesson and get readiness confirmation before presentation work; Ronan explains the data flow and tests it locally. |
+| 3. Render one signal | Complete: display one fixture-derived value accessibly. | Complete; Ronan explained the data flow and the signal was tested locally. |
 | 4. Handle failure | Add loading, empty, and error states with controlled fixture scenarios. | Ronan predicts each state. |
 | 5. Evaluate a live source | Check first-party documentation, data flow, terms, limits, and cost controls. | Record an explicit provider choice and approval. |
 | 6. Connect safely | Add the smallest approved integration, with a proxy if credentials or sensitive data require it. | Privacy and spend checks pass. |
 | 7. Compare signals responsibly | Explore correlations without implying causation or health conclusions. | Review language and visualizations. |
 | 8. Harden and publish | Add appropriate tests, accessibility checks, operational limits, and rollback/shutoff steps. | Complete a final teach-back. |
 
-No lesson phase is active. Lesson 2 is complete; the fixture remains unloaded. Lesson 3 must be explained and opened with Ronan's readiness confirmation before presentation work begins.
+No lesson phase is active. Lesson 3 is complete; the next session must explain Lesson 4 and obtain readiness before beginning its exercise.
 
 ## Planning estimates
 

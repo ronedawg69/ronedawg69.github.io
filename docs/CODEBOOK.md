@@ -24,6 +24,13 @@ This codebook defines project language and records claims that require current f
 | Numeric validation rule | A rule defining which numbers a field accepts, such as whether values may include decimals, whether zero is meaningful, or whether a numeric code must be recognized. |
 | JavaScript object | A value between `{` and `}` that groups named properties. Each property uses a name, a colon, and a value; commas separate properties. |
 | JavaScript array | An ordered collection between `[` and `]`. Items are separated by commas; a fixture array can contain one or more record objects. |
+| Array index | A number in square brackets that selects an array item. JavaScript starts counting array positions at zero, so `[0]` selects the first item. |
+| Property access | Dot notation such as `.name` reads the named property from an object. In `snacks[0].name`, `[0]` first selects an object and `.name` then reads its `name` property. |
+| Document Object Model (DOM) | The browser's JavaScript representation of the HTML page. JavaScript can select an element from this model and then read or change it. |
+| `document.getElementById` | A DOM method that returns the element with the exact `id` passed as a quoted string, such as `document.getElementById("snack-name")`. The string does not include a CSS `#`. |
+| `textContent` | A DOM element property containing its plain text. Assigning a value with `element.textContent = value;` replaces the element's text without treating the value as HTML markup. |
+| String concatenation | Joining values into text with `+`. When one side is a string, `5 + " minutes"` produces `5 minutes`; the leading space inside the string separates the number and unit. |
+| Script loading order | Ordinary browser scripts run in document order. A script that defines a name, such as the fixture's `cycleSignalsFixture`, must load before a later script tries to read that name. |
 | `const` declaration | A JavaScript statement that gives a value a name using `const name = value;`. The name cannot later be assigned a different value. |
 
 ## Approved synthetic fixture schema

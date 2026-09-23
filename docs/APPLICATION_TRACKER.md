@@ -5,12 +5,12 @@
 - **Checked on:** 2026-09-23
 - **Repository:** [ronedawg69/ronedawg69.github.io](https://github.com/ronedawg69/ronedawg69.github.io)
 - **Default branch:** `main`
-- **Verified main commit:** `af99001fdb493ce2c57f65ab6dd8be4e455d3859` (merge of PR #14, 2026-09-17)
+- **Verified main commit:** `8b4c8efad940c8cececde598e221380216d8ec87` (GitHub public API, 2026-09-23)
 - **Lesson 2 publication:** PR #14 merged; `fixtures/cycle-signals-fixture.js` is present on `main`.
-- **Learning stage:** Lessons 1 and 2 complete; Lesson 3 not started.
-- **Current gate:** Explain Lesson 3 and get readiness confirmation before presentation work.
-- **Application impact:** The fixture is checked in but is not loaded by the page. No presentation behavior changed in Lesson 2.
-- **Current test/deployment status:** Not rechecked for this documentation update. Historical checks below are not current verification.
+- **Learning stage:** Lessons 1, 2, and 3 complete as of 2026-09-23; Lesson 4 not started.
+- **Current gate:** Explain Lesson 4 and obtain readiness before a failure-state exercise or application change.
+- **Application impact:** The page now loads the synthetic fixture and displays its first ride duration as `1440 seconds`. Existing weather behavior is otherwise unchanged.
+- **Current test/deployment status:** Local structure, syntax, controlled DOM, and Chromium screenshot checks passed on 2026-09-23. Deployment and live-site behavior were not checked.
 
 This section records hosted GitHub state only. It does not describe a local checkout or prove current live-site behavior.
 
@@ -26,9 +26,9 @@ This section records hosted GitHub state only. It does not describe a local chec
 
 | Area | Current state | Next eligible action | Blocker |
 | --- | --- | --- | --- |
-| Presentation | Accessible London weather card with named WMO conditions, minute intervals, loading, success, failure, retry, timestamps, and attribution; historical deployment claim remains unverified this session | Explain Lesson 3 before rendering a fixture-derived signal | Lesson 3 readiness is not confirmed |
-| Data model | Learner-authored fixture written and correctly described; schema, privacy, declaration, syntax, values, and units validated | Preserve the fixture until Lesson 3 is explained and opened | Lesson 3 readiness is not confirmed |
-| Browser logic | Existing weather request, validation, mapping, display, and retry logic unchanged; fixture is not loaded | Preserve until Lesson 3 is explained and opened | Lesson 3 readiness is not confirmed |
+| Presentation | Existing weather card plus a visible synthetic ride-duration signal; local Chromium showed `1440 seconds` | Preserve until Lesson 4 is explained and opened | Lesson 4 readiness not confirmed |
+| Data model | Learner-authored synthetic fixture loaded by the page; schema, privacy, declaration, syntax, values, and units validated | Preserve the minimal fictional record | None for the implemented signal |
+| Browser logic | Fixture loads before the inline script; the validated assignment displays `1440 seconds`; existing weather logic remains in place | Preserve until Lesson 4 is explained and opened | Lesson 4 readiness not confirmed |
 | External data | Open-Meteo forecast endpoint using generic central-London coordinates; live response matched to the rendered condition | Preserve the Lesson 1 boundary | None for the completed lesson |
 | Secret boundary | Not needed for the credential-free weather request | Design a proxy only when a later selected source needs credentials or receives sensitive data | No private provider selected |
 | Persistence | None | Keep local by default; reconsider only with explicit need and privacy review | No approved use case |
@@ -105,8 +105,8 @@ and live behavior were not checked in this publication review.
 | Hosted safety-rule PR | No confirmed PR identity in supplied evidence; transcript admits metadata was mistaken for publication | Query matching repository/head; no instruction to review a PR until a real link is confirmed |
 | PR #11 merged | Historical assertion only; no hosted PR record supplied | Query the exact PR and base/merge state |
 | Weather card deployed / live behavior | Earlier notes record Ronan's live check; no current deployment or tested commit supplied | Check deployment and URL if release status matters to the next task |
-| Local application validation | Historical checklist only; no source or test output supplied | Run checks relevant to actual code changes; documentation repair does not require invented application tests |
+| Local Lesson 3 application validation | Verified on the `work` branch working tree on 2026-09-23: unique HTML IDs; fixture-before-renderer order; fixture and inline JavaScript syntax; controlled DOM output `1440 seconds`; local Chromium screenshot at `http://127.0.0.1:4173/api-experiment.html` | Re-run against the committed revision when publication or release status is assessed; local evidence is not deployment proof |
 | Hosted checks / review requirements | Unknown; old brief records no CI configuration | Inspect actual PR checks and repository requirements; distinguish none from unavailable |
-| Lesson progress | Locally verified documentation records Lessons 1 and 2 complete and Lesson 3 unopened | Preserve completed gates; do not begin Lesson 3 until the publication gate and its own explanation/readiness gate are satisfied |
+| Lesson progress | Lessons 1, 2, and 3 complete; Lesson 3 final teach-back accepted on 2026-09-23 | Explain Lesson 4 and obtain readiness before starting its exercise |
 
 For future entries record: claim, result, evidence source (command/service/user report), checked-at time, repository and commit/PR/URL where relevant, and limitation. A reference in another Markdown file is not independent verification.

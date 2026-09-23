@@ -64,6 +64,7 @@
         <p class="eyebrow">Project 01 · Experiment</p>
         <h1>Cycle<br>Signals</h1>
         <p class="description">A developing dashboard exploring the quiet connections between weather, sleep, activity and the daily ride to work.</p>
+        <p id="ride_duration_seconds"></p>
       </div>
       <section class="signal" aria-labelledby="weather-title">
         <div class="weather">
@@ -90,9 +91,13 @@
     </section>
     <footer><span>Room 01 / 16</span><span>Conceptual study · Work in progress</span></footer>
   </main>
+  <script src="fixtures/cycle-signals-fixture.js"></script>
   <script>
     (() => {
       "use strict";
+
+      document.getElementById("ride_duration_seconds").textContent =
+        cycleSignalsFixture[0].ride_duration_seconds + " seconds";
 
       // Change this to false to stop all weather requests without removing the card.
       const WEATHER_REQUESTS_ENABLED = true;

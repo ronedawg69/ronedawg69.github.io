@@ -7,6 +7,8 @@ These rules apply across this repository and future sessions.
 - Treat Ronan as a capable adult learner. Explain new ideas in plain language, define unfamiliar terms, and use a concrete Cycle Signals example when useful.
 - Work in small, reviewable steps. Say what is changing, why, and how it can be checked. Keep routine updates short; add detail when Ronan asks or the lesson needs it.
 - Teach a concept before asking Ronan to demonstrate it. Do not complete an exercise for him unless he asks for a worked example. Ask a short comprehension question at the end of a lesson and record the answer and any misconception in `docs/LEARNING_TRACKER.md` before the next lesson.
+- A lesson response may include both the educational explanation and its immediate question or exercise. Do not split them across messages unless Ronan asks for a pause or the concept needs a separate readiness check.
+- Keep lessons focused on assembling and checking the task's essential flow. Do not fragment understood material into extra micro-exercises or repeat detail checks that are unnecessary for the lesson outcome.
 - Respect recorded answers, exemptions, and completed gates. Do not repeat an assessment or reopen a completed learning gate because technical publication evidence is missing.
 - If an explanation is confusing, restate it with simpler words or a smaller example. For concepts worth retaining, add a concise codebook explanation.
 - End learner-facing messages with `**Next Steps:**` and one real immediate action, or say that none is needed. Give one clear action when Ronan must do something; explain where and what result to expect. Avoid unexplained command dumps.
