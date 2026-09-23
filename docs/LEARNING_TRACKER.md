@@ -5,10 +5,10 @@
 ## Current position
 
 - **Learner:** Ronan
-- **Lesson:** Between Lessons 2 and 3
-- **Phase:** No active phase; Lesson 2 complete and Lesson 3 awaits its explanation and readiness check
-- **Status:** Fixture written and described correctly; Lesson 2 complete
-- **Rule:** Explain Lesson 3 and obtain Ronan's readiness confirmation before changing presentation code or rendering a fixture-derived signal.
+- **Lesson:** Lesson 3 — Render one signal
+- **Phase:** Opening and first exercise; no application code changed
+- **Status:** Lessons 1 and 2 complete. Ronan asked to start Lesson 3 on 2026-09-23, confirming readiness. The first HTML-target exercise is awaiting his attempt.
+- **Rule:** Explain the data-to-page flow, then let Ronan attempt the first exercise before changing application code.
 
 ## Lesson 2 opening record
 
@@ -278,13 +278,19 @@ remains recorded as complete.
 | Browser and server boundary | The current Open-Meteo request can run in the browser because it has no secret API key. A future secret-bearing or sensitive request may require a server-side boundary. | Correct; no misconception recorded. | Revisit before any credentialed or sensitive integration. |
 | Readiness | Ronan confirmed that he is ready to finish Lesson 1. | Lesson 1 closeout gate satisfied. | Explain Lesson 2 Phase A, then ask whether he is ready to begin it. |
 
+## Lesson 3 opening
+
+On 2026-09-23, Ronan asked to start Lesson 3, confirming readiness to begin. The lesson goal is to display one value from the synthetic fixture on the page. The current page has HTML elements that JavaScript can target by `id`; the fixture is a separate JavaScript file and is not loaded by the page. No application code has changed. The opening explanation and first exercise are underway. Do not implement the exercise before Ronan attempts it.
+
+The first exercise is to propose one HTML element with a unique `id` that could hold the ride duration. No value is to be rendered yet; first identify the page location JavaScript will later fill.
+
 ## Provisional curriculum progress
 
 | Lesson | Status |
 | --- | --- |
 | 1. First real London weather request | Complete in the learning record — Phase B and final teach-back complete; earlier live verification recorded, current release state tracked separately |
 | 2. Shape a synthetic dataset | Complete — learner-authored fixture written; schema, privacy, syntax, values, units, and final description validated |
-| 3. Render one signal | Not started |
+| 3. Render one signal | Active — opening and first HTML-target exercise; no application code changed |
 | 4. Handle failure | Not started |
 | 5. Evaluate a live source | Not started |
 | 6. Connect safely | Not started |
