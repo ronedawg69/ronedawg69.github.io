@@ -8,11 +8,13 @@ These rules apply across this repository and future sessions.
 - Work in small, reviewable steps. Say what is changing, why, and how it can be checked. Keep routine updates short; add detail when Ronan asks or the lesson needs it.
 - Teach a concept before asking Ronan to demonstrate it. Do not complete an exercise for him unless he asks for a worked example. Ask a short comprehension question at the end of a lesson and record the answer and any misconception in `docs/LEARNING_TRACKER.md` before the next lesson.
 - A lesson response may include both the educational explanation and its immediate question or exercise. Do not split them across messages unless Ronan asks for a pause or the concept needs a separate readiness check.
-- Keep lessons focused on assembling and checking the task's essential flow. Do not fragment understood material into extra micro-exercises or repeat detail checks that are unnecessary for the lesson outcome.
+- Default to one integrated teaching pass per lesson: explain the few ideas needed for the task together in plain language, show how they fit the project, then give one practical exercise that uses them together. Ask one brief check about the overall result at the end.
+- Do not turn each syntax detail, formatting choice, or already-demonstrated idea into a separate exercise or comprehension gate. Explain unfamiliar syntax before the combined exercise; split further only when Ronan asks or a real point of confusion needs attention. Do not require exact technical vocabulary when his explanation shows he understands the idea.
 - Respect recorded answers, exemptions, and completed gates. Do not repeat an assessment or reopen a completed learning gate because technical publication evidence is missing.
 - If an explanation is confusing, restate it with simpler words or a smaller example. For concepts worth retaining, add a concise codebook explanation.
 - End learner-facing messages with `**Next Steps:**` and one real immediate action, or say that none is needed. Give one clear action when Ronan must do something; explain where and what result to expect. Avoid unexplained command dumps.
 - Summarize Git status in practical language. Distinguish what is saved in the workspace from what is on GitHub. Provide a verified PR link when asking Ronan to review it.
+- At the end of completed work, explicitly say what stage it reached (edited, committed, pushed, PR open, merged, or deployed) and name the next action. If a commit is still only in the workspace, say it is not on GitHub yet and tell Ronan whether to push it or what is blocking the push. If a PR is open, give its link and say plainly when it is ready for his review and merge. If he asked for a change to be pushed or merged, do that authorized step where possible; otherwise explain the exact blocker. A merge does not mean the site is deployed or verified live.
 
 ## Repository checks and branch safety
 

@@ -15,7 +15,8 @@ Explain Lesson 4, “Handle failure,” and ask Ronan whether he is ready. Do no
 - Keep examples fictional; do not add credentials, precise locations, real ride or sleep records, or identifiable timestamps.
 - Do not connect providers, enable persistence, or incur costs without the required privacy review and explicit approval.
 - Keep learning progress separate from publication status. Do not reopen completed lessons because of technical uncertainty.
-- Keep the lesson focused on assembling and checking the essential failure-state flow; avoid unnecessary micro-checks.
+- Keep Lesson 4 focused on the practical outcome: the page should explain when data are loading, missing, or unavailable. Teach the needed pieces together, use one combined exercise, and check the overall result once; explain further only if Ronan asks or gets stuck.
+- When the lesson or any documentation task is complete, state plainly whether the work is only local, pushed, in a PR, or merged, and tell Ronan the one next action (including a direct PR link if he needs to review and merge).
 - Before any new repository edits, inspect the actual checkout and verify current GitHub state as required by `AGENTS.md`.
 
 ## Current technical facts
