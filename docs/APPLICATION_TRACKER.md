@@ -7,8 +7,8 @@
 - **Default branch:** `main`
 - **Verified main commit:** `af99001fdb493ce2c57f65ab6dd8be4e455d3859` (merge of PR #14, 2026-09-17)
 - **Lesson 2 publication:** PR #14 merged; `fixtures/cycle-signals-fixture.js` is present on `main`.
-- **Learning stage:** Lessons 1 and 2 complete; Lesson 3 not started.
-- **Current gate:** Explain Lesson 3 and get readiness confirmation before presentation work.
+- **Learning stage:** Lessons 1 and 2 complete; Lesson 3 active as of 2026-09-23.
+- **Current gate:** The first HTML-target exercise is awaiting Ronan's attempt; no application code has changed.
 - **Application impact:** The fixture is checked in but is not loaded by the page. No presentation behavior changed in Lesson 2.
 - **Current test/deployment status:** Not rechecked for this documentation update. Historical checks below are not current verification.
 
