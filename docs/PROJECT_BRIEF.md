@@ -30,22 +30,29 @@ Open-Meteo is selected only for Lesson 1's generic public weather request. No pr
 
 ## How lessons should run
 
-Each lesson should stay anchored to its outcome: explain the necessary ideas together, apply them in one practical task, and check the finished result once. Use a smaller example when it helps, but do not turn every new word or line of code into a separate exercise. Pause for more teaching when Ronan asks or when his attempt reveals a real gap.
+Keep explanations concise by default. Teach the ideas needed for the task together, then use them in one practical exercise. Ronan can ask for more detail whenever he wants it.
 
-## Curriculum and gates
+Every lesson session must leave a tangible result he can see, use, or review: a working feature, a tested change, or a concise decision/design artifact if coding is blocked or not yet appropriate. Do not end with explanation or a quiz alone. Say what the result is and how it was checked.
 
-| Lesson | What you will do | Done when |
+## Course plan
+
+Lessons 1–3 are complete. The remaining plan aims to deliver the personal cycling dashboard described by this project, while treating Strava and Fitbit as candidates to verify rather than approved connections. Keep secrets server-side; do not add paid services without an explicit cost decision.
+
+| Lesson | Practical goal | Tangible result |
 | --- | --- | --- |
-| 1. Data and trust boundaries | Understand how the weather request works, how to check its result, and what belongs in the browser or server. | Explain the main data and safety boundaries. |
-| 2. Shape a synthetic dataset | Choose a few fictional signals, define what they mean, and create the fixture. | The fixture follows the agreed structure and uses invented data. |
-| 3. Render one signal | Read one value from the fixture and show it in the page. | The value appears with a clear label and unit, and you can describe the flow. |
-| 4. Handle failure | Show an honest page state when data is loading, missing, or unavailable. | The page communicates the situation without showing made-up data as real. |
-| 5. Evaluate a live source | Check an outside data source and what using it would mean. | A source is chosen only after its data, terms, limits, and cost are checked and approved. |
-| 6. Connect safely | Add only an approved connection, keeping secrets out of browser code. | The data flow, privacy, and cost controls are reviewed. |
-| 7. Compare signals responsibly | Explore how signals vary together without claiming one caused another. | The comparison is presented accurately and without health claims. |
-| 8. Harden and publish | Check accessibility, reliability, operating limits, and recovery steps before release. | The release checks and shutoff or rollback plan are understood. |
-|
-No lesson phase is active. Lesson 3 is complete; the next session must explain Lesson 4 and obtain readiness before beginning its exercise.
+| 1. Data and trust boundaries | Understand the weather request and what belongs in the browser. | Working weather card and a check of the returned value. |
+| 2. Shape a synthetic dataset | Define the fictional ride, sleep, and weather signals. | Agreed data shape and fixture file. |
+| 3. Render one signal | Show a fixture value in the page. | Page displays fictional ride duration as `1440 seconds`. |
+| 4. Handle failure | Explain loading, missing, or unavailable data clearly. | Tested page states for loading, no data, and an unavailable source. |
+| 5. Choose data sources | Check which source can provide each field and its access, privacy, and cost. | Short source-and-fields decision record, with unknowns marked. |
+| 6. Build a safe connection layer | Keep secrets out of browser code and test with sample data. | Working local endpoint returning a synthetic dashboard record, plus a secret/cost plan. |
+| 7. Connect ride data | Verify and connect the chosen ride source. | A real ride shown in the page, with credentials kept server-side. |
+| 8. Connect sleep data | Verify and connect the chosen sleep source. | A selected sleep/calorie summary shown beside a ride, with credentials kept server-side. |
+| 9. Match signals | Align rides with sleep and historical weather while handling gaps honestly. | Joined ride-and-context table using a broad location. |
+| 10. Build the dashboard | Make rides and comparisons easy to explore without implying cause. | Usable dashboard view with ride list and comparison chart(s). |
+| 11. Verify and publish | Check privacy, accessibility, reliability, and recovery. | Published site and a short checklist of what was tested. |
+
+No lesson phase is active. Lesson 3 is complete; the next session is Lesson 4.
 
 ## Planning estimates
 
