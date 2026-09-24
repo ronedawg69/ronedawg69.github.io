@@ -311,3 +311,23 @@ When verification begins, record the exact first-party page, access date, releva
 | No checks configured | Verified absence of configured checks; not the same as checks passing |
 
 Incident reviewed 2026-09-09: the supplied transcript shows PR metadata being described as a created PR, followed by instructions to review inaccessible checks. Do not repeat this inference. Provider notes above remain dated historical records, not a fresh verification of provider terms in this review.
+
+
+## Current integration and free-hosting check: 2026-09-24
+
+Checked first-party documentation on 2026-09-24 to shape the remaining lesson plan. This establishes documented technical capability and published plan limits only; it does not establish Ronan's account eligibility, live authorization, or that any service has been activated.
+
+| Source | Current official documentation check | Course implication |
+| --- | --- | --- |
+| Strava API | [Getting started](https://developers.strava.com/docs/getting-started/), [OAuth authentication](https://developers.strava.com/docs/authentication/), and [rate limits](https://developers.strava.com/docs/rate-limits/): API access uses OAuth; developers must register an app; new apps are single-player (own account); creating an app requires a Strava subscription. | Personal ride retrieval is technically supported, subject to app setup, subscription, scope consent, and current terms. Keep the client secret and refresh tokens on the server. |
+| Fitbit Web API | [API Explorer](https://dev.fitbit.com/build/reference/web-api/explore/), [sleep endpoints](https://dev.fitbit.com/build/reference/web-api/sleep/), and [authorization guide](https://dev.fitbit.com/build/reference/web-api/developer-guide/authorization/): documents OAuth plus sleep and activity APIs, including calories. Intraday access rules differ for personal and third-party applications. | A personal sleep/activity summary is technically supported subject to app setup, account consent, scopes, and current terms. Use only the fields the dashboard needs; do not promise intraday access. |
+| Cloudflare Workers + D1 | [Workers pricing](https://developers.cloudflare.com/workers/platform/pricing/), [D1 pricing](https://developers.cloudflare.com/d1/platform/pricing/), and [secrets](https://developers.cloudflare.com/workers/configuration/secrets/): Free Worker plan lists 100,000 requests/day and 10 ms CPU per invocation; D1 free quota lists 5 million rows read/day, 100,000 rows written/day, and 5 GB total storage, with a 500 MB per-database limit. Secrets can be configured outside source code. | Leading candidate for a small personal backend and token store, if current account terms and privacy fit. Quota overages are not part of a zero-cost promise; re-check limits before deployment and set a shutoff path. |
+| Vercel Hobby | [Hobby plan](https://vercel.com/docs/plans/hobby) and [pricing](https://vercel.com/pricing): free plan is restricted to personal, non-commercial use and has included function quotas. | Possible for a personal function backend, but a separate persistent store is still needed for refresh tokens. |
+| Supabase Free | [Plan limits](https://supabase.com/docs/guides/platform/billing-on-supabase) and [project pausing](https://supabase.com/docs/guides/platform/free-project-pausing): Free lists 500 MB database, 500,000 Edge Function invocations, and projects may pause after about seven days of low activity. | Possible integrated database/function alternative, with inactivity-pausing trade-off. |
+
+### Limits of this check
+
+- These pages do not prove that a specific account can register or authorize the app; that is checked in the provider dashboard when the integration lesson is reached.
+- Plan limits, eligibility, terms, and product interfaces can change. Re-check official pages immediately before deployment.
+- No credentials were entered, no account was connected, no paid service was enabled, and no personal data was transmitted during this documentation research.
+- Free means within the provider's current published free quota, not a permanent guarantee. The project stays at $0 unless Ronan explicitly approves a cost.

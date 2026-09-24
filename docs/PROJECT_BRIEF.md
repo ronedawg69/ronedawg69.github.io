@@ -1,7 +1,7 @@
 # Cycle Signals project brief
 
 **Status:** Lessons 1, 2, and 3 complete; Lesson 4 has not started
-**Current gate:** Explain Lesson 4 and get Ronan's readiness confirmation before beginning a failure-state exercise or changing application code.
+**Next lesson:** Lesson 4 builds the page's helpful loading, no-data, and error states. Codex explains the idea briefly and implements the feature in the same session.
 
 ## Purpose
 
@@ -30,32 +30,34 @@ Open-Meteo is selected only for Lesson 1's generic public weather request. No pr
 
 ## How lessons should run
 
-Each lesson should stay anchored to its outcome: explain the necessary ideas together, apply them in one practical task, and check the finished result once. Use a smaller example when it helps, but do not turn every new word or line of code into a separate exercise. Pause for more teaching when Ronan asks or when his attempt reveals a real gap.
+Ronan wants to understand the concepts while Codex writes the code. Keep explanations short and concrete by default; explain the few ideas needed, implement the feature, then show it working. Ronan can ask for a deeper explanation at any point. Do not make him write code, pass a quiz, or complete repeated readiness gates before progress.
 
-## Curriculum and gates
+Each lesson ends with a useful project change pushed to a reviewable GitHub PR, with the result and its check briefly demonstrated. Tell Ronan when the PR is ready for review and merge. A lesson may take another session only if a real technical dependency or Ronan's question requires it. Prefer playful, visible dashboard features; keep health data presentation neutral and avoid claims that one signal causes another.
 
-| Lesson | What you will do | Done when |
+## Remaining course: Lessons 4–11
+
+The outcome is a working personal dashboard that combines ride data, sleep/activity summaries, and weather context. Codex implements the code. Ronan learns what each part does through short explanations and by seeing the finished feature. Real account connections depend on Ronan's account access and authorization; credentials stay out of GitHub and chat.
+
+| Lesson | What we will build and learn | Tangible GitHub result |
 | --- | --- | --- |
-| 1. Data and trust boundaries | Understand how the weather request works, how to check its result, and what belongs in the browser or server. | Explain the main data and safety boundaries. |
-| 2. Shape a synthetic dataset | Choose a few fictional signals, define what they mean, and create the fixture. | The fixture follows the agreed structure and uses invented data. |
-| 3. Render one signal | Read one value from the fixture and show it in the page. | The value appears with a clear label and unit, and you can describe the flow. |
-| 4. Handle failure | Show an honest page state when data is loading, missing, or unavailable. | The page communicates the situation without showing made-up data as real. |
-| 5. Evaluate a live source | Check an outside data source and what using it would mean. | A source is chosen only after its data, terms, limits, and cost are checked and approved. |
-| 6. Connect safely | Add only an approved connection, keeping secrets out of browser code. | The data flow, privacy, and cost controls are reviewed. |
-| 7. Compare signals responsibly | Explore how signals vary together without claiming one caused another. | The comparison is presented accurately and without health claims. |
-| 8. Harden and publish | Check accessibility, reliability, operating limits, and recovery steps before release. | The release checks and shutoff or rollback plan are understood. |
-|
-No lesson phase is active. Lesson 3 is complete; the next session must explain Lesson 4 and obtain readiness before beginning its exercise.
+| 4. Make failure states helpful | Show what the page is doing when data are loading, absent, or temporarily unavailable. | A polished status panel with working loading, no-data, and error states, checked with controlled examples. |
+| 5. Pick the connectors and home | Confirm the fields and conditions for Open-Meteo, Strava, and Fitbit; compare free server options and map the data path. | A short connector map in the repository. Cloudflare Workers + D1 is the leading no-cost candidate, subject to a final account/terms check; no billing is enabled. |
+| 6. Add a tiny server | Learn that the browser asks our server for data while private tokens stay on the server. | A Worker endpoint returning a synthetic dashboard record, with a small smoke check and no live credentials. |
+| 7. Bring in rides | See OAuth as a permission slip, then connect Strava for the minimum ride fields. | A working ride list with a fixture fallback. Requires Ronan's Strava app/account authorization; no secrets committed. |
+| 8. Bring in sleep and activity | See how Fitbit permission scopes control data access; retrieve only agreed sleep/activity summaries. | A sleep/activity summary beside rides, with clear missing-data handling. Requires Fitbit account authorization; no sensitive records committed. |
+| 9. Add weather context | Match ride days with weather using a broad location and explain how dates line up. | A joined ride/sleep/weather view with units, source labels, and honest gaps. |
+| 10. Make it enjoyable to explore | Learn how a filter or chart changes the view, without suggesting cause and effect. | A finished dashboard with ride cards, simple comparisons, and a fun interaction. |
+| 11. Check and publish | Learn what was checked, what remains private, and how the public page reaches the server. | A published dashboard plus a concise accessibility, privacy, and recovery checklist. Any account-only setup is handled directly by Ronan in the provider dashboard, never by sharing credentials in chat. |
 
-## Planning estimates
+Every lesson PR includes the working change, a short explanation of the key idea, and the check performed. If an account, access review, or provider decision blocks live data, the PR still delivers and tests the feature with fictional data; the blocker and the next user action are stated plainly.
 
-These are rough learning-effort estimates, not promises or provider prices.
+## Scope and cost guardrails
 
-- Lessons 1–4: about 4–8 focused sessions.
-- Provider evaluation and safe integration: about 2–5 sessions after a source is chosen.
-- Hardening and publish review: about 1–3 sessions.
-- Fixture-first prototype: intended infrastructure spend of **$0**.
-- Live-source spend: **unknown until verified**. Keep the project at $0 unless Ronan explicitly approves a documented cap and shutoff path.
+- Open-Meteo is the existing public weather source. Strava and Fitbit are planned integrations to verify and authorize; they are not yet connected.
+- Cloudflare Workers + D1 is the leading free server candidate from the current documentation check. The lesson verifies current terms and account requirements before deployment.
+- Keep the prototype at $0. Do not activate billing or a paid tier without Ronan's explicit approval. Free quotas and plans can change.
+- Use minimum necessary data, coarse weather location, no public ride routes, and no repository copies of real ride, sleep, or health records.
+- Keep provider tokens server-side. Ask Ronan to enter any secrets directly into the chosen provider's secret settings, not into GitHub source or chat.
 
 ## Risks and controls
 
@@ -74,4 +76,4 @@ Repository-safe material includes source code, synthetic fixtures, coarse fictio
 
 ## Source-verification status
 
-First-party Open-Meteo details relevant to Lesson 1 were recorded in `docs/CODEBOOK.md` on 2026-09-07. Later providers and current hosting cost conditions have not been verified.
+Open-Meteo documentation for the existing weather request was recorded in `docs/CODEBOOK.md`. First-party checks for Strava, Fitbit, Cloudflare Workers/D1, Vercel, and Supabase were recorded there on 2026-09-24. Treat service eligibility, free quotas, terms, and account access as subject to re-check before live integration.
