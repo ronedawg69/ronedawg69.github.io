@@ -16,6 +16,7 @@ Explain Lesson 4, “Handle failure,” and ask Ronan whether he is ready. Do no
 - Do not connect providers, enable persistence, or incur costs without the required privacy review and explicit approval.
 - Keep learning progress separate from publication status. Do not reopen completed lessons because of technical uncertainty.
 - Keep Lesson 4 focused on the practical outcome: the page should explain when data are loading, missing, or unavailable. Teach the needed pieces together, use one combined exercise, and check the overall result once; explain further only if Ronan asks or gets stuck.
+- Lesson 4's tangible result is a page with loading, no-data, and unavailable-source states, demonstrated with controlled examples. Every session should end with a working increment or reviewable artifact, not explanation or a quiz alone.
 - When the lesson or any documentation task is complete, state plainly whether the work is only local, pushed, in a PR, or merged, and tell Ronan the one next action (including a direct PR link if he needs to review and merge).
 - Before any new repository edits, inspect the actual checkout and verify current GitHub state as required by `AGENTS.md`.
 
