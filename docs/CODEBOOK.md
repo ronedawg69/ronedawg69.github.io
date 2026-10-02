@@ -357,3 +357,22 @@ The Lesson 4 loader inserts a script request for `fixtures/cycle-signals-fixture
 Each ride load has a sequence number. A response from an earlier selection is ignored so it cannot overwrite the newer view. Preview scenarios are explicitly labelled and never substitute for live weather. Weather uses `AbortController` to stop a request after 12 seconds and then offers retry.
 
 Run `node tests/lesson4-states.cjs` from the repository root. It needs only Node, executes the page's actual JavaScript against a controlled DOM and supplies invented fixture/weather responses. It checks failure paths and recovery; it does not simulate full browser layout or prove accessibility/live deployment. No current provider product/terms claim is made by this lesson.
+
+## Lesson 5 source check: 2026-10-02
+
+These first-party documentation reads update feasibility, not account access. No account connected, credentials entered, paid tier enabled or real records requested.
+
+| Source | Verified documentation / implication |
+| --- | --- |
+| Open-Meteo | [Terms](https://open-meteo.com/en/terms/) restrict Free use to non-commercial purposes, with 600/minute, 5,000/hour and 10,000/day limits and CC BY 4.0 attribution. Preserve the generic request; review privacy/retention before any new location flow. |
+| Strava | [Getting started](https://developers.strava.com/docs/getting-started/) requires a subscription to create an app; new apps authenticate only the developer's own account initially. [Reference](https://developers.strava.com/docs/reference/) exposes elapsed/moving durations and activity type. Choose duration semantics and minimum OAuth scope before Lesson 7. Ronan's subscription/app access is unknown; do not purchase anything. |
+| Fitbit / Google Health | **Needs re-check:** [migration guide](https://developers.google.com/health/migration) confirms legacy support ended 2026-09-30, shutoff 2026-10-30 and no new-project onboarding currently. Replacement uses Google OAuth and changed schemas; sleep-field parity, access and consent remain unverified. Lesson 8 may need redesign or fixtures. |
+| Cloudflare | [Workers pricing](https://developers.cloudflare.com/workers/platform/pricing/) and [D1 pricing](https://developers.cloudflare.com/d1/platform/pricing/) rechecked. D1 Free includes 5 million rows read/day, 100,000 rows written/day and 5 GB total; reaching Free limits blocks operations. Workers + D1 remains the leading candidate, subject to account, terms, privacy and final pre-deployment checks. |
+| Vercel | [Hobby plan](https://vercel.com/docs/plans/hobby) remains free for personal, non-commercial use. A function backend still needs a separately reviewed persistence choice. |
+| Supabase | [Billing documentation](https://supabase.com/docs/guides/platform/billing-on-supabase) lists two Free projects, 500 MB database/project and 500,000 included Edge Function invocations. Inactivity behavior and exact account terms require recheck before choosing it. |
+
+### Boundary vocabulary
+
+Authentication establishes who requests data; authorization establishes whether that identity may access those data. Server-side credentials protect provider access; endpoint checks separately protect returned records. Static hosting delivers inspectable files; a runtime executes private code; a database persists information. CORS controls browser cross-origin behavior, not who can call an endpoint.
+
+The [connector map](CONNECTOR_MAP.md) documents the proposed flows and unresolved retention, audience and access mechanisms. These remain design questions; documentation reads cannot establish account eligibility or deployment.

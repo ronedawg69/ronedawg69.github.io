@@ -1,12 +1,11 @@
 # Next session handoff
 
-Read [current status](APPLICATION_TRACKER.md#current-status), [learning outcomes](LEARNING_TRACKER.md), and the [course plan](PROJECT_BRIEF.md). Inspect actual GitHub state before implementation.
+Read [current status](APPLICATION_TRACKER.md#current-status), [learning outcomes](LEARNING_TRACKER.md), and [the connector map](CONNECTOR_MAP.md). Inspect actual GitHub state before implementation.
 
 ## Single next action
 
-Continue Lesson 5 by explaining static hosting, server runtime and database roles, then check the newly taught concepts before building the connector map. Browser token exposure and endpoint authentication/authorization checks were answered correctly; do not repeat them. The earlier insufficient access-control explanation was a teaching gap, not a learner error. Record current provider/hosting checks and unresolved choices before the lesson PR; do not connect accounts or enable billing.
+Review and merge the Lesson 5 documentation PR linked in the application tracker. After a reported merge, verify GitHub and update records before Lesson 6. The next lesson starts with resolving the [open privacy/access decisions](PROJECT_BRIEF.md#open-decisions-before-lesson-6), teaching the synthetic server request/response flow, and checking newly taught concepts before building. Do not repeat the correctly answered browser-token, authentication/authorization or runtime checks. Provider blockers remain documented; no live accounts or billing are authorized.
 
 ## Guardrails
 
-Follow [AGENTS.md](../AGENTS.md) for privacy, account authorization, cost, branch safety and reporting. Use the [publication vocabulary](CODEBOOK.md#git-and-publication-vocabulary); a PR is not a deployment. Never rely on stale handoff commit IDs.
-
+Follow [AGENTS.md](../AGENTS.md) for privacy, account authorization, cost, branch safety and reporting. Use the [publication vocabulary](CODEBOOK.md#git-and-publication-vocabulary); a PR is not a deployment.
