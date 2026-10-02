@@ -1,19 +1,14 @@
 # Cycle Signals project brief
 
-**Status:** Lessons 1, 2, and 3 complete; Lesson 4 has not started
-**Next lesson:** Lesson 4 builds the page's helpful loading, no-data, and error states. Codex explains the idea briefly and implements the feature in the same session.
+See [current status and publication evidence](APPLICATION_TRACKER.md#current-status).
 
 ## Purpose
 
 Cycle Signals is a small static website used to learn how a web application can combine weather with fictional cycling and sleep signals. The teaching goal is for Ronan to understand each layer before adding the next one.
 
-## Current project state
+## Project structure
 
-- `index.html` is the main site; `projects.html` is a project gallery; `api-experiment.html` is the Cycle Signals page.
-- The site uses HTML, CSS, and browser JavaScript. It has no package manifest, build step, backend, database, or automated test suite.
-- The Cycle Signals page requests public weather data and loads `fixtures/cycle-signals-fixture.js` before its inline script to render the synthetic ride duration as `1440 seconds`.
-- Lesson 2 documentation and fixture were merged into `main` by PR #14 on 2026-09-17. See `docs/APPLICATION_TRACKER.md` for the latest GitHub verification.
-- There is no approved personal-data integration, persistence, analytics, or paid service.
+`index.html` is the main site, `projects.html` the gallery, and `api-experiment.html` Cycle Signals. See the [application tracker](APPLICATION_TRACKER.md#current-status) for current implementation and release evidence.
 
 ## Provisional architecture
 
@@ -54,7 +49,7 @@ Every lesson PR includes the working change, a short explanation of the key idea
 ## Scope and cost guardrails
 
 - Open-Meteo is the existing public weather source. Strava and Fitbit are planned integrations to verify and authorize; they are not yet connected.
-- Cloudflare Workers + D1 is the leading free server candidate from the current documentation check. The lesson verifies current terms and account requirements before deployment.
+- Cloudflare Workers + D1 is the leading free server candidate from the dated 2026-09-24 documentation check. The lesson verifies current terms and account requirements before deployment.
 - Keep the prototype at $0. Do not activate billing or a paid tier without Ronan's explicit approval. Free quotas and plans can change.
 - Use minimum necessary data, coarse weather location, no public ride routes, and no repository copies of real ride, sleep, or health records.
 - Keep provider tokens server-side. Ask Ronan to enter any secrets directly into the chosen provider's secret settings, not into GitHub source or chat.
@@ -77,3 +72,12 @@ Repository-safe material includes source code, synthetic fixtures, coarse fictio
 ## Source-verification status
 
 Open-Meteo documentation for the existing weather request was recorded in `docs/CODEBOOK.md`. First-party checks for Strava, Fitbit, Cloudflare Workers/D1, Vercel, and Supabase were recorded there on 2026-09-24. Treat service eligibility, free quotas, terms, and account access as subject to re-check before live integration.
+
+
+## Open decisions before Lesson 6
+
+These remain unresolved; this cleanup makes no selection.
+
+- Who can see the published dashboard: only Ronan with real data, or a public dashboard with fictional data only?
+- How will the server endpoint authenticate and authorize requests so strangers cannot fetch Ronan's ride/sleep data?
+- Fitbit / Google Health: re-check replacement API access, consent, scopes and required sleep/activity fields before implementation. Google documents legacy Fitbit support ending 2026-09-30 and API turn-off on 2026-10-30; [first-party migration guide](https://developers.google.com/health/migration), checked 2026-10-02. The guide also says new projects are not currently being onboarded. Lesson 8 may need redesigning; eligibility and the replacement path remain undecided. See the codebook's **needs re-check** row.
