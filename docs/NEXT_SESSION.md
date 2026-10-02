@@ -4,7 +4,9 @@ Read [current status](APPLICATION_TRACKER.md#current-status), [learning outcomes
 
 ## Single next action
 
-Check [current PR status](APPLICATION_TRACKER.md#current-status). If [Lesson 4 PR #23](https://github.com/ronedawg69/ronedawg69.github.io/pull/23) is still open, review and merge it; verify the repository, head/base and latest commit first. If already merged, verify the Pages deployment and try the fictional scenario selector on Cycle Signals before moving to Lesson 5. Do not ask Ronan to review an already merged PR.
+Ask and assess the pending concept check after the Lesson 4 walkthrough: empty versus failed data, and why invalid data should become an error rather than a displayed value. No answers are recorded yet. Explain any misunderstanding before proceeding. Teach and test Lesson 5 concepts before implementing its connector map or code.
+
+Lesson 4 merge/deployment and Ronan's reported scenario use are recorded in the [application tracker](APPLICATION_TRACKER.md#current-status). Do not ask him to merge PR #23 again. This update changes records only.
 
 ## Guardrails
 

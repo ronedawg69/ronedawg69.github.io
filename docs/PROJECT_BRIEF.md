@@ -25,7 +25,7 @@ Open-Meteo is selected only for Lesson 1's generic public weather request. No pr
 
 ## How lessons should run
 
-Ronan wants to understand the concepts while Codex writes the code. Keep explanations short and concrete by default; explain the few ideas needed, implement the feature, then show it working. Ronan can ask for a deeper explanation at any point. Do not make him write code, pass a quiz, or complete repeated readiness gates before progress.
+Ronan wants to understand the concepts while Codex writes the code. Keep explanations short and concrete by default; explain the few ideas needed, ask focused concept questions and wait for assessed answers before implementing the feature, then show it working. Ronan can ask for a deeper explanation at any point. Ronan requested concept testing before execution on 2026-10-02. Assess answers and clarify misunderstandings before implementing lesson work. Do not require him to write code, use exact terminology or answer repetitive generic readiness prompts.
 
 Each lesson ends with a useful project change pushed to a reviewable GitHub PR, with the result and its check briefly demonstrated. Tell Ronan when the PR is ready for review and merge. A lesson may take another session only if a real technical dependency or Ronan's question requires it. Prefer playful, visible dashboard features; keep health data presentation neutral and avoid claims that one signal causes another.
 
