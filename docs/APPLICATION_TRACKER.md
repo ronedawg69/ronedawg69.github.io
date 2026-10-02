@@ -71,4 +71,4 @@ GitHub integration verified main and the lesson branch on 2026-10-02. They diver
 
 [CONNECTOR_MAP.md](CONNECTOR_MAP.md) records minimum candidate fields, boundaries, hosting alternatives, unresolved retention/access choices and provider blockers. First-party checks are dated in the codebook; actual answers are in the learning tracker. Documentation consistency and the changed-file scope are checked; no application test or deployment is claimed for this docs-only lesson.
 
-Lesson 5 publication: reviewable PR on `codex/lesson-5-connectors` targeting `main`; not merged or deployed. Exact hosted identity will be linked after creation.
+Lesson 5 publication: [PR #25](https://github.com/ronedawg69/ronedawg69.github.io/pull/25), verified open with head `codex/lesson-5-connectors` and base `main`; not merged or deployed. GitHub reported a clean, mergeable PR. All five changed files are documentation; no application bytes differ from main.
