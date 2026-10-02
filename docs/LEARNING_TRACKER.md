@@ -47,3 +47,11 @@ The [11-lesson plan](PROJECT_BRIEF.md#remaining-course-lessons-411) defines scop
 2. Ronan explained that the fixture should show fictional positive whole numbers and values failing those rules should not be displayed. Assessment: correct for this ride-duration field; invalid data should become an error. No misconception remains in these checked concepts.
 
 Lesson 5 explanation starts with browser, server and provider roles. Its concept check is pending; no answers or implementation are recorded yet.
+
+## Lesson 5 boundary concept check: 2026-10-02
+
+- Browser token exposure: Ronan answered that anyone with access to the browser could access the private token. Assessment: correct; visitors can inspect delivered JavaScript and take the token.
+- Endpoint access: Ronan challenged whether the second concept had been taught. Codex acknowledged the explanation was insufficient, then explicitly explained authentication (who is requesting) and authorization (whether they may access the data). This was a teaching gap, not a learner misconception.
+- After the explanation, Ronan answered “Authentication and Authorization” when asked what the server should check before returning ride data to a stranger. Assessment: correct. Both checked boundary concepts are understood; no corrective check remains for them.
+
+Next teaching topic: hosting versus runtime versus database. Explain these roles before testing them; no hosting selection, account connection or deployment has been approved by these answers.
