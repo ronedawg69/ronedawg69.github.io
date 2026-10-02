@@ -47,6 +47,21 @@
     .weather-retry { align-self: start; margin-top: 18px; padding: 9px 13px; border: 1px solid rgba(232,196,109,.35); color: var(--gold); background: transparent; font: inherit; font-size: 11px; cursor: pointer; }
     .weather-retry:hover { border-color: var(--gold); }
     .weather-retry:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+
+    .ride-panel { max-width: 450px; margin-top: 28px; padding: 22px; border: 1px solid rgba(232,196,109,.2); background: #090908; }
+    .ride-kicker { margin: 0 0 12px; color: var(--gold); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+    .ride-status { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
+    .ride-status[data-state="error"] { color: #e4b6a8; }
+    .ride-value { margin: 12px 0; font: 400 30px/1.15 Georgia, serif; color: var(--ink); }
+    .ride-note { margin: 12px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .state-preview { margin-top: 20px; border-top: 1px solid rgba(255,255,255,.09); padding-top: 15px; }
+    .state-preview label { display: block; margin-bottom: 8px; color: var(--muted); font-size: 11px; }
+    .state-preview select { max-width: 100%; padding: 9px 12px; border: 1px solid rgba(232,196,109,.35); color: var(--ink); background: #11100d; font: inherit; font-size: 12px; }
+    .state-preview select:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+    .ride-retry { margin-top: 15px; padding: 9px 13px; border: 1px solid rgba(232,196,109,.35); color: var(--gold); background: transparent; font: inherit; font-size: 12px; cursor: pointer; }
+    .ride-retry:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+    [hidden] { display: none !important; }
+    button:disabled { opacity: .5; cursor: wait; }
     footer { display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,.08); padding-top: 20px; color: #77746c; font-size: 10px; letter-spacing: .13em; text-transform: uppercase; }
     @media (max-width: 760px) {
       .shell { width: calc(100% - 32px); padding-top: 28px; }
@@ -64,9 +79,24 @@
         <p class="eyebrow">Project 01 · Experiment</p>
         <h1>Cycle<br>Signals</h1>
         <p class="description">A developing dashboard exploring the quiet connections between weather, sleep, activity and the daily ride to work.</p>
-        <p id="ride_duration_seconds"></p>
+        <section class="ride-panel" id="ride-panel" aria-labelledby="ride-title" aria-busy="true">
+          <h2 class="ride-kicker" id="ride-title">Ride signal · Fictional sample</h2>
+          <p class="ride-status" id="ride-status" role="status" aria-live="polite" data-state="loading">Loading the fictional ride sample…</p>
+          <p class="ride-value" id="ride_duration_seconds" hidden></p>
+          <p class="ride-note">Invented learning data. No ride or sleep account is connected.</p>
+          <button class="ride-retry" id="ride-retry" type="button" hidden>Try again</button>
+          <div class="state-preview">
+            <label for="ride-preview">Try a fictional scenario</label>
+            <select id="ride-preview">
+              <option value="sample">Loaded sample</option>
+              <option value="loading">Preview: loading</option>
+              <option value="empty">Preview: no rides</option>
+              <option value="error">Preview: loading failed</option>
+            </select>
+          </div>
+        </section>
       </div>
-      <section class="signal" aria-labelledby="weather-title">
+      <section class="signal" aria-labelledby="weather-title" aria-busy="true">
         <div class="weather">
           <p class="weather-kicker" id="weather-title">Current weather · Central London</p>
           <p class="weather-status" id="weather-status" role="status" aria-live="polite">Loading current weather…</p>
@@ -91,13 +121,91 @@
     </section>
     <footer><span>Room 01 / 16</span><span>Conceptual study · Work in progress</span></footer>
   </main>
-  <script src="fixtures/cycle-signals-fixture.js"></script>
   <script>
     (() => {
       "use strict";
 
-      document.getElementById("ride_duration_seconds").textContent =
-        cycleSignalsFixture[0].ride_duration_seconds + " seconds";
+      const ridePanel = document.getElementById("ride-panel");
+      const rideStatus = document.getElementById("ride-status");
+      const rideValue = document.getElementById("ride_duration_seconds");
+      const rideRetry = document.getElementById("ride-retry");
+      const ridePreview = document.getElementById("ride-preview");
+      let fixtureRequest;
+      let rideRun = 0;
+
+      function setRideState(state, message, seconds) {
+        ridePanel.setAttribute("aria-busy", String(state === "loading"));
+        rideStatus.dataset.state = state;
+        rideStatus.textContent = message;
+        rideValue.textContent = state === "ready" ? seconds + " seconds" : "";
+        rideValue.hidden = state !== "ready";
+        rideRetry.hidden = state !== "error" && state !== "empty";
+        rideRetry.disabled = state === "loading";
+        rideRetry.textContent = ridePreview.value === "sample" ? "Try again" : "Load the sample";
+      }
+
+      // Load once, share an in-flight request, and allow retry after a failed load.
+      function loadFixture() {
+        if (fixtureRequest) return fixtureRequest;
+        fixtureRequest = new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = "fixtures/cycle-signals-fixture.js";
+          function finish(error) {
+            script.onload = script.onerror = null;
+            script.remove();
+            if (error) { reject(error); return; }
+            if (typeof cycleSignalsFixture === "undefined") {
+              reject(new Error("Fixture did not define its data")); return;
+            }
+            resolve(cycleSignalsFixture);
+          }
+          script.onload = () => finish();
+          script.onerror = () => finish(new Error("Fixture could not be loaded"));
+          document.body.appendChild(script);
+        }).catch((error) => { fixtureRequest = undefined; throw error; });
+        return fixtureRequest;
+      }
+
+      function renderRides(records) {
+        if (!Array.isArray(records)) throw new Error("Invalid fixture collection");
+        if (records.length === 0) {
+          setRideState("empty", "No fictional rides in this sample. Load the sample to see an example.");
+          return;
+        }
+        const record = records[0];
+        if (!record || record.is_synthetic !== true ||
+            !Number.isInteger(record.ride_duration_seconds) || record.ride_duration_seconds <= 0) {
+          throw new Error("Invalid fictional ride");
+        }
+        setRideState("ready", "Fictional sample loaded. Ride duration:", record.ride_duration_seconds);
+      }
+
+      async function loadRides() {
+        const run = ++rideRun;
+        const scenario = ridePreview.value;
+        setRideState("loading", scenario === "sample" ?
+          "Loading the fictional ride sample…" : "Preview: loading fictional rides…");
+        if (scenario === "loading") return; // Deliberate, labelled loading preview.
+        try {
+          if (scenario === "empty") { renderRides([]); return; }
+          if (scenario === "error") throw new Error("Simulated failure");
+          const records = await loadFixture();
+          if (run !== rideRun) return; // An older response must not replace a newer view.
+          renderRides(records);
+        } catch (error) {
+          if (run !== rideRun) return;
+          setRideState("error", scenario === "error" ?
+            "Preview: the fictional sample could not load. Load the sample to try again." :
+            "The fictional ride sample could not load. Check your connection and try again.");
+        }
+      }
+
+      ridePreview.addEventListener("change", loadRides);
+      rideRetry.addEventListener("click", () => {
+        ridePreview.value = "sample";
+        loadRides();
+      });
+      loadRides();
 
       // Change this to false to stop all weather requests without removing the card.
       const WEATHER_REQUESTS_ENABLED = true;
@@ -211,6 +319,8 @@
           timeStyle: "short"
         }).format(updatedAt);
 
+        document.querySelector(".signal").setAttribute("aria-busy", "false");
+        retry.disabled = false;
         status.hidden = true;
         retry.hidden = true;
         reading.hidden = false;
@@ -218,6 +328,8 @@
       }
 
       function showError(message = "Current weather could not be loaded. No substitute data is being shown.") {
+        document.querySelector(".signal").setAttribute("aria-busy", "false");
+        retry.disabled = false;
         status.hidden = false;
         status.dataset.state = "error";
         status.textContent = message;
@@ -233,6 +345,8 @@
           return;
         }
 
+        document.querySelector(".signal").setAttribute("aria-busy", "true");
+        retry.disabled = true;
         status.hidden = false;
         status.dataset.state = "loading";
         status.textContent = "Loading current weather…";
@@ -240,8 +354,10 @@
         meta.hidden = true;
         retry.hidden = true;
 
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 12000);
         try {
-          const response = await fetch(WEATHER_URL);
+          const response = await fetch(WEATHER_URL, { signal: controller.signal });
           if (!response.ok) throw new Error(`Weather request returned ${response.status}`);
 
           const data = await response.json();
@@ -250,7 +366,10 @@
           showWeather(data);
         } catch (error) {
           console.error("Weather request failed:", error);
-          showError();
+          showError(error.name === "AbortError" ?
+            "The weather request took too long. Try again when your connection is ready." : undefined);
+        } finally {
+          clearTimeout(timeout);
         }
       }
 
@@ -260,3 +379,4 @@
   </script>
 </body>
 </html>
+
