@@ -4,9 +4,7 @@ Read [current status](APPLICATION_TRACKER.md#current-status), [learning outcomes
 
 ## Single next action
 
-Ask and assess the pending concept check after the Lesson 4 walkthrough: empty versus failed data, and why invalid data should become an error rather than a displayed value. No answers are recorded yet. Explain any misunderstanding before proceeding. Teach and test Lesson 5 concepts before implementing its connector map or code.
-
-Lesson 4 merge/deployment and Ronan's reported scenario use are recorded in the [application tracker](APPLICATION_TRACKER.md#current-status). Do not ask him to merge PR #23 again. This update changes records only.
+Teach Lesson 5 browser/server/provider roles, then ask and assess its concept questions before building the connector map or implementing lesson code. Lesson 4's two follow-up answers were assessed as correct; do not repeat that check. See the learning tracker for the actual answer record.
 
 ## Guardrails
 
