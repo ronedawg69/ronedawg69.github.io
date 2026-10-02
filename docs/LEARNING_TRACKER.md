@@ -14,9 +14,13 @@ The lesson explains that loading means a result is pending, empty means the sour
 
 Codex built the fictional ride status panel, labelled scenario selector and recovery action. A separate ride loader keeps its failures from stopping weather. Controlled checks cover the real application logic; visual browser verification was unavailable. No optional teach-back was requested and no learner answer or misconception was invented. See the [application tracker](APPLICATION_TRACKER.md#current-status) for publication and check evidence.
 
+## Teaching correction and walkthrough: 2026-10-02
+
+Ronan reported insufficient teaching and requested concept tests before execution. Codex explained `renderRides(records)`: empty collections, `return`, first-record access with `[0]`, validation, `throw`/catch and ready-state rendering, plus clearing stale values and ignoring older responses. Ronan reported trying the fictional scenarios; this does not establish concept mastery. No concept answers have yet been received or assessed, and no misconception is inferred. Teach first, ask a few connected questions together, wait for answers, assess and clarify before implementing. This supersedes the former optional/no-quiz rule.
+
 ## Where Lesson 5 starts
 
-Once the Lesson 4 PR is reviewed and merged, briefly explain the connector/data path and re-check candidate services and hosting. Confirm the unresolved dashboard visibility, endpoint protection and Google Health access questions in the project brief; do not connect real accounts or activate billing without authorization.
+Use the application tracker for publication status. Teach browser/server/provider roles and test understanding before building the Lesson 5 connector map or changing lesson code. Re-check candidate services and hosting. Confirm the unresolved dashboard visibility, endpoint protection and Google Health access questions in the project brief; do not connect real accounts or activate billing without authorization.
 
 ## Curriculum outcomes
 
