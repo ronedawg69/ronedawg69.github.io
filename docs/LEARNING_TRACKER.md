@@ -16,7 +16,7 @@ Codex built the fictional ride status panel, labelled scenario selector and reco
 
 ## Teaching correction and walkthrough: 2026-10-02
 
-Ronan reported insufficient teaching and requested concept tests before execution. Codex explained `renderRides(records)`: empty collections, `return`, first-record access with `[0]`, validation, `throw`/catch and ready-state rendering, plus clearing stale values and ignoring older responses. Ronan reported trying the fictional scenarios; this does not establish concept mastery. No concept answers have yet been received or assessed, and no misconception is inferred. Teach first, ask a few connected questions together, wait for answers, assess and clarify before implementing. This supersedes the former optional/no-quiz rule.
+Ronan reported insufficient teaching and requested concept tests before execution. Codex explained `renderRides(records)`: empty collections, `return`, first-record access with `[0]`, validation, `throw`/catch and ready-state rendering, plus clearing stale values and ignoring older responses. Ronan reported trying the fictional scenarios; this does not establish concept mastery. The follow-up answers and assessment are recorded below. Teach first, ask a few connected questions together, wait for answers, assess and clarify before implementing. This supersedes the former optional/no-quiz rule.
 
 ## Where Lesson 5 starts
 
@@ -40,3 +40,10 @@ The [11-lesson plan](PROJECT_BRIEF.md#remaining-course-lessons-411) defines scop
 | 10. Make it enjoyable to explore | Planned; see the application tracker for current stage. |
 | 11. Check and publish | Planned; see the application tracker for current stage. |
 
+
+## Lesson 4 concept check: 2026-10-02
+
+1. Ronan explained that no data is fundamentally different from an error calling the data, and that distinguishing them matters. Assessment: correct; empty is a valid result, whereas retrieval/validation failure means no usable result.
+2. Ronan explained that the fixture should show fictional positive whole numbers and values failing those rules should not be displayed. Assessment: correct for this ride-duration field; invalid data should become an error. No misconception remains in these checked concepts.
+
+Lesson 5 explanation starts with browser, server and provider roles. Its concept check is pending; no answers or implementation are recorded yet.
