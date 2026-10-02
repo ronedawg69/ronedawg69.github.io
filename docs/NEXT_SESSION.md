@@ -4,7 +4,7 @@ Read [current status](APPLICATION_TRACKER.md#current-status), [learning outcomes
 
 ## Single next action
 
-Teach Lesson 5 browser/server/provider roles, then ask and assess its concept questions before building the connector map or implementing lesson code. Lesson 4's two follow-up answers were assessed as correct; do not repeat that check. See the learning tracker for the actual answer record.
+Continue Lesson 5 by explaining static hosting, server runtime and database roles, then check the newly taught concepts before building the connector map. Browser token exposure and endpoint authentication/authorization checks were answered correctly; do not repeat them. The earlier insufficient access-control explanation was a teaching gap, not a learner error. Record current provider/hosting checks and unresolved choices before the lesson PR; do not connect accounts or enable billing.
 
 ## Guardrails
 
