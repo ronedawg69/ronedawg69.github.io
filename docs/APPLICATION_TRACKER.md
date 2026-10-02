@@ -3,29 +3,29 @@
 ## Current status
 
 - **Checked on:** 2026-10-02 (Europe/London).
-- **Repository / default branch:** [ronedawg69/ronedawg69.github.io](https://github.com/ronedawg69/ronedawg69.github.io), `main`.
-- **Verified main commit:** `6128cc478263eb5221b37f507a3eccdb6f70aac3`, from GitHub's branch-ref API. This is the baseline checked for this documentation PR; re-check after merging rather than treating it as an evergreen latest commit.
-- **Lesson stage:** Lessons 1–3 complete; Lesson 4 not started. No active lesson in this documentation-only session. The next lesson entry is helpful loading, no-data and error states, with no required quiz or readiness gate.
-- **Lesson 2/3 publication:** the fixture exists on main, has `ride_duration_seconds: 1440`, loads before the inline renderer in `api-experiment.html`, and supplies the paragraph's seconds text. These changes are on GitHub main, not merely local or on a separate branch.
-- **Deployed version:** GitHub Pages workflow for the main commit above completed successfully. HTTP reads of [Cycle Signals](https://ronedawg69.github.io/api-experiment.html) and its [fixture](https://ronedawg69.github.io/fixtures/cycle-signals-fixture.js) confirmed the fixture include, renderer and `1440` value. The project gallery and Human Perspective return button were also published in that baseline.
-- **Live-check limitation:** this session checked served source and deployment evidence, not rendered browser behavior or a fresh weather response. Prior controlled DOM/Chromium checks are historical evidence, not rerun results.
-- **Checkout:** this workspace has no Git checkout; read-only Git inspection returned “not a git repository.” Local branch, HEAD, remotes, working tree and remote-tracking branches are unavailable. Source was read from GitHub at the baseline commit.
-- **Open PRs at initial check:** none. This documentation cleanup is prepared on a separate branch for one reviewable PR; it does not merge itself or change deployed application code.
-- **Implementation scope:** static HTML/CSS/browser JavaScript, public generic-London weather request and synthetic fixture; no backend, database, approved real-account connection or personal-data persistence. Private-provider access and dashboard visibility remain unresolved in the project brief.
+- **Repository/default branch:** [ronedawg69/ronedawg69.github.io](https://github.com/ronedawg69/ronedawg69.github.io), `main`.
+- **Verified main:** `2b300249f5dc6e0ee5d556dd11ea56958abfa4a4`. Documentation cleanup [PR #22](https://github.com/ronedawg69/ronedawg69.github.io/pull/22) is merged. Lesson 3 fixture and seconds renderer are present at this baseline.
+- **Lesson stage:** Lessons 1–3 outcomes preserved. Lesson 4 implementation and controlled checks complete; the brief explanation covers loading, absence, failure and recovery. No teach-back was required or assessed, and no new learner misconception is recorded. Lesson 5 is not started.
+- **Lesson 4 publication:** [PR #23](https://github.com/ronedawg69/ronedawg69.github.io/pull/23), verified open, head `codex/lesson-4-helpful-states`, base `main`. Application/test commit `4f1769a4e7500fac6f9fd104973f553286108c88`; documentation closeout follows in the same branch. Not merged or deployed. Query the PR for its latest head before reviewing/merging.
+- **Deployed baseline:** GitHub Pages workflow for the main commit above completed successfully. This verifies deployment of the baseline, not Lesson 4. No fresh live-site runtime check was performed this lesson.
+- **Local validation:** `node tests/lesson4-states.cjs` passed against the Lesson 4 application/test bytes. Tests execute the actual inline JavaScript with a controlled DOM and fictional responses; check ready/loading/empty/error, malformed or missing data, retry, stale-value clearing, delayed responses, weather independence, HTTP failure, invalid response and timeout.
+- **Limitations:** Chromium is absent; its install download returned an invalid archive. No browser rendering, mobile layout or accessibility audit was completed. Semantic labels, live status regions, busy states and keyboard-native controls are implemented; their browser behavior still needs review.
+- **Workspace:** no Git checkout exists here; read-only Git commands confirmed that local branch/HEAD/remotes/status are unavailable. Sources were fetched from GitHub at the verified baseline. The application/test changes are pushed to the PR branch.
+- **Scope:** static HTML/CSS/browser JavaScript; existing public generic-London weather request and invented fixture only. Lesson 4 adds a ride status panel, labelled fictional scenario previews, validation/retry and a weather timeout. No private account, server, storage, credential, billing or additional provider was introduced.
 
-This is the single current-status record. Other documents link here. Historical learning evidence is in [Lessons 1–3 history](history/lessons-1-3.md); publication terms are defined in the [codebook](CODEBOOK.md#git-and-publication-vocabulary).
+This is the single current-status record. Other documents link here. Learning outcomes are in [LEARNING_TRACKER.md](LEARNING_TRACKER.md); publication terms are defined in the [codebook](CODEBOOK.md#git-and-publication-vocabulary).
 
 ## Technical evidence register
 
 | Claim | Evidence and status | Next verification when needed |
 | --- | --- | --- |
-| Repository/main and open PRs | GitHub integration queried the main ref and open PRs on the checked date; exact baseline and initial PR result are above. | Re-check before relying on publication state. |
+| Repository/main and open PRs | GitHub integration queried the main ref and open PRs on the checked date; exact baseline and Lesson 4 PR identity are above. | Re-check before relying on publication state. |
 | Local checkout | Read-only `pwd`, Git repository/branch/HEAD/status/remotes/remote-branch commands; no checkout exists here. | Inspect an actual checkout if one is created or supplied. |
 | Lesson 2 fixture publication | GitHub contents read at the baseline: fixture exists and contains the approved synthetic record. Earlier missing-commit claim is superseded; publication does not require the old local SHA to survive merging. | Verify file bytes on a new revision if they change. |
-| Lesson 3 publication | GitHub contents read at the baseline confirms paragraph target, fixture-before-renderer order and seconds assignment. | Re-check after relevant source changes. |
-| GitHub write/publication route | Supported authenticated integration created and merged prior PRs #20 and #21 in this session's visible record. Earlier fetch/push limitations do not describe this route. | Use the integration; verify each new PR and head/base. |
-| Deployment | GitHub Actions workflow for the baseline completed successfully. | Check the workflow for a new merged version. |
-| Live served source | HTTP reads confirmed Lesson 3 include, renderer and fixture value. No browser rendering or weather response was checked in this cleanup. | Browser/Network check when runtime behavior matters. |
+| Lesson 3 publication | GitHub contents read at the baseline confirms the Lesson 3 paragraph, script order and seconds assignment. Lesson 4 changes loading to an independent script request, rendering after its load event. | Re-check after relevant source changes. |
+| GitHub write/publication route | Supported authenticated integration verified merged PR #22 and created the Lesson 4 PR. Earlier fetch/push limitations do not describe this route. | Use the integration; verify each new PR and head/base. |
+| Deployment | GitHub Actions workflow for the baseline completed successfully; Lesson 4 remains unmerged. | Check the workflow for a new merged version. |
+| Live served source | Prior cleanup HTTP reads confirmed Lesson 3 include, renderer and fixture value. No fresh live behavior check this lesson. | Browser/Network check when runtime behavior matters. |
 | Historical Lesson 3 validation | 2026-09-23 record: unique HTML IDs, script order, syntax, controlled DOM output and Chromium screenshot. | Retain as historical; rerun only when a relevant change requires it. |
 | Historical safety-rule and PR #11 claims | Earlier unverified hashes/PR assertions are not current evidence. Current AGENTS.md was read from GitHub; no historical merge/deployment claim is inferred from it. | Query an exact historical PR if its identity is needed. |
 | Hosted checks / review requirements | Pages workflow was checked; broader branch-protection or required-check configuration was not inspected. | Inspect exact PR checks/requirements when merging. |
@@ -63,3 +63,6 @@ Older rows record the decision at its checkpoint, not current lesson or publicat
 | 2026-09-24 (recorded here 2026-10-02) | Follow the 11-lesson plan in PROJECT_BRIEF.md; preserve Lessons 1–3 outcomes and build the remaining course through Lesson 11. | Active |
 | 2026-09-24 (recorded here 2026-10-02) | Cloudflare Workers + D1 is the leading candidate, not an approved deployment or permanent free-cost guarantee; re-check account access, terms and privacy first. | Provisional |
 | 2026-10-02 | Documentation cleanup only; preserve application code and archive detailed Lessons 1–3 history without changing its content. No Lesson 4 implementation. | Active for this session |
+
+
+| 2026-10-02 | Lesson 4 loads fictional ride data independently of weather, rejects invalid signals, distinguishes empty from failure, clears stale values and supplies explicit recovery. Scenario previews are labelled as fictional. | Implemented in PR #23; not deployed |

@@ -8,9 +8,15 @@ Completed outcomes: the public weather request and honest failure state; the min
 
 Remember these resolved misconceptions: `const name = value` declaration order; assignment to an element's `.textContent` property (not the element itself or `textContext`); seconds mean duration, not distance. WMO code 61 was immediately self-corrected to Slight rain. No unresolved misconception is recorded. The unnecessary vocabulary exercise and repeated comprehension gates were tutoring errors, not learner errors.
 
-## Where Lesson 4 starts
+## Lesson 4 outcome
 
-Briefly explain loading, no-data and error states, then Codex builds and checks the combined feature with fictional examples and opens a reviewable PR. No required quiz or readiness gate. This documentation session does not start that lesson.
+The lesson explains that loading means a result is pending, empty means the source returned no records, and error means retrieval or validation failed. None should show an old value as if it were current. Retry is a new attempt, not a fabricated replacement result.
+
+Codex built the fictional ride status panel, labelled scenario selector and recovery action. A separate ride loader keeps its failures from stopping weather. Controlled checks cover the real application logic; visual browser verification was unavailable. No optional teach-back was requested and no learner answer or misconception was invented. See the [application tracker](APPLICATION_TRACKER.md#current-status) for publication and check evidence.
+
+## Where Lesson 5 starts
+
+Once the Lesson 4 PR is reviewed and merged, briefly explain the connector/data path and re-check candidate services and hosting. Confirm the unresolved dashboard visibility, endpoint protection and Google Health access questions in the project brief; do not connect real accounts or activate billing without authorization.
 
 ## Curriculum outcomes
 
@@ -21,7 +27,7 @@ The [11-lesson plan](PROJECT_BRIEF.md#remaining-course-lessons-411) defines scop
 | 1. First real London weather request | Complete; public request, response tracing and honest failure states. |
 | 2. Shape a synthetic dataset | Complete; minimal schema, privacy rules and fixture. |
 | 3. Render one signal | Complete; script order, fixture access, DOM assignment and units. |
-| 4. Make failure states helpful | Planned; see the application tracker for current stage. |
+| 4. Make failure states helpful | Implemented and checked; loading, empty, error and recovery outcomes recorded above. Publication is tracked separately. |
 | 5. Pick the connectors and home | Planned; see the application tracker for current stage. |
 | 6. Add a tiny server | Planned; see the application tracker for current stage. |
 | 7. Bring in rides | Planned; see the application tracker for current stage. |
@@ -29,3 +35,4 @@ The [11-lesson plan](PROJECT_BRIEF.md#remaining-course-lessons-411) defines scop
 | 9. Add weather context | Planned; see the application tracker for current stage. |
 | 10. Make it enjoyable to explore | Planned; see the application tracker for current stage. |
 | 11. Check and publish | Planned; see the application tracker for current stage. |
+
