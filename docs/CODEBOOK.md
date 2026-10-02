@@ -342,4 +342,18 @@ GET/HEAD/OPTIONS is the limit for this reading task, not blanket permission for 
 
 ## Fixture-to-page flow
 
-The renderer loads `fixtures/cycle-signals-fixture.js` before reading `cycleSignalsFixture[0].ride_duration_seconds`, appends `" seconds"`, and assigns the result to the paragraph's `textContent`. For implementation, deployment and checked date, see [current status](APPLICATION_TRACKER.md#current-status).
+The Lesson 4 loader inserts a script request for `fixtures/cycle-signals-fixture.js` independently of the weather request. Only after the script loads does it validate the first fictional record, append `" seconds"` and assign the result to the paragraph's `textContent`. An empty array gets an empty state; missing, invalid or failed data gets an error, rather than stopping weather initialization. For implementation, deployment and checked date, see [current status](APPLICATION_TRACKER.md#current-status).
+
+
+## Lesson 4: status and recovery
+
+| State | Meaning | Ride panel behavior |
+| --- | --- | --- |
+| Loading | A result is pending | Clear the old value; set `aria-busy`; show a status message. |
+| Ready | A valid invented sample was read | Display the duration with units and label it fictional. |
+| Empty | The collection contains no records | Explain that no fictional rides are present; offer the sample action. |
+| Error | Loading or validation failed | Clear the value; explain the failure; offer retry. |
+
+Each ride load has a sequence number. A response from an earlier selection is ignored so it cannot overwrite the newer view. Preview scenarios are explicitly labelled and never substitute for live weather. Weather uses `AbortController` to stop a request after 12 seconds and then offers retry.
+
+Run `node tests/lesson4-states.cjs` from the repository root. It needs only Node, executes the page's actual JavaScript against a controlled DOM and supplies invented fixture/weather responses. It checks failure paths and recovery; it does not simulate full browser layout or prove accessibility/live deployment. No current provider product/terms claim is made by this lesson.
