@@ -14,10 +14,4 @@ Cycle Signals is a small, static website project for learning how to combine wea
 - [Next-session handoff](docs/NEXT_SESSION.md)
 - [Collaboration rules](AGENTS.md)
 
-The checked-in fixture in `fixtures/cycle-signals-fixture.js` contains invented example values. It is not loaded by the page yet; rendering a fixture value belongs to the next lesson.
-
-## Current scope
-
-The site is a static HTML, CSS, and JavaScript project hosted with GitHub Pages. It currently includes a weather display and a synthetic fixture for learning. It does not connect to personal ride or sleep accounts, store personal data, or use a backend.
-
-See the project brief and trackers for the current lesson state and verified technical details.
+For current lesson stage, application scope, GitHub publication and deployment evidence, see the [application tracker](docs/APPLICATION_TRACKER.md#current-status).
