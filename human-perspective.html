@@ -1,0 +1,420 @@
+<html data-type="html" data-identifier="03b24f64-ff37-49da-a83b-68f2726f6f28" data-title="Human Perspective: Build 4b" data-version="7" width="1200" height="1300"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Human Perspective: Build 4b</title>
+<style>
+:root{--paper:#f3ecdc;--paper2:#fbf6ea;--ink:#231e19;--ink2:#4a4238;--muted:#766b5c;--rule:#cfc2a9;--dot:#8b8071;--accent:#b5412a;--blue:#2f4a6b;--serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;--sans:'Helvetica Neue',Helvetica,Arial,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink)}
+body{font-family:var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh}
+button,input{font:inherit;color:inherit}
+main{max-width:1240px;margin:0 auto;padding:clamp(22px,4vw,56px)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:14px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.top strong{color:var(--ink);font-weight:600}
+.build{border:1px solid var(--rule);padding:3px 8px}
+h1{font:400 clamp(38px,6.2vw,76px)/.98 var(--serif);letter-spacing:-.03em;margin:64px 0 18px;max-width:820px}
+h1 em{font-style:italic;color:var(--accent)}
+.dek{font:400 clamp(16px,1.7vw,19px)/1.55 var(--serif);color:var(--ink2);max-width:620px;margin:0 0 42px}
+.stops{display:flex;border-top:1px solid var(--ink);overflow-x:auto;scrollbar-width:none}
+.stops::-webkit-scrollbar{display:none}
+.stop{flex:1 1 0;min-width:122px;text-align:left;background:none;border:0;border-top:3px solid transparent;margin-top:-2px;padding:13px 16px 12px 0;cursor:pointer;color:var(--ink2)}
+.stop b{display:block;font:400 20px/1.1 var(--serif);color:var(--ink);letter-spacing:-.01em;transition:color .2s}
+.stop span{display:block;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+.stop:hover b{color:var(--accent)}
+.stop.on{border-top-color:var(--accent)}
+.stop.on b{color:var(--accent)}
+.stop-cap{font:italic 400 16px/1.45 var(--serif);color:var(--ink2);min-height:2.9em;margin:4px 0 16px;max-width:760px}
+.readout{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 22px;padding:11px 0 10px;border-top:1px solid var(--rule);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.readout b{color:var(--ink);font-weight:600}
+.stage{position:relative;height:450px;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none;outline:none}
+.stage:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.stage.dragging{cursor:grabbing}
+.stage svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;animation:fadein .9s ease-out both}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.sweep{position:absolute;left:24px;right:24px;top:calc(100% - 70px);height:1px;background:linear-gradient(90deg,var(--accent),rgba(181,65,42,0));transform:scaleX(0);transform-origin:left;animation:sweep 1.8s cubic-bezier(.2,.7,.2,1) .2s forwards;pointer-events:none}
+@keyframes sweep{0%{opacity:.7}70%{opacity:.7}to{transform:scaleX(1);opacity:0}}
+@media(prefers-reduced-motion:reduce){.sweep{display:none}.stage svg,.event-card{animation:none}.line-note{transition:none}}
+.ink{stroke:var(--ink);stroke-width:1.5}
+.gen{fill:var(--ink2)}
+.skulls{fill:var(--ink2)}
+.life{fill:none;stroke:var(--muted);stroke-width:1}
+.life-t{font:italic 400 12.5px var(--serif);fill:var(--muted)}
+.line-note{position:absolute;left:24px;bottom:88px;max-width:min(760px,calc(100% - 48px));margin:0;font:italic 400 14px/1.4 var(--serif);color:var(--muted);pointer-events:none;transition:opacity .25s ease}
+.line-note b{font-style:normal;font-weight:600;color:var(--ink2);font-family:var(--sans);font-size:12px;letter-spacing:.02em}
+.mk .bg{fill:var(--paper)}
+.mk .core,.mk .sk{fill:var(--ink)}
+.mk .halo{fill:var(--ink);opacity:0}
+.mk.on .halo{opacity:.07}
+.mk.pin .halo{opacity:.13}
+.lab line{stroke:var(--ink2);stroke-width:1}
+.lab text{font:italic 400 13px var(--serif);fill:var(--ink2)}
+.lab.on line{stroke:var(--accent)}.lab.on text{fill:var(--accent)}
+.key{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin:14px 0 0;font-size:11.5px;color:var(--ink2)}
+.ki{display:inline-flex;align-items:center;gap:6px}
+.ki svg{width:24px;height:24px;overflow:visible}
+.seg{margin-left:auto;display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.seg button{border:1px solid var(--rule);background:transparent;padding:5px 9px;font-size:11px;letter-spacing:0;text-transform:none;cursor:pointer;color:var(--ink2);border-radius:2px}
+.seg button[aria-pressed=true]{border-color:var(--ink);color:var(--ink);background:var(--paper2)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.key-note{width:100%;font:italic 13px/1.45 var(--serif);color:var(--muted);margin:0}
+.event-card{position:absolute;z-index:2;bottom:96px;left:50%;transform:translateX(-50%);width:min(300px,calc(100% - 16px));max-height:calc(100% - 104px);overflow:auto;padding:15px 18px 14px;background:var(--paper2);border:1px solid var(--rule);box-shadow:0 10px 28px rgba(60,42,22,.14);pointer-events:none;animation:rise .18s ease-out;cursor:default;user-select:text;-webkit-user-select:text}
+.event-card[hidden]{display:none}
+.event-card.away{visibility:hidden}
+.event-card.pinned{pointer-events:auto;width:min(620px,calc(100% - 16px));border-color:#a99a82;box-shadow:0 14px 36px rgba(60,42,22,.2);padding:17px 22px 14px}
+.event-card:after{content:'';position:absolute;top:100%;left:var(--stem,50%);width:1px;height:17px;background:var(--ink2);opacity:.6}
+@keyframes rise{from{opacity:0;margin-bottom:-6px}to{opacity:1;margin-bottom:0}}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.kind{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.close{display:none;border:0;background:none;font-size:22px;line-height:1;padding:0 2px;cursor:pointer;color:var(--muted)}
+.close:hover,.close:focus-visible{color:var(--accent)}
+.pinned .close{display:block}
+.event-card h2{font:400 24px/1.12 var(--serif);margin:5px 0 6px;letter-spacing:-.01em}
+.pinned h2{font-size:28px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.edate{font-size:12px;color:var(--ink2);font-variant-numeric:tabular-nums}
+.dtype{font-size:9px;letter-spacing:.13em;text-transform:uppercase;border:1px solid var(--rule);padding:2px 6px;color:var(--ink2);white-space:nowrap}
+.region{font-size:11.5px;color:var(--muted);margin-top:6px}
+.cbody p{font:400 14px/1.48 var(--serif);color:var(--ink2);margin:11px 0 0}
+.more{display:none}
+.pinned .more{display:block}
+.pinned .cbody{display:grid;grid-template-columns:1.2fr 1fr;gap:4px 24px}
+.cbody p.after{font:12.5px/1.5 var(--sans);color:var(--ink2);border-top:1px solid var(--rule);padding-top:9px}
+.cbody p.dnote{font:italic 12px/1.45 var(--serif);color:var(--muted);margin-top:8px}
+.hh{display:grid;grid-template-columns:auto 1fr;gap:5px 10px;margin:10px 0 0;font-size:12px;line-height:1.4}
+.hh dt{font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding-top:2px}
+.hh dt.h{color:var(--blue)}.hh dt.x{color:var(--accent)}
+.hh dd{margin:0;color:var(--ink2)}
+.sect{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:12px 0 5px}
+.rel{display:flex;flex-direction:column;gap:3px}
+.rlink{text-align:left;background:none;border:0;border-bottom:1px solid var(--rule);padding:4px 0 5px;cursor:pointer;font:15px/1.25 var(--serif);color:var(--ink)}
+.rlink:hover,.rlink:focus-visible{color:var(--accent);border-color:var(--accent)}
+.rl{display:block;font:600 8.5px/1.5 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.src a{display:block;font-size:11.5px;line-height:1.4;color:var(--ink2);text-underline-offset:3px;margin:4px 0;word-break:break-word}
+.src a:after{content:' ↗';color:var(--accent)}
+.src a:hover{color:var(--accent)}
+.nav{display:none;justify-content:space-between;align-items:center;gap:10px;margin-top:14px;padding-top:10px;border-top:1px solid var(--rule);font-size:11px;color:var(--muted)}
+.pinned .nav{display:flex}
+.nav button{border:1px solid var(--rule);background:transparent;padding:5px 10px;cursor:pointer;font-size:11px;border-radius:2px}
+.nav button:hover:not(:disabled),.nav button:focus-visible{border-color:var(--accent);color:var(--accent)}
+.nav button:disabled{opacity:.35;cursor:default}
+.peek{font-size:10.5px;color:var(--accent);margin-top:10px;letter-spacing:.04em}
+.pinned .peek{display:none}
+.axis{position:relative;height:40px;border-top:1px solid var(--rule);font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.tick{position:absolute;top:10px;transform:translateX(-50%);white-space:nowrap}
+.tick:before{content:'';position:absolute;left:50%;top:-10px;width:1px;height:6px;background:var(--dot)}
+.tick.first{transform:none}.tick.first:before{left:0}
+.tick.last{transform:translateX(-100%)}.tick.last:before{left:100%}
+.ov-k{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:18px 0 9px}
+.ov{cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none}
+.ov-track{position:relative;height:22px;border:1px solid var(--rule);background:var(--paper2)}
+.ov-m{position:absolute;top:5px;bottom:5px;width:2px;background:var(--ink2);opacity:.7}
+.ov-win{position:absolute;top:-5px;bottom:-5px;min-width:3px;background:rgba(181,65,42,.13);border:1.5px solid var(--accent);pointer-events:none}
+.ov-win:before{content:'';position:absolute;left:50%;top:-11px;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--accent)}
+.ov-labels{display:flex;justify-content:space-between;gap:10px;font-size:10.5px;color:var(--muted);margin-top:8px;letter-spacing:.03em}
+.ov-labels b{color:var(--accent);font-weight:600}
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0 0}
+.toolbtn{border:1px solid #b7aa95;background:transparent;border-radius:2px;padding:8px 12px;min-width:40px;cursor:pointer;color:var(--ink)}
+.toolbtn:hover,.toolbtn:focus-visible{border-color:var(--accent);color:var(--accent)}
+.toolbtn:focus-visible,.milestone:focus-visible,summary:focus-visible,input:focus-visible,.close:focus-visible,.nav button:focus-visible,.src a:focus-visible,.stop:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.zoomrow{display:flex;align-items:center;gap:10px;flex:1;min-width:200px;color:var(--muted);font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+.zoomrow input{flex:1;accent-color:var(--accent)}
+.zoomrow span:last-child{min-width:92px;text-align:right;color:var(--ink)}
+.hint{width:100%;color:var(--muted);font-size:11px;margin-top:4px;line-height:1.5}
+details{border-top:1px solid var(--rule);padding-top:16px;margin-top:34px}
+summary{cursor:pointer;color:var(--ink2);font-size:12px;letter-spacing:.05em}
+.milestones{display:flex;flex-wrap:wrap;gap:7px;margin-top:15px}
+.milestone{border:1px solid var(--rule);background:var(--paper2);color:var(--ink2);padding:7px 10px;font-size:11.5px;border-radius:2px;cursor:pointer;text-align:left}
+.milestone:hover{border-color:var(--accent);color:var(--ink)}
+.milestone span{color:var(--muted);margin-left:6px}
+.footer{margin-top:30px;padding-top:14px;border-top:1px solid var(--rule);font-size:11px;line-height:1.6;color:var(--muted);max-width:820px}
+.err{color:var(--accent);font-size:12px}
+textarea.data{display:none}
+@media(max-width:620px){main{padding:20px 16px}.top{font-size:9px}h1{margin-top:40px}.dek{margin-bottom:28px}.stage{height:440px}.axis{font-size:10px}.readout{font-size:10px}.line-note{font-size:13px}.stop b{font-size:17px}.stop-cap{font-size:15px}.pinned .cbody{display:block}.pinned h2{font-size:24px}.event-card.pinned{padding:15px 16px 12px}.seg{margin-left:0}}
+</style>
+</head>
+<body onresize="if(window.TL)TL.size()" onload="
+if(window.TL)return;var T=window.TL={};
+T.el=function(i){return document.getElementById(i)};
+T.clamp=function(n,a,b){return Math.max(a,Math.min(b,n))};
+T.START=-3300000;T.END=2026;T.G=25;T.N=Math.floor((T.END-T.START)/T.G)+1;T.pad=24;T.maxS=360;T.D0=1.6;T.D1=2.6;T.K0=9;T.K1=13;T.LIFE=80;T.anim=0;T.animId=0;T.hr=12;T.mode='k';
+T.C={ink:'#231e19',helped:'#2f4a6b',harmed:'#b5412a'};
+T.notes={k:'Single ring: a capability, a shift in what people could do. Double ring: a consequence, coloured by whether it mainly helped, harmed, or both.',a:'Every marker now shows what followed. Capabilities keep their single ring but take the colour of their main effects; consequences keep their double ring.'};
+T.rm=!!(window.matchMedia&amp;&amp;window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+T.stops=[
+{y:0,cap:'All 3.3 million years at once. Everything from farming onwards is squeezed into the last few pixels on the right.'},
+{y:315000,cap:'The whole story of Homo sapiens so far. Farming only arrives in the last 4% of it.'},
+{y:12600,cap:'Since farming began: about 480 generations. Writing appears a little over halfway along.'},
+{y:1000,cap:'About 40 generations. Most of the markers here sit in the last dozen of them.'},
+{y:100,cap:'Four generations: roughly you, your parents, your grandparents and theirs. Eight markers, from fission to the Green Revolution, land on just one of them.'}];
+T.SKULL='M-8 1C-8-5.5-4.5-9 0-9S8-5.5 8 1C8 3.5 6.5 4.8 5 5.4V8H-5V5.4C-6.5 4.8-8 3.5-8 1ZM-5.2 .6A2.3 2.3 0 1 0-.6 .6A2.3 2.3 0 1 0-5.2 .6ZM.6 .6A2.3 2.3 0 1 0 5.2 .6A2.3 2.3 0 1 0 .6 .6ZM0 3L-1.1 4.9H1.1ZM-1.9 6H-1V8H-1.9ZM1 6H1.9V8H1Z';
+try{T.ev=JSON.parse(T.el('eventData').value)}catch(err){T.ev=[];T.el('dataError').hidden=false}
+T.ev.sort(function(a,b){return a.year_start-b.year_start});
+T.stage=T.el('stage');T.svg=T.el('lineSvg');T.card=T.el('eventCard');T.zoom=T.el('zoom');T.note=T.el('lineNote');T.ovWin=T.el('ovWin');T.stopBtns=document.querySelectorAll('.stop');
+T.w=0;T.h=0;T.scale=1;T.left=0;T.sel=null;T.pinned=false;T.drag=null;T.raf=0;T.ovD=false;
+T.idx=function(y){return Math.round((y-T.START)/T.G)};
+T.yearAt=function(i){return T.START+i*T.G};
+T.iw=function(){return T.w-2*T.pad};
+T.minS=function(){return T.iw()/(T.N-1)};
+T.sFor=function(v){return T.minS()*Math.pow(T.maxS/T.minS(),v/100)};
+T.vFor=function(s){return 100*Math.log(s/T.minS())/Math.log(T.maxS/T.minS())};
+T.maxLeft=function(){return Math.max(0,T.N-1-T.iw()/T.scale)};
+T.x=function(i){return T.pad+(i-T.left)*T.scale};
+T.num=function(n){return Math.round(n).toLocaleString('en-US')};
+T.ago=function(a){return a&lt;=0?'Today':a&gt;=1e6?(Math.round(a/1e5)/10)+' million years ago':T.num(a)+' years ago'};
+T.agoShort=function(a){return a&lt;=0?'Today':a&gt;=1e6?(Math.round(a/1e5)/10)+' million':T.num(a)};
+T.cal=function(y){y=Math.round(y);return y&lt;0?T.num(-y)+' BCE':y===0?'BCE | CE':y&lt;1000?y+' CE':String(y)};
+T.fmt=function(y){return y&lt;-8000?T.ago(T.END-y):T.cal(y)};
+T.tick=function(x,t){var c=x&lt;50?' first':x&gt;T.w-50?' last':'';return '&lt;span class=\'tick'+c+'\' style=\'left:'+x.toFixed(1)+'px\'&gt;'+t+'&lt;/span&gt;'};
+T.ticks=function(){var ppy=T.scale/T.G,ch=[1,2,5,10,20,50,100,200,500,1000,2000,5000,10000,20000,50000,100000,200000,500000,1000000],step=1000000,k,h='',x,a,y;
+for(k=0;k&lt;ch.length;k++){if(ch[k]*ppy&gt;=110){step=ch[k];break}}
+var y0=T.yearAt(T.left),y1=Math.min(T.END,T.yearAt(T.left+T.iw()/T.scale)+T.G),deep=y0&lt;-8000;
+T.el('axisMode').textContent=deep?'Years ago':'Calendar years';
+if(deep){for(a=Math.ceil((T.END-y1)/step)*step;a&lt;=T.END-y0;a+=step){x=T.pad+((T.END-a-T.START)/T.G-T.left)*T.scale;if(x&gt;=-1&amp;&amp;x&lt;=T.w+1)h+=T.tick(x,T.agoShort(a))}}
+else{for(y=Math.ceil(y0/step)*step;y&lt;=y1;y+=step){x=T.pad+((y-T.START)/T.G-T.left)*T.scale;if(x&gt;=-1&amp;&amp;x&lt;=T.w+1)h+=T.tick(x,T.cal(y))}}
+T.el('axis').innerHTML=h};
+T.skull=function(x,y,k,c){return '&lt;use'+(c?' class=\''+c+'\'':'')+' href=\'#skull\' transform=\'translate('+x+' '+y+') scale('+k.toFixed(3)+')\'/&gt;'};
+T.lean=function(e){return e.marker==='label'?'ink':e.marker!=='capability'?e.marker:(T.mode==='a'&amp;&amp;e.lean?e.lean:'ink')};
+T.rg=function(x,y,r,l,w){var s=' fill=\'none\' stroke-width=\''+w+'\'',a=(x-r).toFixed(1),b=(x+r).toFixed(1),R=r.toFixed(1);
+if(l==='mixed')return '&lt;path'+s+' stroke=\''+T.C.helped+'\' d=\'M'+a+' '+y+'A'+R+' '+R+' 0 0 1 '+b+' '+y+'\'/&gt;&lt;path'+s+' stroke=\''+T.C.harmed+'\' d=\'M'+b+' '+y+'A'+R+' '+R+' 0 0 1 '+a+' '+y+'\'/&gt;';
+return '&lt;circle'+s+' stroke=\''+(T.C[l]||T.C.ink)+'\' cx=\''+x.toFixed(1)+'\' cy=\''+y+'\' r=\''+R+'\'/&gt;'};
+T.pfmt=function(v){return v&gt;=10?String(Math.round(v)):v&gt;=1?v.toFixed(1):v.toPrecision(1)};
+T.stopG=function(k){var y=T.stops[k].y;return y?T.clamp(y/T.G,T.iw()/T.maxS,T.N-1):T.N-1};
+T.render=function(){if(!T.w)return;var ly=T.h-70,iw=T.iw(),s=T.scale,a=Math.max(0,Math.floor(T.left)-1),b=Math.min(T.N-1,Math.ceil(T.left+iw/s)+1),o='',i,x,xn,j,e,on,rr,kk,cs,ln,wd,xs=Math.max(0,T.x(0)),xe=Math.min(T.w,T.x(T.N-1)),da=T.clamp((s-T.D0)/(T.D1-T.D0),0,1),sk=T.clamp((s-T.K0)/(T.K1-T.K0),0,1),r=T.clamp(s*.2,.6,2.4),sz=T.clamp(s*.6,6,24),k=sz/18,span=iw/s,full=span&gt;=T.N*0.97,lp=T.LIFE/T.G*s;
+T.hr=Math.max(12,sk&gt;0?sz*.62+4:0);
+o+='&lt;defs&gt;&lt;path id=\'skull\' fill-rule=\'evenodd\' d=\''+T.SKULL+'\'/&gt;&lt;/defs&gt;';
+o+='&lt;line class=\'ink\' stroke-opacity=\''+(1-da*.82).toFixed(3)+'\' x1=\''+xs+'\' x2=\''+xe+'\' y1=\''+ly+'\' y2=\''+ly+'\'/&gt;';
+if(da&gt;0&amp;&amp;sk&lt;1){o+='&lt;g opacity=\''+(da*(1-sk)).toFixed(3)+'\'&gt;';for(i=a;i&lt;=b;i++){x=T.x(i);if(x&lt;-4||x&gt;T.w+4)continue;o+='&lt;circle class=\'gen\' cx=\''+x.toFixed(1)+'\' cy=\''+ly+'\' r=\''+r.toFixed(2)+'\'/&gt;'}o+='&lt;/g&gt;'}
+if(sk&gt;0){o+='&lt;g class=\'skulls\' opacity=\''+sk.toFixed(3)+'\'&gt;';for(i=a;i&lt;=b;i++){x=T.x(i);if(x&lt;-14||x&gt;T.w+14)continue;o+=T.skull(x.toFixed(1),ly,k)}o+='&lt;/g&gt;'}
+if(da&gt;=1&amp;&amp;lp&gt;=18&amp;&amp;lp&lt;=iw-16){var yy=Math.round(ly-Math.max(18,sk&gt;0?sz*.62+12:14)),xt=T.x((T.END-T.START)/T.G),x0,x1,an,lb;
+if(xt&lt;=T.w-T.pad+4&amp;&amp;xt-lp&gt;=T.pad){x1=xt;x0=xt-lp;an='end';lb='A lifetime ending today · ~80 years · about 3 generations'}else{x0=T.pad+8;x1=x0+lp;an='start';lb='One human lifetime · ~80 years · about 3 generations'}
+o+='&lt;path class=\'life\' d=\'M'+x0.toFixed(1)+' '+(yy+6)+'V'+yy+'H'+x1.toFixed(1)+'V'+(yy+6)+'\'/&gt;&lt;text class=\'life-t\' x=\''+(an==='end'?x1:x0).toFixed(1)+'\' y=\''+(yy-7)+'\' text-anchor=\''+an+'\'&gt;'+lb+'&lt;/text&gt;'}
+for(j=0;j&lt;T.ev.length;j++){e=T.ev[j];i=T.idx(e.year_start);if(i&lt;a||i&gt;b)continue;xn=T.x(i);x=xn.toFixed(1);on=e===T.sel;rr=sk&gt;0?Math.max(on?9:6.5,sz*.62+(on?4:2.5)):(on?9:6.5);
+if(e.marker==='label'){var ty=ly-Math.max(8,sk&gt;0?sz*.62+4:8);o+='&lt;g class=\'lab'+(on?' on':'')+'\'&gt;&lt;line x1=\''+x+'\' x2=\''+x+'\' y1=\''+ty+'\' y2=\''+(ty-22)+'\'/&gt;&lt;text x=\''+x+'\' y=\''+(ty-28)+'\' text-anchor=\'middle\'&gt;Homo sapiens&lt;/text&gt;&lt;/g&gt;';continue}
+cs=e.marker!=='capability';ln=T.lean(e);wd=on?2.1:1.5;
+o+='&lt;g class=\'mk'+(on?' on':'')+(on&amp;&amp;T.pinned?' pin':'')+'\'&gt;&lt;circle class=\'halo\' cx=\''+x+'\' cy=\''+ly+'\' r=\''+Math.max(15,rr+8).toFixed(1)+'\'/&gt;&lt;circle class=\'bg\' cx=\''+x+'\' cy=\''+ly+'\' r=\''+(rr+(cs?3.2:0)).toFixed(1)+'\'/&gt;'+T.rg(xn,ly,rr,ln,wd)+(cs?T.rg(xn,ly,rr+3.2,ln,wd):'')+(sk&gt;=.5?T.skull(x,ly,k,'sk'):'&lt;circle class=\'core\' cx=\''+x+'\' cy=\''+ly+'\' r=\'1.9\'/&gt;')+'&lt;/g&gt;'}
+T.svg.innerHTML=o;T.ticks();
+T.note.innerHTML=(full?'This line holds ':'This stretch holds ')+'&lt;b&gt;~'+T.num(span)+' generations&lt;/b&gt;, too close together to draw one by one. At this scale, a whole human lifetime is &lt;b&gt;'+(lp&lt;1?lp.toPrecision(1):lp.toFixed(1))+' px&lt;/b&gt; wide.';
+T.note.style.opacity=String(((1-da)*(T.card.hidden?1:0)).toFixed(3));
+T.el('rangeReadout').textContent=full?'The full span · ~3.3 million years':T.fmt(T.yearAt(T.left))+'  →  '+T.fmt(Math.min(T.END,T.yearAt(T.left+span)));
+T.el('genReadout').textContent='~'+T.num(span)+' generations on screen';
+T.el('densityReadout').textContent=s&lt;1?'~'+T.num(1/s)+' generations per pixel':s&lt;T.D0?'Generations almost visible · keep zooming':da&lt;1?'Generations coming into view':sk&lt;=0?'Each dot = one generation (25 years)':sk&lt;1?'Generations taking shape':'Each skull = one generation (25 years)';
+T.el('zoomLabel').textContent=full?'All time':'~'+T.num(span*T.G)+' yrs';
+var pc=span/(T.N-1)*100;T.ovWin.style.left='min('+(T.left/(T.N-1)*100).toFixed(4)+'%, calc(100% - 3px))';T.ovWin.style.width=Math.min(pc,100).toFixed(4)+'%';
+T.el('ovPct').innerHTML=pc&gt;=97?'Viewing the &lt;b&gt;whole line&lt;/b&gt;':'Viewing &lt;b&gt;'+T.pfmt(pc)+'%&lt;/b&gt; of the line';
+var re=T.left+span,ak=-1;for(kk=0;kk&lt;T.stops.length;kk++){if(re&gt;=T.N-1.6&amp;&amp;Math.abs(Math.log(span/T.stopG(kk)))&lt;.06)ak=kk}
+for(kk=0;kk&lt;T.stopBtns.length;kk++){T.stopBtns[kk].classList.toggle('on',kk===ak);T.stopBtns[kk].setAttribute('aria-pressed',kk===ak?'true':'false')}
+if(!T.anim)T.el('stopCap').textContent=ak&gt;=0?T.stops[ak].cap:'Exploring freely. Drag and zoom anywhere, or jump back to a stop.';
+if(T.sel&amp;&amp;!T.card.hidden){var cx=T.x(T.idx(T.sel.year_start));if(cx&lt;-10||cx&gt;T.w+10){if(T.pinned)T.card.classList.add('away');else T.card.hidden=true}else{T.card.classList.remove('away');var cw=T.card.offsetWidth||320,pos=T.clamp(cx,cw/2+4,T.w-cw/2-4);T.card.style.left=pos+'px';T.card.style.setProperty('--stem',T.clamp(cx-pos+cw/2,6,cw-6).toFixed(1)+'px')}}};
+T.req=function(){if(T.raf)return;T.raf=requestAnimationFrame(function(){T.raf=0;T.render()})};
+T.halt=function(){T.anim=0};
+T.go=function(k){if(!T.w)return;var g0=T.iw()/T.scale,g1=T.stopG(k),r0=T.left+g0,r1=T.N-1,L0=Math.log(g0),L1=Math.log(g1),d=T.rm?0:T.clamp(450+230*Math.abs(L1-L0),450,1900),id=++T.animId,t0=performance.now();T.anim=id;T.hide();
+var f=function(now){if(T.anim!==id)return;var p=d?T.clamp((now-t0)/d,0,1):1,q=p&lt;.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2,g=Math.exp(L0+(L1-L0)*q);T.scale=T.iw()/g;T.left=T.clamp(r0+(r1-r0)*q-g,0,T.maxLeft());T.zoom.value=String(T.clamp(T.vFor(T.scale),0,100));if(p&gt;=1)T.anim=0;T.render();if(p&lt;1)requestAnimationFrame(f)};
+if(d)requestAnimationFrame(f);else f(t0)};
+T.kinds={capability:'Capability',helped:'Consequence · helped',harmed:'Consequence · harmed',mixed:'Consequence · mixed',label:'Reference point'};
+T.dtypes={earliest_evidence:'Earliest known evidence',documented:'Documented',spread:'Wider spread',consequence:'Consequence',period:'Period'};
+T.byId=function(id){for(var j=0;j&lt;T.ev.length;j++)if(T.ev[j].id===id)return T.ev[j];return null};
+T.lk={};
+T.link=function(e,id,f){var t=T.byId(id);if(!t||t===e)return;[[e,t],[t,e]].forEach(function(p){var L=T.lk[p[0].id]||(T.lk[p[0].id]=[]);if(!L.some(function(q){return q.t===p[1]}))L.push({t:p[1],f:f})})};
+T.ev.forEach(function(e){(e.related||[]).forEach(function(r){var o=typeof r==='string'?{id:r}:r;T.link(e,o.id,o.relation==='same_family')});(e.family||[]).forEach(function(id){T.link(e,id,true)})});
+T.mk=function(tag,cls,txt){var n=document.createElement(tag);if(cls)n.className=cls;if(txt!=null)n.textContent=txt;return n};
+T.fill=function(e){var n,box,pos=T.ev.indexOf(e),ln=T.lean(e);
+n=T.el('eventKind');n.textContent=(T.kinds[e.marker]||'Event')+(e.marker==='capability'&amp;&amp;T.mode==='a'&amp;&amp;e.lean?' · what followed: '+e.lean:'');n.style.color=ln==='helped'?T.C.helped:ln==='harmed'||ln==='mixed'?T.C.harmed:T.C.ink;
+T.el('eventTitle').textContent=e.title;
+T.el('eventDate').textContent=e.display_date||'';
+n=T.el('eventType');n.textContent=T.dtypes[e.date_type]||'';n.hidden=!n.textContent;
+n=T.el('eventRegion');n.textContent=e.region?'Where · '+e.region:'';n.hidden=!e.region;
+T.el('eventBody').textContent=e.summary||'';
+n=T.el('eventAfter');n.textContent=e.what_followed||'';n.hidden=!e.what_followed;
+n=T.el('eventNote');var notes=[e.date_note,e.dispute_note].filter(Boolean);n.textContent=notes.join(' ');n.hidden=!notes.length;
+box=T.el('eventHH');box.innerHTML='';
+if(e.helped){box.appendChild(T.mk('dt','h','Helped'));box.appendChild(T.mk('dd',null,e.helped))}
+if(e.harmed){box.appendChild(T.mk('dt','x','Harmed'));box.appendChild(T.mk('dd',null,e.harmed))}
+box.hidden=!box.children.length;
+box=T.el('eventRel');box.innerHTML='';
+(T.lk[e.id]||[]).slice().sort(function(p,q){return p.t.year_start-q.t.year_start}).forEach(function(r){var t=r.t,b=T.mk('button','rlink');b.type='button';b.appendChild(T.mk('span','rl',(r.f?'Related':t.year_start&gt;e.year_start?'Led to':'Built on')+' · '+(t.display_date||'')));b.appendChild(document.createTextNode(t.title));b.onclick=function(){T.focus(t.id,false)};box.appendChild(b)});
+T.el('relWrap').hidden=!box.children.length;
+box=T.el('eventSrc');box.innerHTML='';
+(e.sources||[]).forEach(function(s){var u=typeof s==='string'?s:s.url;if(!u)return;var a=T.mk('a',null,typeof s==='string'?u.replace(/^https?:\/\/(www\.)?/,'').split('/')[0]:(s.publisher?s.publisher+' · ':'')+(s.title||u));a.href=u;a.target='_blank';a.rel='noopener noreferrer';box.appendChild(a)});
+T.el('srcWrap').hidden=!box.children.length;
+T.el('eventPos').textContent='Event '+(pos+1)+' of '+T.ev.length;
+T.el('eventPrev').disabled=pos&lt;=0;T.el('eventNext').disabled=pos&gt;=T.ev.length-1};
+T.show=function(e,pin){var was=T.sel;T.sel=e;T.pinned=!!pin;if(was!==e||T.card.hidden)T.fill(e);T.card.classList.toggle('pinned',T.pinned);T.card.classList.remove('away');T.card.hidden=false;if(was!==e)T.card.scrollTop=0;T.render()};
+T.hide=function(){if(T.pinned||(T.card.hidden&amp;&amp;!T.sel))return;T.card.hidden=true;T.sel=null;T.req()};
+T.unpin=function(){T.pinned=false;T.card.classList.remove('pinned');T.card.hidden=true;T.sel=null;T.req()};
+T.step=function(d){var p=T.ev.indexOf(T.sel)+d;if(p&lt;0||p&gt;=T.ev.length)return;T.halt();var e=T.ev[p],cx=T.x(T.idx(e.year_start));if(cx&lt;T.pad+40||cx&gt;T.w-T.pad-40)T.left=T.clamp(T.idx(e.year_start)-T.iw()/(2*T.scale),0,T.maxLeft());T.show(e,true)};
+T.near=function(px,lim){var best=null,d=1e9,j,dd;for(j=0;j&lt;T.ev.length;j++){dd=Math.abs(T.x(T.idx(T.ev[j].year_start))-px);if(dd&lt;d){d=dd;best=T.ev[j]}}return d&lt;=lim?best:null};
+T.down=function(e){T.halt();T.drag={x:e.clientX,left:T.left,moved:0};T.stage.classList.add('dragging');try{T.stage.setPointerCapture(e.pointerId)}catch(_){}};
+T.move=function(e){var r=T.stage.getBoundingClientRect(),px=e.clientX-r.left,py=e.clientY-r.top;
+if(T.drag){var dx=e.clientX-T.drag.x;T.drag.moved=Math.max(T.drag.moved,Math.abs(dx));if(T.drag.moved&gt;4){T.left=T.clamp(T.drag.left-dx/T.scale,0,T.maxLeft());T.hide();T.req()}return}
+if(e.pointerType!=='mouse')return;var n=Math.abs(py-(T.h-70))&lt;44?T.near(px,T.hr):null;
+T.stage.style.cursor=n?'pointer':'';if(T.pinned)return;
+if(n){if(n!==T.sel||T.card.hidden)T.show(n,false)}else T.hide()};
+T.up=function(e){if(!T.drag)return;var d=T.drag;T.drag=null;T.stage.classList.remove('dragging');if(d.moved&lt;=4){var r=T.stage.getBoundingClientRect(),n=T.near(e.clientX-r.left,T.hr+6);if(n)T.show(n,true);else if(T.pinned)T.unpin();else T.hide()}};
+T.cancel=function(){T.drag=null;T.stage.classList.remove('dragging')};
+T.zoomAt=function(v,px){T.halt();if(px==null)px=T.sel&amp;&amp;!T.card.hidden?T.x(T.idx(T.sel.year_start)):T.w/2;var anchor=T.left+(px-T.pad)/T.scale;T.scale=T.sFor(v);T.left=T.clamp(anchor-(px-T.pad)/T.scale,0,T.maxLeft());T.zoom.value=String(v);T.req()};
+T.nudge=function(d){T.zoomAt(T.clamp(Number(T.zoom.value)+d,0,100))};
+T.wheel=function(e){var r=T.stage.getBoundingClientRect(),px=e.clientX-r.left;
+if(e.ctrlKey||e.metaKey){e.preventDefault();T.zoomAt(T.clamp(Number(T.zoom.value)+(e.deltaY&lt;0?4:-4),0,100),px)}
+else if(Math.abs(e.deltaX)&gt;Math.abs(e.deltaY)||e.shiftKey){e.preventDefault();T.halt();var dd=e.shiftKey&amp;&amp;!e.deltaX?e.deltaY:e.deltaX;T.left=T.clamp(T.left+dd/T.scale,0,T.maxLeft());T.req()}};
+T.key=function(e){var k=e.key,st=T.iw()/T.scale*0.1;
+if(e.target!==T.stage&amp;&amp;(k==='Enter'||k===' '))return;
+if(k.length===1&amp;&amp;k&gt;='1'&amp;&amp;k&lt;='5'&amp;&amp;!e.ctrlKey&amp;&amp;!e.metaKey&amp;&amp;!e.altKey){e.preventDefault();T.go(Number(k)-1);return}
+if(T.pinned&amp;&amp;(k==='ArrowLeft'||k==='ArrowRight')){e.preventDefault();T.step(k==='ArrowLeft'?-1:1);return}
+if(k==='ArrowLeft'){T.halt();T.left=T.clamp(T.left-st,0,T.maxLeft())}else if(k==='ArrowRight'){T.halt();T.left=T.clamp(T.left+st,0,T.maxLeft())}
+else if(k==='+'||k==='=')T.nudge(8);else if(k==='-'||k==='_')T.nudge(-8);
+else if(k==='Home'){T.halt();T.left=0}else if(k==='End'){T.halt();T.left=T.maxLeft()}
+else if(k==='Enter'||k===' '){var n=T.near(T.w/2,T.w);if(n)T.show(n,true)}
+else if(k==='Escape'){T.unpin();try{T.stage.focus({preventScroll:true})}catch(_){}}else return;e.preventDefault();T.req()};
+T.ovSet=function(e){var r=T.el('ovTrack').getBoundingClientRect(),f=T.clamp((e.clientX-r.left)/r.width,0,1),g=T.iw()/T.scale;T.left=T.clamp(f*(T.N-1)-g/2,0,T.maxLeft());T.hide();T.req()};
+T.ovDown=function(e){T.halt();T.ovD=true;try{e.currentTarget.setPointerCapture(e.pointerId)}catch(_){}T.ovSet(e)};
+T.ovMove=function(e){if(T.ovD)T.ovSet(e)};
+T.ovUp=function(){T.ovD=false};
+T.ovm=function(){var h='';T.ev.forEach(function(e){var m=T.lean(e),bg=m==='mixed'?'linear-gradient('+T.C.helped+' 50%,'+T.C.harmed+' 50%)':(T.C[m]||T.C.ink);h+='&lt;i class=\'ov-m\' style=\'left:'+(T.idx(e.year_start)/(T.N-1)*100).toFixed(3)+'%;background:'+bg+'\'&gt;&lt;/i&gt;'});T.el('ovMarks').innerHTML=h};
+T.setMode=function(m){T.mode=m;T.el('mK').setAttribute('aria-pressed',String(m==='k'));T.el('mA').setAttribute('aria-pressed',String(m==='a'));T.el('keyNote').textContent=T.notes[m];T.ovm();if(T.sel&amp;&amp;!T.card.hidden)T.fill(T.sel);T.req()};
+T.focus=function(id,scroll){var e=T.byId(id);if(!e)return;T.halt();
+var yrs=e.year_start&gt;1800?250:e.year_start&gt;0?1500:e.year_start&gt;-20000?12000:600000;
+T.scale=T.clamp(T.iw()/(yrs/T.G),T.minS(),T.maxS);T.zoom.value=String(T.clamp(T.vFor(T.scale),0,100));
+T.left=T.clamp(T.idx(e.year_start)-T.iw()/(2*T.scale),0,T.maxLeft());T.show(e,true);
+if(scroll!==false)T.stage.scrollIntoView({behavior:'smooth',block:'center'})};
+T.size=function(){var ow=T.w,center=ow?T.left+T.iw()/(2*T.scale):0,v=Number(T.zoom.value);T.w=T.stage.clientWidth;T.h=T.stage.clientHeight;T.scale=T.sFor(v);if(ow)T.left=T.clamp(center-T.iw()/(2*T.scale),0,T.maxLeft());T.render()};
+T.list=function(){var box=T.el('milestones');box.innerHTML='';T.ev.forEach(function(e){var b=document.createElement('button'),s=document.createElement('span');b.type='button';b.className='milestone';b.textContent=e.title;s.textContent=e.display_date;b.appendChild(s);b.onclick=function(){T.focus(e.id)};box.appendChild(b)});T.el('evCount').textContent=T.ev.length};
+T.list();T.ovm();T.el('keyNote').textContent=T.notes.k;T.size();
+">
+<main onpointerover="if(!window.TL&amp;&amp;window.onload)window.onload()">
+  <div class="top"><span><strong>Four perspectives on time</strong> &nbsp;/&nbsp; Perspective 03 · Human capability</span><span class="build">Build 4b · Marker system</span></div>
+
+  <h1 id="pageTitle">What humans could do.<br><em>What followed.</em></h1>
+  <p class="dek" id="dek">A line through human history, made of one mark for every generation, marked by shifts in what we could do and the consequences that came with them.</p>
+
+  <nav class="stops" aria-label="Zoom stops">
+    <button class="stop on" type="button" aria-pressed="true" onclick="TL.go(0)"><b>All time</b><span>3.3 million years</span></button>
+    <button class="stop" type="button" aria-pressed="false" onclick="TL.go(1)"><b>Our species</b><span>~300,000 years</span></button>
+    <button class="stop" type="button" aria-pressed="false" onclick="TL.go(2)"><b>Since farming</b><span>~12,000 years</span></button>
+    <button class="stop" type="button" aria-pressed="false" onclick="TL.go(3)"><b>Last millennium</b><span>1,000 years</span></button>
+    <button class="stop" type="button" aria-pressed="false" onclick="TL.go(4)"><b>Living memory</b><span>100 years</span></button>
+  </nav>
+  <p class="stop-cap" id="stopCap" aria-live="polite">All 3.3 million years at once. Everything from farming onwards is squeezed into the last few pixels on the right.</p>
+
+  <div class="readout">
+    <span><b id="rangeReadout">The full span · ~3.3 million years</b></span>
+    <span id="genReadout">~132,000 generations on screen</span>
+    <span id="densityReadout">Zoom in to see each generation</span>
+    <span>Axis · <b id="axisMode">Years ago</b></span>
+  </div>
+
+  <div class="stage" id="stage" tabindex="0" role="group" aria-label="Human timeline. Single rings are capabilities; double rings are consequences, blue for helped, rust for harmed, split for mixed. Keys 1 to 5 jump to zoom stops. Drag or use arrow keys to move through time, plus and minus to zoom. Press Enter to open the event nearest the centre; while an event is open, left and right arrows step between events and Escape closes it." onpointerdown="TL.down(event)" onpointermove="TL.move(event)" onpointerup="TL.up(event)" onpointercancel="TL.cancel()" onpointerleave="if(event.pointerType==='mouse'&amp;&amp;!TL.drag)TL.hide()" onwheel="TL.wheel(event)" onkeydown="TL.key(event)">
+    <svg id="lineSvg" aria-hidden="true"></svg>
+    <div class="sweep" aria-hidden="true"></div>
+    <p class="line-note" id="lineNote">This line holds <b>~132,000 generations</b>, too close together to draw one by one.</p>
+
+    <div class="event-card" id="eventCard" hidden="" aria-live="polite" onpointerdown="event.stopPropagation()" onwheel="event.stopPropagation()">
+      <div class="card-top"><span class="kind" id="eventKind"></span><button class="close" type="button" aria-label="Close event" onclick="TL.unpin();TL.stage.focus({preventScroll:true})">×</button></div>
+      <h2 id="eventTitle"></h2>
+      <div class="meta"><span class="edate" id="eventDate"></span><span class="dtype" id="eventType"></span></div>
+      <div class="region" id="eventRegion"></div>
+      <div class="cbody">
+        <div class="c1">
+          <p id="eventBody"></p>
+          <div class="more">
+            <p class="after" id="eventAfter"></p>
+            <dl class="hh" id="eventHH"></dl>
+            <p class="dnote" id="eventNote"></p>
+          </div>
+        </div>
+        <div class="c2 more">
+          <div id="relWrap"><div class="sect">Connected events</div><div class="rel" id="eventRel"></div></div>
+          <div id="srcWrap" class="src"><div class="sect">Sources</div><div id="eventSrc"></div></div>
+        </div>
+      </div>
+      <div class="nav"><button type="button" id="eventPrev" onclick="TL.step(-1)">← Earlier</button><span id="eventPos"></span><button type="button" id="eventNext" onclick="TL.step(1)">Later →</button></div>
+      <div class="peek">Click to open · what followed, connections and sources</div>
+    </div>
+  </div>
+  <div class="axis" id="axis" aria-hidden="true"></div>
+
+  <div class="key" id="key">
+    <span class="ki"><svg viewBox="-12 -12 24 24" aria-hidden="true"><circle r="6.5" fill="none" stroke="#231e19" stroke-width="1.5"></circle><circle r="1.9" fill="#231e19"></circle></svg>Capability</span>
+    <span class="ki"><svg viewBox="-12 -12 24 24" aria-hidden="true"><circle r="6.5" fill="none" stroke="#2f4a6b" stroke-width="1.5"></circle><circle r="9.7" fill="none" stroke="#2f4a6b" stroke-width="1.5"></circle><circle r="1.9" fill="#231e19"></circle></svg>Consequence · helped</span>
+    <span class="ki"><svg viewBox="-12 -12 24 24" aria-hidden="true"><circle r="6.5" fill="none" stroke="#b5412a" stroke-width="1.5"></circle><circle r="9.7" fill="none" stroke="#b5412a" stroke-width="1.5"></circle><circle r="1.9" fill="#231e19"></circle></svg>Consequence · harmed</span>
+    <span class="ki"><svg viewBox="-12 -12 24 24" aria-hidden="true"><path d="M-6.5 0A6.5 6.5 0 0 1 6.5 0M-9.7 0A9.7 9.7 0 0 1 9.7 0" fill="none" stroke="#2f4a6b" stroke-width="1.5"></path><path d="M6.5 0A6.5 6.5 0 0 1-6.5 0M9.7 0A9.7 9.7 0 0 1-9.7 0" fill="none" stroke="#b5412a" stroke-width="1.5"></path><circle r="1.9" fill="#231e19"></circle></svg>Consequence · mixed</span>
+    <span class="seg" role="group" aria-label="What the colours show">Colour
+      <button type="button" id="mK" aria-pressed="true" onclick="TL.setMode('k')">Consequences only</button>
+      <button type="button" id="mA" aria-pressed="false" onclick="TL.setMode('a')">Every marker</button>
+    </span>
+    <p class="key-note" id="keyNote" aria-live="polite"></p>
+  </div>
+
+  <div class="ov-k" id="ovHeading">The whole line · where you are</div>
+  <div class="ov" aria-hidden="true" onpointerdown="TL.ovDown(event)" onpointermove="TL.ovMove(event)" onpointerup="TL.ovUp()" onpointercancel="TL.ovUp()">
+    <div class="ov-track" id="ovTrack"><div id="ovMarks"></div><div class="ov-win" id="ovWin"></div></div>
+    <div class="ov-labels"><span>3.3 million years ago</span><span id="ovPct">Viewing the <b>whole line</b></span><span>Today</span></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="toolbtn" type="button" aria-label="Zoom out" onclick="TL.nudge(-12)">−</button>
+    <label class="zoomrow"><span>Zoom</span><input id="zoom" type="range" min="0" max="100" step="0.5" value="0" aria-label="Zoom through time" oninput="TL.zoomAt(Number(this.value))"><span id="zoomLabel">All time</span></label>
+    <button class="toolbtn" type="button" aria-label="Zoom in" onclick="TL.nudge(12)">+</button>
+    <span class="hint">Jump with the stops above (or keys 1–5) · Drag to travel through time · Ctrl/⌘ + scroll or the slider to zoom · Click or drag the overview strip to move there · Hover a circle to preview, click to open</span>
+  </div>
+
+  <details>
+    <summary>All milestones (<span id="evCount">0</span>), in date order</summary>
+    <div class="milestones" id="milestones"></div>
+  </details>
+
+  <p class="err" id="dataError" hidden="">The event data block could not be read. Check that the JSON is valid.</p>
+
+  <p class="footer" id="footerNote">Working prototype. The 41 events come from the research dataset (core list), edited for length and framing. Sources have been partly checked but not yet fully verified. Marker rule: ring shape shows what an event is (single ring for a capability, double ring for a consequence); colour shows what mainly followed (blue helped, rust harmed, split both). These are editorial judgements, and the cards explain who was helped and who was harmed. Dates are approximate and may mark earliest known evidence, a documented breakthrough, or the start of a wider spread; each marker sits at the start of its date range. Generation rule: every dot or skull drawn is exactly one 25-year generation. Every view is linear: the zoom stops change how much time you see, never how it is spaced.</p>
+
+<!-- ================= EVENT DATA =================
+     41 core events, compacted from human-capability-timeline.json.
+     marker = what the event is (capability, or helped/harmed/mixed consequence, or label).
+     lean = what followed (used by the "Every marker" colour mode).
+     related = causal links (shown both ways); family = looser "Related" links.
+     ============================================== -->
+<textarea class="data" id="eventData" aria-hidden="true">[
+{"id":"stone-tools","title":"Deliberate stone-tool making","marker":"capability","lean":"helped","year_start":-3300000,"display_date":"~3.3 million years ago","date_type":"earliest_evidence","region":"East Africa (Lomekwi 3, Kenya)","summary":"Hominins struck stones to make cutting and pounding tools. The Lomekwi tools predate the earliest known fossils of the genus Homo, so who made them is unknown.","what_followed":"Toolmaking became cumulative: later makers refined edges, shapes and specialised toolkits for butchery, woodworking and other tasks.","helped":"Processing food and materials","date_note":"The oldest widely accepted stone-tool assemblage. A minimum date, not necessarily the first tools.","sources":[{"publisher":"Smithsonian Human Origins","title":"Early Stone Age tools","url":"https://humanorigins.si.edu/evidence/behavior/stone-tools/early-stone-age-tools"},{"publisher":"Smithsonian Magazine","title":"The oldest stone tools yet discovered","url":"https://www.smithsonianmag.com/science-nature/oldest-known-stone-tools-unearthed-kenya-180955341/"}]},
+{"id":"controlled-fire","title":"Controlled use of fire","marker":"capability","lean":"helped","year_start":-790000,"year_end":-400000,"display_date":"At least ~790,000 years ago","date_type":"earliest_evidence","region":"Western Asia (Gesher Benot Ya’aqov, Israel), then Africa and Eurasia","summary":"Burned materials at hearth sites show early humans controlling fire. Warmth, cooking, light and protection changed daily life.","what_followed":"Fire helped people live in colder places and gathered social life around the hearth. Much later, combustion would power industry.","helped":"Warmth, cooked food, light and protection","date_note":"A minimum date from one strong site. How routinely earlier groups used fire is debated, and early hearths are not proof of fire-making.","sources":[{"publisher":"Smithsonian Human Origins","title":"Hearths and shelters","url":"https://humanorigins.si.edu/evidence/behavior/hearths-shelters"}]},
+{"id":"symbolic-trade","title":"Long-distance exchange and pigment use","marker":"capability","lean":"helped","year_start":-320000,"display_date":"~320,000 years ago","date_type":"earliest_evidence","region":"East Africa (Olorgesailie, Kenya)","summary":"People carried obsidian over long distances and used coloured pigments, suggesting social ties beyond the immediate group.","what_followed":"Exchange let materials and ideas move between communities, a pattern behind later trade, migration and large-scale cooperation.","helped":"Access to distant resources; wider social ties","date_note":"Social arrangements are inferred from objects and where they came from; motives and routes cannot be fully recovered.","family":["symbolic-marking"],"sources":[{"publisher":"Smithsonian Human Origins","title":"Evolution of human innovation","url":"https://humanorigins.si.edu/research/east-african-research-projects/evolution-human-innovation"}]},
+{"id":"homo-sapiens","title":"Homo sapiens emerges","marker":"label","year_start":-300000,"year_end":-200000,"display_date":"~300,000 years ago","date_type":"earliest_evidence","region":"Africa (Jebel Irhoud, Morocco, among the oldest fossils)","summary":"Fossils show our species emerging in Africa through a long evolutionary process. This is a reference point, not an invention, and not the start of human capability.","what_followed":"Homo sapiens spread and diversified. Other human species also made tools and shaped history before disappearing.","date_note":"Species boundaries are gradual and debated. No sudden transition or hierarchy of human worth should be inferred.","related":["out-of-africa"],"sources":[{"publisher":"Smithsonian Human Origins","title":"Homo sapiens","url":"https://humanorigins.si.edu/evidence/human-fossils/species/homo-sapiens"}]},
+{"id":"symbolic-marking","title":"Durable symbolic marking","marker":"capability","lean":"helped","year_start":-77000,"display_date":"~77,000 years ago","date_type":"earliest_evidence","region":"Southern Africa (Blombos Cave, South Africa)","summary":"Engraved ochre pieces carry repeated geometric designs: deliberate marks, though we cannot know what they meant to their makers.","what_followed":"Symbolic objects appear across later societies, though there is no simple, unbroken line from these marks to writing or art.","helped":"Marking, remembering or communicating ideas","date_note":"Best not called the first art; its purpose is unknown.","family":["writing"],"sources":[{"publisher":"Smithsonian Human Origins","title":"Blombos ocher plaque","url":"https://humanorigins.si.edu/evidence/behavior/recording-information/blombos-ocher-plaque"}]},
+{"id":"out-of-africa","title":"Homo sapiens expands beyond Africa","marker":"capability","lean":"mixed","year_start":-70000,"year_end":-50000,"display_date":"Major expansions ~70,000–50,000 years ago","date_type":"spread","region":"Africa, Asia and beyond","summary":"Human groups moved through changing landscapes and eventually reached nearly every continent, meeting and mixing with other human species.","what_followed":"People adapted their technologies to new environments and exchanged genes and ideas with other populations.","helped":"Survival across very different environments","harmed":"Competition with, and displacement of, other populations","date_note":"There were earlier dispersals and several waves. This range marks the expansions behind most living non-African ancestry.","family":["pacific-voyaging"],"sources":[{"publisher":"Natural History Museum, London","title":"When and how did modern humans spread out of Africa?","url":"https://www.nhm.ac.uk/discover/when-how-did-modern-humans-homo-sapiens-spread-out-of-africa.html"}]},
+{"id":"farming","title":"Farming begins in several regions","marker":"capability","lean":"mixed","year_start":-9500,"year_end":-3000,"display_date":"~9500–3000 BCE, at different times","date_type":"spread","region":"Southwest Asia, China, New Guinea, Africa, Mesoamerica, the Andes","summary":"Communities in several separate regions domesticated plants and animals. Farming was not one invention spreading from one place, and foraging continued alongside it for millennia.","what_followed":"Food production supported denser settlements, specialisation and states, but often also heavier workloads, more infectious disease and inequality.","helped":"Larger populations and settled life","harmed":"Workload, disease and social stratification often rose","date_note":"The span is a teaching range covering independent origins, not a single start date.","related":["cities"],"sources":[{"publisher":"Smithsonian Human Origins","title":"Humans change the world","url":"https://humanorigins.si.edu/human-characteristics/humans-change-world"}]},
+{"id":"copper","title":"Copper smelting and metalworking","marker":"capability","lean":"mixed","year_start":-5000,"display_date":"~5000 BCE","date_type":"earliest_evidence","region":"Southeastern Europe and Southwest Asia","summary":"People learned to extract copper from ore and work it into tools and objects that could be reshaped and repaired.","what_followed":"Copper alloys, especially bronze, spread through exchange networks and fed new crafts, weapons and administration.","helped":"Durable tools and valued objects","harmed":"Mining labour and fuel use; metal wealth could concentrate power","date_note":"Belovode, Serbia holds some of the earliest known smelting evidence. Metalworking emerged in several places.","sources":[{"publisher":"University College London","title":"The rise of metallurgy in Eurasia","url":"https://www.ucl.ac.uk/social-historical-sciences/archaeology/research/research-directory/material-worlds/rise-metallurgy-eurasia"}]},
+{"id":"cities","title":"Cities, irrigation and organised states","marker":"mixed","lean":"mixed","year_start":-4000,"year_end":-2500,"display_date":"~4000–2500 BCE, in several regions","date_type":"consequence","region":"Mesopotamia, the Nile, Indus and Yellow River valleys","summary":"Large settlements coordinated water, food, labour and trade. Urban life depended on social organisation as much as on any single technology.","what_followed":"Cities enabled specialised work, long-distance exchange and formal government, and made people dependent on complex food and water systems.","helped":"Shared infrastructure and specialised work","harmed":"Hierarchy, taxation, forced labour, and vulnerability to drought and war","related":["writing","wheel"],"sources":[{"publisher":"The Met","title":"Uruk: the first city","url":"https://www.metmuseum.org/ja/essays/uruk-the-first-city"}]},
+{"id":"wheel","title":"Wheeled vehicles","marker":"capability","lean":"mixed","year_start":-3500,"display_date":"~3500 BCE","date_type":"earliest_evidence","region":"Southwest Asia and Central Europe","summary":"Wheels and axles made heavy loads easier to move, working alongside roads, draught animals and skilled carpentry.","what_followed":"Wheeled transport expanded trade, building and warfare. Railways and motor vehicles later scaled it up enormously.","helped":"Moving goods and people","harmed":"Armies, extraction and environmental change","date_note":"Early evidence appears in Mesopotamia and Europe at similar times; no single inventor or origin can be named.","sources":[{"publisher":"Antiquity (Cambridge)","title":"The earliest evidence of wheeled vehicles in Europe and the Near East","url":"https://www.cambridge.org/core/journals/antiquity/article/abs/earliest-evidence-of-wheeled-vehicles-in-europe-and-the-near-east/4835B594180234DC116F6F0105771573"}]},
+{"id":"writing","title":"Writing","marker":"capability","lean":"mixed","year_start":-3300,"display_date":"~3300 BCE","date_type":"earliest_evidence","region":"Mesopotamia and Egypt; later independently in China and Mesoamerica","summary":"Early clay tablets in Mesopotamia used signs and numerals to track goods and obligations. Egyptian writing appears at around the same time.","what_followed":"Records could outlast memory and travel long distances, supporting law, administration, scholarship and the build-up of knowledge.","helped":"Coordinating cities; preserving knowledge","harmed":"Literacy was restricted, and records strengthened taxation and state power","date_note":"Earliest known proto-cuneiform. Writing arose independently in several places.","family":["place-value-zero"],"sources":[{"publisher":"The Met","title":"The origins of writing","url":"https://www.metmuseum.org/essays/the-origins-of-writing"}]},
+{"id":"pacific-voyaging","title":"Pacific voyaging and wayfinding","marker":"capability","lean":"mixed","year_start":-1500,"year_end":1300,"display_date":"~1500 BCE–1300 CE, in successive waves","date_type":"spread","region":"Oceania","summary":"Austronesian and Polynesian voyagers crossed vast stretches of open ocean using canoes, sails and knowledge of stars, winds, currents, birds and swell.","what_followed":"Voyaging connected island societies, carried crops and animals, and peopled the remotest Pacific islands. Modern wayfinding revivals renew these traditions.","helped":"Navigation, exchange and settlement across the Pacific","harmed":"Ecological change and loss of native species on some islands","date_note":"Runs from Lapita expansion to the settlement of Hawaii, Rapa Nui and Aotearoa New Zealand; the sequence is debated.","sources":[{"publisher":"Te Ara, Encyclopedia of New Zealand","title":"Pacific migrations","url":"https://teara.govt.nz/en/pacific-migrations"}]},
+{"id":"paper","title":"Paper-making","marker":"capability","lean":"helped","year_start":105,"display_date":"Documented by 105 CE","date_type":"documented","region":"China","summary":"Paper gave a light, adaptable surface for records and images. Its use spread gradually across Asia and later into Europe.","what_followed":"Paper supported bureaucracy, scholarship, religious texts and, eventually, printing.","helped":"Cheaper, portable records","date_note":"Tradition credits Cai Lun in 105 CE, but older paper fragments exist. This is a documented date, not the invention.","related":["woodblock-printing"],"sources":[{"publisher":"The Met","title":"Han dynasty (206 BCE–220 CE)","url":"https://www.metmuseum.org/toah/hd/hand/hd_hand.htm"}]},
+{"id":"place-value-zero","title":"Place-value numerals with zero","marker":"capability","lean":"helped","year_start":628,"year_end":1202,"display_date":"7th–13th centuries CE","date_type":"spread","region":"India, then the Islamic world and Europe","summary":"Indian mathematicians developed a decimal place-value system in which zero could mark an empty place and be used in calculation. Scholars writing in Arabic carried it further.","what_followed":"The numerals reached Europe and became the basis of modern calculation, accounting, science and computing.","helped":"Compact, efficient arithmetic for trade and science","date_note":"Brahmagupta gave rules for zero in 628 CE. The notation developed gradually, not on a single date.","related":["scientific-methods"],"sources":[{"publisher":"MacTutor, University of St Andrews","title":"Zero","url":"https://mathshistory.st-andrews.ac.uk/HistTopics/Zero/"},{"publisher":"MacTutor, University of St Andrews","title":"Arabic numerals","url":"https://mathshistory.st-andrews.ac.uk/HistTopics/Arabic_numerals/"}]},
+{"id":"woodblock-printing","title":"Woodblock printing in East Asia","marker":"capability","lean":"helped","year_start":700,"display_date":"By the 7th–8th centuries CE","date_type":"earliest_evidence","region":"East Asia","summary":"Carved wooden blocks reproduced whole pages of text and images, centuries before printing began in Europe.","what_followed":"Print circulated Buddhist texts, calendars and practical knowledge. Movable type followed in China around 1040, and metal type in Korea by 1377.","helped":"Consistent copies of texts","harmed":"Authorities could also use print to standardise belief","date_note":"Surviving dated prints do not mark the beginning of the practice.","related":["gutenberg"],"sources":[{"publisher":"The Met","title":"The printed image in China","url":"https://www.metmuseum.org/exhibitions/listings/2012/printed-image-in-china"}]},
+{"id":"gutenberg","title":"European press with movable metal type","marker":"capability","lean":"mixed","year_start":1450,"display_date":"~1450s","date_type":"documented","region":"Europe (Mainz)","summary":"Gutenberg combined reusable metal type, a press and new inks to reproduce European books faster and more cheaply, within a longer global history of printing.","what_followed":"Print sped up religious debate, scientific exchange and literacy in everyday languages, though access remained unequal.","helped":"Ideas circulated widely","harmed":"Amplified religious conflict, censorship battles and misinformation","related":["scientific-methods"],"sources":[{"publisher":"Royal Collection Trust","title":"Early printed books","url":"https://www.rct.uk/collection/about-the-collection/the-royal-library-and-royal-archives/a-history-of-the-royal-library/early-printed-books-manuscripts-fine-bindings-and-private-presses"}]},
+{"id":"atlantic-crossings","title":"Atlantic crossings: conquest and exchange","marker":"harmed","lean":"harmed","year_start":1492,"year_end":1600,"display_date":"From 1492","date_type":"consequence","region":"The Americas, Europe and Africa","summary":"Sustained contact across the Atlantic moved crops, animals, pathogens and people between continents, as colonial conquest devastated Indigenous societies.","what_followed":"Epidemics and violence caused catastrophic Indigenous population loss. American crops reshaped diets worldwide, and colonial extraction and the forced migration of Africans grew.","helped":"New crops reshaped diets across continents","harmed":"Indigenous peoples, through epidemics, dispossession and violence","date_note":"1492 is a conventional marker; the exchange unfolded through many later voyages and conquests.","related":["slave-trade"],"sources":[{"publisher":"Smithsonian Magazine","title":"Alfred W. Crosby on the Columbian Exchange","url":"https://www.smithsonianmag.com/history/alfred-w-crosby-on-the-columbian-exchange-98116477/"},{"publisher":"Smithsonian American History","title":"Unsettling the continent, 1492–1776","url":"https://americanhistory.si.edu/explore/exhibitions/many-voices/online/unsettling-continent-1492-1776"}]},
+{"id":"slave-trade","title":"Transatlantic slave trade","marker":"harmed","lean":"harmed","year_start":1501,"year_end":1867,"display_date":"16th–19th centuries","date_type":"period","region":"West and Central Africa, the Atlantic, the Americas","summary":"European empires and merchants built a vast system of forced migration and hereditary enslavement. Millions of Africans were transported under brutal conditions to labour in the Americas.","what_followed":"Plantation economies enriched enslavers and states while inflicting generations of violence, family separation and racialised inequality. Abolition ended the legal trade unevenly, not its legacies.","harmed":"Enslaved Africans and their descendants, on a massive scale","date_note":"Start and end dates vary by definition; estimates of the number of people transported vary by source.","sources":[{"publisher":"SlaveVoyages","title":"Trans-Atlantic slave trade database","url":"https://www.slavevoyages.org/"}]},
+{"id":"scientific-methods","title":"Scientific institutions and experimental methods","marker":"capability","lean":"mixed","year_start":1543,"year_end":1700,"display_date":"16th–17th centuries","date_type":"period","region":"Europe, building on work across many regions","summary":"New instruments, mathematics, publishing and organised debate changed how natural questions were tested, building on earlier traditions in West, South and East Asia.","what_followed":"Repeatable experiments and scientific societies let knowledge accumulate, feeding navigation, medicine and industry.","helped":"Testing claims; accumulating useful knowledge","harmed":"Entangled with colonial extraction, racial theories and military research","date_note":"No single invention date.","related":["steam"],"sources":[{"publisher":"Encyclopaedia Britannica","title":"Scientific Revolution","url":"https://www.britannica.com/science/Scientific-Revolution"}]},
+{"id":"steam","title":"Steam power and industrialisation","marker":"capability","lean":"mixed","year_start":1712,"year_end":1850,"display_date":"From 1712; 18th–19th centuries","date_type":"spread","region":"Britain, then Europe and beyond","summary":"Steam engines first pumped water from mines, then powered factories, railways and ships. Coal supplied energy beyond the limits of muscle, wind and water.","what_followed":"Mechanised production and transport grew rapidly, driving factory work, urbanisation, global trade and economic growth.","helped":"Productive capacity and access to goods","harmed":"Dangerous labour, exploitation, pollution and rising fossil-fuel emissions","date_note":"Newcomen’s engine dates to 1712 and Watt’s separate condenser to 1769. Industrialisation was a long, uneven transformation.","related":["electric-grids","climate-measured"],"sources":[{"publisher":"National Museums Scotland","title":"The Newcomen engine and Britain’s industrial revolution","url":"https://www.nms.ac.uk/discover-catalogue/the-newcomen-engine-and-its-role-in-britains-industrial-revolution"},{"publisher":"Our World in Data","title":"Fossil fuels","url":"https://ourworldindata.org/fossil-fuels"}]},
+{"id":"jenner","title":"Vaccination against smallpox","marker":"capability","lean":"helped","year_start":1796,"display_date":"1796","date_type":"documented","region":"Britain, then global","summary":"Edward Jenner used cowpox material to protect a child against smallpox, building on earlier inoculation practised in China, India, Africa and the Ottoman Empire.","what_followed":"Vaccination spread internationally and became the foundation of the campaign that eradicated smallpox.","helped":"Protection from a deadly disease","harmed":"Early campaigns included ethical abuses and coercion","related":["smallpox-eradicated","life-expectancy"],"sources":[{"publisher":"World Health Organization","title":"History of smallpox vaccination","url":"https://www.who.int/news-room/spotlight/history-of-vaccination/history-of-smallpox-vaccination"},{"publisher":"U.S. National Library of Medicine","title":"Smallpox: vaccination","url":"https://www.nlm.nih.gov/exhibition/smallpox/sp_vaccination.html"}]},
+{"id":"telegraph","title":"Electric telegraph","marker":"capability","lean":"mixed","year_start":1844,"display_date":"1844","date_type":"documented","region":"Britain and the United States, then global","summary":"Coded electrical signals sent messages along wires far faster than any messenger could travel.","what_followed":"Telegraph networks coordinated railways, markets, news and governments across long distances, laying the groundwork for later telecommunications.","helped":"Rapid long-distance communication","harmed":"Concentrated control of communication; carried military orders","date_note":"The 1844 Washington–Baltimore line is a famous milestone, but commercial telegraphs were already working in Britain from 1839.","sources":[{"publisher":"Smithsonian Magazine","title":"How the telegraph went from semaphore to communication game-changer","url":"https://www.smithsonianmag.com/arts-culture/how-the-telegraph-went-from-semaphore-to-communication-game-changer-1403433/"}]},
+{"id":"germ-theory","title":"Germ theory, sanitation and public health","marker":"capability","lean":"helped","year_start":1854,"year_end":1900,"display_date":"Mid-19th century to 1900","date_type":"period","region":"Britain, Europe and beyond","summary":"Evidence linking dirty water and microorganisms to disease changed medicine and city planning. Sewers, clean water and hygiene became shared public-health tools.","what_followed":"Infection control reduced many disease risks and made vaccines, pasteurisation and safer surgery possible, though access was unequal.","helped":"Fewer deaths from infectious disease","harmed":"Some interventions involved coercion and surveillance","date_note":"John Snow’s 1854 cholera study, sanitation reform and germ theory were separate strands that converged.","related":["penicillin","life-expectancy"],"sources":[{"publisher":"U.S. CDC","title":"150th anniversary of John Snow and the pump handle","url":"https://www.cdc.gov/mmwr/preview/mmwrhtml/mm5334a1.htm"},{"publisher":"U.S. CDC","title":"Achievements in public health: control of infectious diseases","url":"https://www.cdc.gov/mmwr/preview/mmwrhtml/mm4829a1.htm"}]},
+{"id":"electric-grids","title":"Electric lighting and power grids","marker":"capability","lean":"mixed","year_start":1882,"year_end":1930,"display_date":"From 1882; grids spread over decades","date_type":"spread","region":"United States and Europe, then global","summary":"Central power stations supplied electric light, then power for appliances, factories and transport.","what_followed":"Electricity extended working and leisure hours, changed factory and household labour, and made communications and computing possible.","helped":"Light, productivity and less household drudgery","harmed":"Unequal access; much of it fossil-fuelled","date_note":"Edison’s Pearl Street station opened in 1882. Electrification took decades and still varies widely by country.","related":["transistor"],"sources":[{"publisher":"Smithsonian American History","title":"Lighting a revolution: consequences","url":"https://americanhistory.si.edu/lighting/19thcent/consq19.htm"},{"publisher":"Our World in Data","title":"Energy","url":"https://ourworldindata.org/energy"}]},
+{"id":"life-expectancy","title":"Life expectancy rises and child mortality falls","marker":"helped","lean":"helped","year_start":1900,"year_end":2026,"display_date":"~1900–today, unevenly","date_type":"spread","region":"Global","summary":"Over the last century, average life expectancy rose markedly and deaths of young children fell, thanks to nutrition, sanitation, vaccination, medicine and better living conditions.","what_followed":"More children survived and people lived longer, reshaping families, populations and economies. Progress stalled at times and remains very unequal.","helped":"Millions of lives saved; longer, healthier lives","date_note":"Global estimates before 1900 are sparse (around 32 years in 1900). Comparable child-mortality data are strongest from 1990. The span marks an ongoing trend.","sources":[{"publisher":"Our World in Data","title":"Life expectancy","url":"https://ourworldindata.org/life-expectancy"},{"publisher":"UNICEF / UN IGME","title":"Under-five mortality","url":"https://data.unicef.org/topic/child-survival/under-five-mortality/"}]},
+{"id":"haber-bosch","title":"Industrial nitrogen fertiliser","marker":"capability","lean":"mixed","year_start":1909,"display_date":"1909–1913","date_type":"documented","region":"Germany, then global","summary":"The Haber–Bosch process fixed nitrogen from the air into ammonia, making synthetic fertiliser possible at industrial scale.","what_followed":"Fertiliser greatly raised crop yields and helped feed a growing population, while tying food to industrial energy and disrupting nitrogen cycles.","helped":"Higher food output and lower famine risk","harmed":"Runoff, emissions and wartime explosives","date_note":"Haber demonstrated the process in 1909; Bosch and BASF scaled it up by 1913.","related":["green-revolution"],"sources":[{"publisher":"Science History Institute","title":"Fritz Haber","url":"https://www.sciencehistory.org/education/scientific-biographies/fritz-haber/"}]},
+{"id":"world-war-i","title":"World War I","marker":"harmed","lean":"harmed","year_start":1914,"year_end":1918,"display_date":"1914–1918","date_type":"period","region":"Europe, the Middle East, Africa and beyond","summary":"Industrial production, railways, machine guns, aircraft and chemical weapons made war more lethal and more widespread than ever before.","what_followed":"Millions of soldiers and civilians died, empires collapsed, and the post-war settlement shaped the conditions for another world war.","harmed":"Soldiers and civilians, on an unprecedented scale","date_note":"Written from the research’s combined world-wars entry.","family":["world-war-ii"],"sources":[{"publisher":"The National Archives (UK)","title":"Technology in the First World War","url":"https://www.nationalarchives.gov.uk/explore-the-collection/explore-by-time-period/early-20th-century/technology-first-world-war/"}]},
+{"id":"penicillin","title":"Penicillin and the antibiotic era","marker":"capability","lean":"helped","year_start":1928,"year_end":1945,"display_date":"Discovered 1928; mass use in the 1940s","date_type":"documented","region":"Britain and the United States, then global","summary":"Alexander Fleming noticed a mould killing bacteria. Teams at Oxford and in the US later purified and mass-produced penicillin as a life-saving medicine.","what_followed":"Antibiotics transformed the treatment of infection and made modern surgery safer. Overuse has bred resistant bacteria, a continuing global health threat.","helped":"Lives saved from bacterial infection","harmed":"Overuse drives antimicrobial resistance","date_note":"Discovery, clinical proof and mass production were separate milestones.","related":["life-expectancy"],"sources":[{"publisher":"USDA Agricultural Research Service","title":"Penicillin: opening the era of antibiotics","url":"https://www.ars.usda.gov/midwest-area/peoria-il/national-center-for-agricultural-utilization-research/docs/penicillin-opening-the-era-of-antibiotics/"}]},
+{"id":"fission","title":"Nuclear fission identified","marker":"capability","lean":"mixed","year_start":1938,"year_end":1939,"display_date":"1938–1939","date_type":"documented","region":"Germany, Sweden and Denmark","summary":"Otto Hahn and Fritz Strassmann found that uranium could split into lighter elements. Lise Meitner and Otto Frisch explained the physics and named it fission.","what_followed":"Within seven years the discovery had produced both reactors and atomic weapons.","helped":"Nuclear physics, and eventually low-carbon electricity","harmed":"Nuclear weapons, arms races and radiation exposure","date_note":"Experimental result December 1938; interpretation and naming 1939. Credit was unevenly assigned.","related":["atomic-bombings","nuclear-electricity"],"sources":[{"publisher":"Science History Institute","title":"Otto Hahn, Lise Meitner and Fritz Strassmann","url":"https://www.sciencehistory.org/education/scientific-biographies/otto-hahn-lise-meitner-and-fritz-strassmann/"},{"publisher":"U.S. DOE, OSTI","title":"The discovery of fission, 1938–1939","url":"https://www.osti.gov/opennet/manhattan-project-history/Events/1890s-1939/discovery_fission.htm"}]},
+{"id":"world-war-ii","title":"World War II","marker":"harmed","lean":"harmed","year_start":1939,"year_end":1945,"display_date":"1939–1945","date_type":"period","region":"Global","summary":"A global war mobilised industry, science and whole populations, and brought death and destruction on an unprecedented scale.","what_followed":"Tens of millions died, including in genocide. Radar, computing, jet aviation and nuclear weapons were all accelerated by the war.","helped":"Some wartime technologies later had civilian uses","harmed":"Tens of millions of civilians and combatants","date_note":"Written from the research’s combined world-wars entry.","family":["atomic-bombings"],"sources":[{"publisher":"U.S. National Archives","title":"Secret weapons, forgotten sacrifices","url":"https://www.archives.gov/publications/prologue/2016/spring/office-scientific-research-development-world-war-ii"}]},
+{"id":"atomic-bombings","title":"Nuclear weapons used in war","marker":"harmed","lean":"harmed","year_start":1945,"display_date":"6 and 9 August 1945","date_type":"consequence","region":"Japan (Hiroshima and Nagasaki)","summary":"The Manhattan Project turned nuclear physics into weapons. After the Trinity test in July 1945, the United States dropped atomic bombs on Hiroshima and Nagasaki.","what_followed":"Nuclear weapons made civilisation-scale destruction possible and shaped deterrence, arms races and non-proliferation efforts.","harmed":"The people of Hiroshima and Nagasaki and their descendants","date_note":"The bombings remain morally and historically contested.","sources":[{"publisher":"U.S. National Archives","title":"The atomic bombing of Hiroshima and Nagasaki","url":"https://www.archives.gov/news/topics/hiroshima-nagasaki-75"},{"publisher":"U.S. Department of Energy","title":"Trinity Site: world’s first nuclear explosion","url":"https://www.energy.gov/lm/trinity-site-worlds-first-nuclear-explosion"}]},
+{"id":"transistor","title":"The transistor","marker":"capability","lean":"mixed","year_start":1947,"display_date":"1947","date_type":"documented","region":"United States (Bell Labs), then global","summary":"A small semiconductor device could amplify and switch electrical signals without bulky vacuum tubes, making compact, reliable electronics practical.","what_followed":"Transistors led to integrated circuits that pack billions of switches onto a chip, the basis of modern computing.","helped":"Compact, widespread computing and communication","harmed":"Mineral extraction, energy use and hard labour in global supply chains","related":["world-wide-web","smartphones","generative-ai"],"sources":[{"publisher":"Computer History Museum","title":"1947: invention of the point-contact transistor","url":"https://www.computerhistory.org/siliconengine/invention-of-the-point-contact-transistor/"}]},
+{"id":"nuclear-electricity","title":"Nuclear electricity reaches a grid","marker":"mixed","lean":"mixed","year_start":1954,"display_date":"1954","date_type":"documented","region":"Soviet Union (Obninsk)","summary":"The small Obninsk reactor supplied electricity to a grid, a civilian use of fission less than a decade after its use as a weapon.","what_followed":"Nuclear power became a major low-carbon source in some countries, alongside concerns about accidents, waste, cost and proliferation.","helped":"Reliable electricity with low operational emissions","harmed":"Communities affected by accidents such as Chernobyl and Fukushima","sources":[{"publisher":"IAEA","title":"From Obninsk beyond","url":"https://www.iaea.org/newscenter/news/obninsk-beyond-nuclear-power-conference-looks-future"}]},
+{"id":"sputnik","title":"Sputnik and spaceflight","marker":"capability","lean":"mixed","year_start":1957,"display_date":"4 October 1957","date_type":"documented","region":"Soviet Union and Earth orbit","summary":"Sputnik 1 became the first artificial satellite to orbit Earth, making spaceflight a public reality and sharpening Cold War rivalry.","what_followed":"Satellites transformed communication, weather forecasting, navigation and Earth observation. Launch technology also advanced missiles and surveillance.","helped":"Global services and science from orbit","harmed":"Military competition and surveillance","sources":[{"publisher":"NASA","title":"Dawn of the Space Age","url":"https://www.nasa.gov/history/dawn-of-the-space-age/"}]},
+{"id":"climate-measured","title":"Human-caused climate change measured","marker":"harmed","lean":"harmed","year_start":1958,"year_end":2026,"display_date":"From 1958; measurements continue","date_type":"consequence","region":"Global (measured at Mauna Loa, Hawaii)","summary":"Charles David Keeling’s precise measurements showed carbon dioxide in the atmosphere rising year after year: a global consequence of burning fossil fuels, made visible.","what_followed":"The record helped establish modern climate science. Warming from rising greenhouse gases now affects ecosystems and communities worldwide, unevenly.","harmed":"Ecosystems and communities exposed to warming, often those least responsible","date_note":"Re-titled from the Keeling Curve. The curve measures the harm; the harm itself comes from emissions since industrialisation.","sources":[{"publisher":"Scripps Institution of Oceanography","title":"The Keeling Curve","url":"https://scripps.ucsd.edu/news/ralph-keeling-curve"},{"publisher":"Our World in Data","title":"CO₂ emissions","url":"https://ourworldindata.org/co2-emissions"}]},
+{"id":"green-revolution","title":"The Green Revolution","marker":"mixed","lean":"mixed","year_start":1960,"year_end":1980,"display_date":"1960s–1980s, varying by region","date_type":"spread","region":"South Asia, Latin America and beyond","summary":"New crop varieties, irrigation, fertiliser and pesticides sharply raised wheat and rice yields in many regions. Policy and credit mattered as much as seeds.","what_followed":"Higher yields helped avert food shortages and supported population growth, while straining water, soils and biodiversity.","helped":"Greater food availability","harmed":"Uneven benefits, groundwater depletion and pesticide pollution","family":["life-expectancy"],"sources":[{"publisher":"FAO","title":"The Green Revolution","url":"https://www.fao.org/4/Y5160E/y5160e08.htm"}]},
+{"id":"smallpox-eradicated","title":"Smallpox eradicated","marker":"helped","lean":"helped","year_start":1980,"display_date":"1980","date_type":"documented","region":"Global","summary":"A coordinated international vaccination and surveillance campaign ended naturally occurring smallpox, the only human disease ever eradicated worldwide.","what_followed":"It showed what vaccination, case-finding and international cooperation could achieve, and left questions about stored virus samples.","helped":"Ended a disease that had killed and disfigured millions","harmed":"Some campaign tactics were coercive","date_note":"Last natural case 1977; certified 1979; declared by the World Health Assembly in 1980.","related":["life-expectancy"],"sources":[{"publisher":"World Health Organization","title":"The Smallpox Eradication Programme (1966–1980)","url":"https://www.who.int/news-room/feature-stories/detail/the-smallpox-eradication-programme---sep-(1966-1980)"},{"publisher":"U.S. CDC","title":"History of smallpox","url":"https://www.cdc.gov/smallpox/about/history.html"}]},
+{"id":"world-wide-web","title":"The World Wide Web","marker":"capability","lean":"mixed","year_start":1989,"year_end":1993,"display_date":"Proposed 1989; opened broadly 1993","date_type":"documented","region":"CERN, Switzerland, then global","summary":"Tim Berners-Lee combined links, addresses and pages to connect information across computers. CERN made it free to use, so it spread far beyond physics.","what_followed":"The Web opened publishing, commerce and communication to billions, along with platform concentration, tracking and misinformation.","helped":"Finding and publishing information at scale","harmed":"Surveillance, scams, harassment and fast-spreading false claims","date_note":"The Web runs on the older Internet, which dates from 1969.","related":["smartphones","generative-ai"],"sources":[{"publisher":"CERN","title":"A short history of the Web","url":"https://home.cern/science/computing/the-birth-of-the-web/short-history-web/"}]},
+{"id":"smartphones","title":"Smartphones","marker":"capability","lean":"mixed","year_start":2007,"year_end":2010,"display_date":"Late 2000s onward","date_type":"spread","region":"Global","summary":"Touchscreen phones combined camera, maps, messaging, browsing and apps in one pocket device, with near-constant internet access.","what_followed":"Smartphones reshaped work, navigation, commerce and social life, and concentrated attention and personal data in a few platforms.","helped":"Communication and services in a pocket","harmed":"Privacy, attention, e-waste and digital exclusion","date_note":"The 2007 iPhone and 2008 Android are key milestones, built on earlier devices and networks.","related":["generative-ai"],"sources":[{"publisher":"Computer History Museum","title":"Timeline of computer history: 2007","url":"https://www.computerhistory.org/timeline/2007/"}]},
+{"id":"crispr","title":"CRISPR gene editing","marker":"capability","lean":"mixed","year_start":2012,"display_date":"2012","date_type":"documented","region":"Global research community","summary":"Researchers adapted a bacterial defence system into a tool that can cut DNA at chosen places, making genome editing faster and easier.","what_followed":"Scientists began exploring treatments, crop changes and basic biology. Editing inherited DNA raised deep questions about safety and consent.","helped":"Potential treatments and faster research","harmed":"Risks of misuse or premature use, and unequal access","date_note":"Jennifer Doudna and Emmanuelle Charpentier showed programmable DNA cutting in 2012, building on earlier CRISPR biology.","sources":[{"publisher":"NIH","title":"The CRISPR revolution","url":"https://www.nih.gov/about-nih/nih-turning-discovery-into-health-/transformative-technologies/crispr-revolution"}]},
+{"id":"generative-ai","title":"Generative AI becomes widely accessible","marker":"capability","lean":"mixed","year_start":2022,"display_date":"2022 onward","date_type":"spread","region":"Global","summary":"Large models began producing fluent text, images, audio and code for mass audiences, bringing machine learning into everyday work.","what_followed":"Adoption and investment accelerated, alongside disputes over accuracy, labour, bias, copyright, privacy and energy use. This is the handoff to Perspective 04.","helped":"Wider access to creative and analytical tools","harmed":"Errors, displaced work, bias and deception","date_note":"An adoption milestone, not the invention of AI. Long-term effects remain uncertain.","sources":[{"publisher":"Stanford HAI","title":"The 2026 AI Index Report","url":"https://hai.stanford.edu/ai-index/2026-ai-index-report"}]}
+]</textarea>
+</main>
+
+</body></html>
