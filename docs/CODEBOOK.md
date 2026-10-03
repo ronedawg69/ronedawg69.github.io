@@ -386,3 +386,16 @@ The [connector map](CONNECTOR_MAP.md) documents the proposed flows and unresolve
 - **Private boundary:** tokens kept on a server do not protect returned data. Real-data access still requires authentication and authorization. CORS does not provide those checks.
 
 Cloudflare's [fetch handler](https://developers.cloudflare.com/workers/runtime-apis/handlers/fetch/) and [Wrangler configuration](https://developers.cloudflare.com/workers/wrangler/configuration/) were read on 2026-10-03 for handler/config structure. Pricing, account eligibility and hosted runtime behavior were not verified here. No deployment was performed.
+
+## Hosted browser requests: checked 2026-10-03
+
+GitHub stores source; GitHub Pages delivers static files. Browser code can display a login but cannot independently enforce protection against the visitor controlling that browser. The trusted server must check permission before returning private records. Approved records reach the browser; private provider credentials stay server-side. Current Worker has invented data and no authentication.
+
+CORS lets a browser read a reply from a different origin; it is not login or authorization. This sample uses an exact allowed Pages origin, no cookies/credentials and no polling. Direct clients can still read the public sample.
+
+Cloudflare first-party references checked on 2026-10-03:
+- [CORS response headers](https://developers.cloudflare.com/workers/examples/cors-header-proxy/).
+- [workers.dev routing and Wrangler configuration](https://developers.cloudflare.com/workers/configuration/routing/workers-dev/).
+- [Build root and deploy command](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/).
+
+Dashboard production URL enablement is matched by `workers_dev: true`; version preview URLs are disabled. This prevents the next Wrangler deployment from restoring the old disabled setting. No provider logging-retention guarantee or new pricing claim is made.

@@ -62,3 +62,9 @@ Lesson 5 answers and assessment follow.
 - Browser role: Ronan answered “The browser reads the package and displays based on the states that have already been built”. Assessment: correct; the response does not render itself.
 - Failed request: Ronan answered “The dashboard should show the error state, as it was a failure on the server side, not a lack of data”. Assessment: error versus empty is correct. Clarified that the cause can be the server or the connection, so a missing reply does not prove server failure. No repeated check required.
 - Taught endpoint as a data-request address and JSON as labelled text data. Implemented the synthetic Worker handler, local adapter and browser server scenario after assessment. No real accounts or login implementation is claimed.
+
+## Hosted server and boundary clarification: 2026-10-03
+
+- Ronan correctly explained that direct endpoint success does not prove the dashboard works: browser/site failures can stop the data reaching the display. Assessment: correct; verify the whole request/render journey.
+- Ronan initially understood the server as authorizing access to GitHub. Clarified that GitHub Pages serves public files; our server checks access to data. Ronan then correctly explained that browser source checks can be bypassed and private credentials stay server-side. Refined that approved response data does reach the browser while provider credentials stay on the server. No corrective gate remains for these concepts.
+- Implementation continues the synthetic hosted preview only; actual login and authorization are still not implemented.

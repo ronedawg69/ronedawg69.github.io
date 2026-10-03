@@ -89,7 +89,7 @@
             <label for="ride-preview">Try a fictional scenario</label>
             <select id="ride-preview">
               <option value="sample">Loaded sample</option>
-              <option value="server">Ask the server · local preview</option>
+              <option value="server">Ask the server · fictional sample</option>
               <option value="loading">Preview: loading</option>
               <option value="empty">Preview: no rides</option>
               <option value="error">Preview: loading failed</option>
@@ -131,7 +131,10 @@
       const rideValue = document.getElementById("ride_duration_seconds");
       const rideRetry = document.getElementById("ride-retry");
       const ridePreview = document.getElementById("ride-preview");
-      const DASHBOARD_ENDPOINT = "/api/dashboard";
+      // Published Pages uses the hosted sample; local previews use the local adapter.
+      const DASHBOARD_ENDPOINT = typeof location !== "undefined" && location.hostname === "ronedawg69.github.io"
+        ? "https://cycle-signals-synthetic.ronan-d-keogh.workers.dev/api/dashboard"
+        : "/api/dashboard";
       let fixtureRequest;
       let rideRun = 0;
 
@@ -172,7 +175,7 @@
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 12000);
         try {
-          const response = await fetch(DASHBOARD_ENDPOINT, {signal: controller.signal, cache: "no-store"});
+          const response = await fetch(DASHBOARD_ENDPOINT, {signal: controller.signal, cache: "no-store", credentials: "omit"});
           if (!response.ok) throw new Error("Server request failed");
           const data = await response.json();
           if (!data || data.source !== "synthetic-server" || !Array.isArray(data.records)) {
@@ -212,7 +215,7 @@
         } catch (error) {
           if (run !== rideRun) return;
           setRideState("error", scenario === "server" ?
-            "The server could not return a usable reply. This option needs the local server preview; it is not hosted yet. Try again." : scenario === "error" ?
+            "The sample server could not return a usable reply. Check your connection and try again." : scenario === "error" ?
             "Preview: the fictional sample could not load. Load the sample to try again." :
             "The fictional ride sample could not load. Check your connection and try again.");
         }

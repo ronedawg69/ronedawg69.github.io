@@ -15,7 +15,7 @@ const sampleWeather = {
   current_units: {temperature_2m:'°C',apparent_temperature:'°C',precipitation:'mm',wind_speed_10m:'km/h',wind_direction_10m:'°'}
 };
 const flush = async () => { for (let i=0;i<12;i++) await Promise.resolve(); };
-function setup({fixtureBody=fixture, failedLoads=0, delayFixture=false, weatherStatus=200, weatherBody=sampleWeather, hangWeather=false, serverBody={source:'synthetic-server',records:[{is_synthetic:true,ride_duration_seconds:1440}]}, serverStatus=200, hangServer=false, delayServer=false}={}) {
+function setup({fixtureBody=fixture, failedLoads=0, delayFixture=false, weatherStatus=200, weatherBody=sampleWeather, hangWeather=false, serverBody={source:'synthetic-server',records:[{is_synthetic:true,ride_duration_seconds:1440}]}, serverStatus=200, hangServer=false, delayServer=false, hostname="localhost"}={}) {
   const elements = new Map();
   for (const match of html.matchAll(/<[^>]+\bid="([^"]+)"[^>]*>/g)) {
     assert(!elements.has(match[1]), 'HTML IDs must be unique');
@@ -41,10 +41,11 @@ function setup({fixtureBody=fixture, failedLoads=0, delayFixture=false, weatherS
       if(delayFixture)pending.push(complete);else queueMicrotask(complete);
     }}
   };
-  context=vm.createContext({document,URL,URLSearchParams,AbortController,Intl,Date,
+  context=vm.createContext({location:{hostname},document,URL,URLSearchParams,AbortController,Intl,Date,
     console:{error(){}},setTimeout(fn,ms){const id=++nextTimer;timers.set(id,{fn,ms});return id},clearTimeout(id){timers.delete(id)},
     fetch(url,{signal}){
-      if(String(url)==='/api/dashboard'){
+      if(String(url)==='/api/dashboard' || String(url)==='https://cycle-signals-synthetic.ronan-d-keogh.workers.dev/api/dashboard'){
+        assert.equal(String(url), hostname==='ronedawg69.github.io' ? 'https://cycle-signals-synthetic.ronan-d-keogh.workers.dev/api/dashboard' : '/api/dashboard');
         if(hangServer)return new Promise((_,reject)=>signal.addEventListener('abort',()=>reject(Object.assign(new Error('aborted'),{name:'AbortError'}))));
         const reply=()=>({ok:serverStatus===200,status:serverStatus,json:async()=>serverBody});
         if(delayServer)return new Promise(resolve=>pending.push(()=>resolve(reply())));
@@ -72,6 +73,14 @@ function setup({fixtureBody=fixture, failedLoads=0, delayFixture=false, weatherS
   assert(body.records.every(r=>r.is_synthetic===true && r.period.startsWith('sample-')));
   assert.equal((await request('/missing')).status,404);
   assert.equal((await request('/api/dashboard','POST')).status,405);
+  for (const origin of ['https://ronedawg69.github.io', 'https://example.com', 'https://ronedawg69.github.io.evil.example', 'null']) {
+    const res = await worker.fetch(new Request('https://sample.test/api/dashboard', {headers:{Origin:origin}}));
+    assert.equal(res.headers.get('Access-Control-Allow-Origin'), origin === 'https://ronedawg69.github.io' ? origin : null);
+    assert.equal(res.headers.get('Vary'), 'Origin');
+    assert.equal(res.headers.get('Access-Control-Allow-Credentials'), null);
+  }
+  let hosted=setup({serverBody:body,hostname:'ronedawg69.github.io'});await flush();await hosted.select('server');
+  assert.equal(hosted.el('ride_duration_seconds').textContent,'1440 seconds');
   let s=setup({serverBody:body});await flush();await s.select('server');
   assert.equal(s.el('ride-status').dataset.state,'ready');
   assert.equal(s.el('ride_duration_seconds').textContent,'1440 seconds');

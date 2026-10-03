@@ -2,16 +2,15 @@
 
 ## Current status
 
-- **Checked on:** 2026-10-03 (UTC), GitHub integration and local checks.
-- **Repository/default branch:** [ronedawg69/ronedawg69.github.io](https://github.com/ronedawg69/ronedawg69.github.io), `main`.
-- **Verified main:** `0a1dc7b8e9b6cee21b09c19efaa2cdb83513ff26` before the rooms update. GitHub confirms Lesson 6 PR #26 merged; hosted Worker preview remains outstanding.
-- **Lesson stage:** Lessons 1–5 learning outcomes complete. Lesson 6 concepts assessed; synthetic server and local browser connection implemented and controlled checks passed. Hosted preview remains outstanding; Lesson 6 stays active. Lesson 7 has not started.
-- **Publication:** Lesson 6 PR #26 is merged into main. The rooms update is prepared on a separate branch for publication; see its record below. Merge does not establish deployment.
-- **Validation:** `node tests/lesson4-states.cjs` and `node tests/lesson6-server.cjs` passed on the session source. Worker routing/JSON and actual browser script checks include errors, empty results, timeout, retry, stale responses and weather independence. Local HTTP smoke evidence is recorded below after checking.
-- **Deployment:** no Worker deployment, account connection or billing. Newer Pages deployment was not checked; prior Lesson 4 deployment evidence below remains historical.
-- **Workspace:** no Git checkout in this session; read-only Git inspection returned not a repository. Sources fetched through GitHub; files used locally for checks. Branch/HEAD/remotes do not exist locally.
-- **Direction:** private dashboard with real data first, optional selected public summaries/relationships/insights later. Login and access implementation remain unresolved. The Lesson 6 endpoint contains invented data only and is not a protected real-data endpoint.
-- **Limitations:** no independent visual browser audit or Cloudflare runtime test. The server option works in the local adapter; it is not yet available on GitHub Pages. Default fixture and independent weather behavior remain.
+- **Checked on:** 2026-10-03, GitHub integration, clean cloned checkout and HTTP endpoint check.
+- **Repository/default branch:** `ronedawg69/ronedawg69.github.io`, `main`; verified baseline `e11bd79239ca55dfbbef8688c0dcf04e480ecc27`.
+- **Lesson stage:** Lesson 6 active. Synthetic server is hosted; dashboard connection changes are prepared on `codex/lesson-6-hosted-connection`. Lesson 7 has not started.
+- **Publication:** baseline is on GitHub main. This branch adds the hosted endpoint selection, exact-origin CORS and enabled workers.dev configuration; it must be reviewed and merged before these changes are live.
+- **Validation:** Lesson 4 and Lesson 6 controlled checks passed, including hosted/local endpoint selection, exact-origin CORS, server rendering, errors, empty, timeout, retry and stale replies. These checks do not establish live browser behavior.
+- **Deployment evidence:** Ronan's Cloudflare screenshot shows successful build `45f8b1ad`, version `2153b53c-f2a0-4ac4-9f47-0dd51eff1060`. Ronan enabled the Production URL and reported the expected JSON. Independent HTTP GET to `https://cycle-signals-synthetic.ronan-d-keogh.workers.dev/api/dashboard` returned 200, JSON with the expected invented record and `Cache-Control: no-store`. The screenshot does not identify the full source commit.
+- **Outstanding:** merge this connection change, verify both Pages and Worker deployment, then test the live dashboard selector end to end. Existing hosted Worker has no CORS permission yet; direct URL success does not prove browser fetch success.
+- **Privacy:** public invented records only; no real accounts, login, private credentials or personal records. CORS is browser read permission, not authorization. Real-data access remains blocked until server-side access controls and provider connection work are implemented.
+- **Workspace:** clean checkout cloned from origin at the verified baseline, then separate feature branch created; no existing user work overwritten.
 
 This is the single current-status record. Other documents link here. Learning outcomes are in [LEARNING_TRACKER.md](LEARNING_TRACKER.md); publication terms are defined in the [codebook](CODEBOOK.md#git-and-publication-vocabulary).
 
