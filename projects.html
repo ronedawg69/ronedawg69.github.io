@@ -1,6 +1,5 @@
 <!doctype html>
-<html lang="en">
-<head>
+<html lang="en"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#050505">
@@ -12,154 +11,259 @@
       --ink: #ece8dc;
       --muted: #aaa69a;
       --gold: #e8c46d;
+      --label: #c9bd9b;
+      --dim: #77746c;
       --background: #050505;
+      --edge: clamp(24px, 4.5vw, 72px);
+      --ease: cubic-bezier(.2, .7, .2, 1);
+
+      /* ---- Colour scale: change these to retune all 16 rooms ---- */
+      --h0: 22;        /* starting hue (copper) */
+      --hstep: 2;      /* hue shift per room */
+      --s: 62%;        /* saturation */
+      --l0: 52%;       /* starting lightness */
+      --lstep: 7%;     /* lightness jump per row */
     }
 
     * { box-sizing: border-box; }
     html { background: var(--background); }
     body {
       min-width: 320px;
-      min-height: 100vh;
+      min-height: 100svh;
       margin: 0;
       color: var(--ink);
       background:
-        radial-gradient(ellipse at 50% 8%, rgba(198, 158, 49, .055), transparent 36rem),
+        radial-gradient(ellipse at 52% 22%, rgba(198, 158, 49, .045), transparent 42%),
         linear-gradient(180deg, #080808, #030303);
+      background-attachment: fixed;
       font-family: Inter, ui-sans-serif, system-ui, sans-serif;
       -webkit-font-smoothing: antialiased;
+      touch-action: manipulation;
+    }
+    /* Vignette from the intro scene */
+    body::before {
+      position: fixed; inset: 0; z-index: 0; content: ""; pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.16), transparent 22%, transparent 77%, rgba(0,0,0,.31)),
+        radial-gradient(ellipse at center, transparent 37%, rgba(0,0,0,.2) 78%, rgba(0,0,0,.68) 140%);
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ---------- Return pill (matches .tool in index.html) ---------- */
+    .return-link {
+      position: fixed; z-index: 30;
+      top: max(30px, env(safe-area-inset-top)); right: var(--edge);
+      display: inline-flex; align-items: center; gap: 8px;
+      min-height: 44px; padding: 10px 16px 10px 13px;
+      color: var(--muted); background: #0c0c0bcc;
+      border: 1px solid #ffffff16; border-radius: 24px;
+      font-size: 14px;
+      transition: color .2s, border-color .2s, background .2s;
+      -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    }
+    .return-link:hover { color: var(--ink); border-color: #e8c46d66; background: #1a1812; }
+    .return-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
+    .return-link svg { flex: none; opacity: .8; }
+
+    /* ---------- Layout ---------- */
+    .shell { position: relative; z-index: 1; max-width: 1440px; margin: 0 auto; padding: max(30px, env(safe-area-inset-top)) var(--edge) 0; }
+    .masthead { margin-bottom: 64px; padding-right: 150px; }
+    .eyebrow { margin: 0 0 13px; color: var(--gold); font-size: 12px; letter-spacing: .22em; text-transform: uppercase; }
+    h1 { margin: 0; font: 400 clamp(32px, 4vw, 54px)/1.05 Georgia, "Times New Roman", serif; letter-spacing: -.045em; }
+    .intro { max-width: 290px; margin: 14px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+
+    /* ---------- Gallery ---------- */
+    .gallery {
+      --gap: clamp(10px, 1.7vw, 22px);
+      --orb: clamp(56px, 11vw, 150px);
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      column-gap: var(--gap);
+      row-gap: clamp(30px, 4vw, 54px);
+      counter-reset: rooms;
     }
 
-    body::before {
-      position: fixed;
-      inset: 0;
+    /* ---------- Doors (glowing points) ---------- */
+    .door {
+      --i: 0;
+      --r: 0;
+      --h: calc(var(--h0) + var(--i) * var(--hstep));
+      --hn: calc(var(--h) + var(--hstep));
+      --l: calc(var(--l0) + var(--r) * var(--lstep));
+      --c: hsl(var(--h) var(--s) var(--l));
+      --c-hi: hsl(var(--h) var(--s) calc(var(--l) + 18%));
+      --c-ray: hsl(var(--h) var(--s) calc(var(--l) + 10%) / .8);
+      --c-ray2: hsl(var(--h) var(--s) calc(var(--l) + 10%) / .5);
+      --c-glow: hsl(var(--h) var(--s) var(--l) / .13);
+      --c-ring: hsl(var(--h) var(--s) var(--l) / .3);
+      --c-ring2: hsl(var(--h) var(--s) var(--l) / .14);
+      position: relative;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 6px 8px 10px;
+      color: #8d897e; text-align: center;
+      counter-increment: rooms;
+      transition: color .35s;
+    }
+
+    /* Colour position: rows step in lightness, each room steps in hue */
+    .door:nth-child(n+5)  { --r: 1; }
+    .door:nth-child(n+9)  { --r: 2; }
+    .door:nth-child(n+13) { --r: 3; }
+    .door:nth-child(2)  { --i: 1; }  .door:nth-child(3)  { --i: 2; }  .door:nth-child(4)  { --i: 3; }
+    .door:nth-child(5)  { --i: 4; }  .door:nth-child(6)  { --i: 5; }  .door:nth-child(7)  { --i: 6; }
+    .door:nth-child(8)  { --i: 7; }  .door:nth-child(9)  { --i: 8; }  .door:nth-child(10) { --i: 9; }
+    .door:nth-child(11) { --i: 10; } .door:nth-child(12) { --i: 11; } .door:nth-child(13) { --i: 12; }
+    .door:nth-child(14) { --i: 13; } .door:nth-child(15) { --i: 14; } .door:nth-child(16) { --i: 15; }
+
+    /* Dotted connector to the next room in the row, shading between their colours */
+    .door:not(:nth-child(4n)):not(:last-child)::before {
+      position: absolute;
+      top: calc(6px + var(--orb) / 2);
+      left: calc(50% + var(--orb) / 2 + 8px);
+      width: calc(100% + var(--gap) - var(--orb) - 16px);
+      height: 1px;
       content: "";
       pointer-events: none;
-      background: radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, .4) 120%);
+      background: linear-gradient(90deg, hsl(var(--h) var(--s) var(--l)), hsl(var(--hn) var(--s) var(--l)));
+      opacity: .45;
+      -webkit-mask: repeating-linear-gradient(90deg, #000 0 1.25px, transparent 1.25px 9px);
+      mask: repeating-linear-gradient(90deg, #000 0 1.25px, transparent 1.25px 9px);
     }
 
-    a { color: inherit; }
-    .return-link {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 10;
-      padding: 10px 13px;
-      border: 1px solid rgba(232, 196, 109, .28);
-      color: var(--gold);
-      background: rgba(5, 5, 5, .9);
-      font-size: 11px;
-      letter-spacing: .08em;
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: color .25s ease, border-color .25s ease, background .25s ease;
+    .orb { position: relative; width: var(--orb); height: var(--orb); margin-bottom: 18px; border-radius: 50%; transition: transform .6s var(--ease); }
+    .orb::before, .orb::after { position: absolute; inset: 0; content: ""; border-radius: 50%; transition: transform 1.2s var(--ease); }
+    .disc {
+      position: absolute; top: 50%; left: 50%;
+      width: calc(var(--orb) * .2); height: calc(var(--orb) * .2);
+      border: 1px solid var(--c-ring); border-radius: 50%;
+      background: #080808;
+      transform: translate(-50%, -50%);
     }
-    .return-link:hover { color: #fff8e3; border-color: rgba(232, 196, 109, .62); background: #11100d; }
-    .return-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-    .shell { position: relative; width: min(1180px, calc(100% - 48px)); margin: 0 auto; padding: 72px 0 88px; }
-    .masthead { display: flex; align-items: end; justify-content: space-between; gap: 32px; margin-bottom: 54px; }
-    .eyebrow { margin: 0 0 13px; color: var(--gold); font-size: 12px; letter-spacing: .22em; text-transform: uppercase; }
-    h1 { margin: 0; font: 400 clamp(40px, 6vw, 74px)/.95 Georgia, "Times New Roman", serif; letter-spacing: -.055em; }
-    .intro { max-width: 330px; margin: 0 0 4px; color: var(--muted); font-size: 13px; line-height: 1.65; }
 
-    .gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.7vw, 22px); counter-reset: rooms; }
-    .door {
-      position: relative;
-      display: flex;
-      min-height: clamp(230px, 28vw, 340px);
-      padding: 0;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, .09);
-      color: var(--muted);
-      background: #0a0a09;
-      text-decoration: none;
-      counter-increment: rooms;
-      isolation: isolate;
-      transition: border-color .35s ease, color .35s ease, transform .35s ease;
+    /* Unoccupied: dim tinted rings */
+    .door:not(.live) .orb::before { inset: calc(var(--orb) * .25); border: 1px dashed var(--c-ring2); background: #070707; }
+
+    .number { display: block; margin-bottom: 9px; color: hsl(var(--h) 22% 46%); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+    .number::before { content: "Room " counter(rooms, decimal-leading-zero); }
+    .door h2 { margin: 0; color: inherit; font: 400 clamp(17px, 1.7vw, 22px)/1.15 Georgia, "Times New Roman", serif; letter-spacing: -.03em; }
+    .door p { max-width: 220px; margin: 8px 0 0; color: var(--dim); font-size: 12px; line-height: 1.5; }
+
+    /* Open: the Emergence ray-burst, in each room's own colour */
+    .door.live { color: var(--ink); }
+    .door.live .orb { background: radial-gradient(circle, var(--c-glow), transparent 62%); }
+    .door.live .orb::before {
+      background: repeating-conic-gradient(var(--c-ray) 0 1deg, transparent 1deg 16.3636deg);
+      -webkit-mask: radial-gradient(closest-side, transparent 40%, #000 41% 84%, transparent 85%);
+      mask: radial-gradient(closest-side, transparent 40%, #000 41% 84%, transparent 85%);
     }
-    .door::before {
-      position: absolute;
-      inset: 8px;
-      content: "";
-      border: 1px solid rgba(255, 255, 255, .055);
-      background:
-        linear-gradient(90deg, transparent 49.7%, rgba(255,255,255,.035) 50%, transparent 50.3%),
-        linear-gradient(180deg, rgba(255,255,255,.02), transparent 35%, rgba(0,0,0,.3));
-      box-shadow: inset 0 0 45px rgba(0, 0, 0, .38);
-      transition: border-color .35s ease, background .35s ease, box-shadow .35s ease;
-      z-index: -1;
+    .door.live .orb::after {
+      background: repeating-conic-gradient(from 8.18deg, var(--c-ray2) 0 1deg, transparent 1deg 16.3636deg);
+      -webkit-mask: radial-gradient(closest-side, transparent 44%, #000 45% 64%, transparent 65%);
+      mask: radial-gradient(closest-side, transparent 44%, #000 45% 64%, transparent 65%);
     }
-    .door::after {
-      position: absolute;
-      top: 50%;
-      right: 19px;
-      width: 5px;
-      height: 5px;
-      border: 1px solid #8e7950;
-      border-radius: 50%;
-      content: "";
-      box-shadow: 0 0 0 4px rgba(232,196,109,.025);
-      transition: background .35s ease, box-shadow .35s ease;
+    .door.live .disc {
+      width: calc(var(--orb) * .28); height: calc(var(--orb) * .28);
+      border: 0;
+      background: radial-gradient(circle closest-side, #171611 0 64%, var(--c) 68% 100%);
+      animation: endpoint 2.8s ease-in-out infinite;
     }
-    .door-content { align-self: end; width: 100%; padding: 24px 25px 26px; }
-    .number { display: block; margin-bottom: 10px; color: #716e66; font-size: 10px; letter-spacing: .18em; }
-    .number::before { content: "ROOM 0" counter(rooms); }
-    .door:nth-child(n+10) .number::before { content: "ROOM " counter(rooms); }
-    .door h2 { margin: 0; color: inherit; font: 400 clamp(20px, 2vw, 27px)/1.1 Georgia, "Times New Roman", serif; letter-spacing: -.025em; }
-    .door p { margin: 9px 0 0; color: #77746c; font-size: 11px; line-height: 1.45; }
-    .door.live { color: var(--ink); border-color: rgba(232, 196, 109, .28); }
-    .door.live::before { border-color: rgba(232, 196, 109, .14); background: radial-gradient(circle at 70% 35%, rgba(232,196,109,.07), transparent 45%), linear-gradient(180deg, #11100d, #080807); }
-    .door.live .number { color: var(--gold); }
-    .door.live p { color: var(--muted); }
-    .door.live:hover { color: #fff8e3; border-color: rgba(232, 196, 109, .62); transform: translateY(-4px); }
-    .door.live:hover::before { box-shadow: inset 0 0 50px rgba(232, 196, 109, .05), 0 0 32px rgba(232, 196, 109, .04); }
-    .door.live:hover::after { background: var(--gold); box-shadow: 0 0 18px rgba(232,196,109,.45); }
-    .door:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
-    .status { display: flex; align-items: center; gap: 9px; margin-top: 62px; color: #77746c; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
-    .status::before { width: 24px; height: 1px; content: ""; background: var(--gold); opacity: .7; }
+
+    /* Glyph centre: a larger dark disc with a thin ring and an icon in the room's colour */
+    .door.live .disc.glyph {
+      display: grid; place-items: center;
+      width: calc(var(--orb) * .36); height: calc(var(--orb) * .36);
+      color: var(--c);
+      background: radial-gradient(circle closest-side, #171611 0 84%, var(--c) 87% 100%);
+    }
+    .disc.glyph svg { display: block; width: 58%; height: 58%; overflow: visible; transition: color .35s, transform .6s var(--ease); }
+    .disc.glyph.wide svg { width: 66%; height: 66%; }
+    .door.live:hover .disc.glyph { color: var(--c-hi); }
+    .door.live:hover .disc.glyph svg { transform: scale(1.06); }
+
+    .door.live .number { color: var(--c); }
+    .door.live p { color: var(--label); }
+    .door.live:hover { color: #fff8e3; }
+    .door.live:hover .orb { transform: scale(1.06); }
+    .door.live:hover .orb::before { transform: rotate(9deg); }
+    .door.live:hover .orb::after { transform: rotate(-7deg); }
+    .door:focus-visible { outline: 2px solid var(--c); outline-offset: 5px; border-radius: 6px; }
+
+    /* ---------- Footer (status + progress, right-aligned) ---------- */
+    .footer {
+      display: flex; justify-content: flex-end;
+      margin-top: 64px; padding: 26px 0 max(32px, env(safe-area-inset-bottom));
+      background: repeating-linear-gradient(90deg, rgba(226,207,143,.2) 0 1.25px, transparent 1.25px 9px) 0 0 / 100% 1px no-repeat;
+    }
+    .footer-right { text-align: right; }
+    .status { margin: 0; color: var(--gold); font-size: 14px; letter-spacing: .04em; }
+    .progress-track { width: 104px; height: 1px; margin: 12px 0 0 auto; background: #ffffff24; }
+    /* --progress = open rooms ÷ 16 (2 ÷ 16 = .125) */
+    .progress-track i { --progress: .125; display: block; width: 100%; height: 100%; background: var(--gold); transform: scaleX(var(--progress)); transform-origin: left; }
+
+    @keyframes endpoint {
+      0%, 100% { box-shadow: 0 0 0 4px var(--c-glow), 0 0 14px var(--c-ring); }
+      50% { box-shadow: 0 0 0 7px var(--c-glow), 0 0 26px var(--c-ring); }
+    }
 
     @media (max-width: 760px) {
-      .shell { width: min(100% - 32px, 560px); padding-top: 44px; }
-      .masthead { display: block; margin-bottom: 38px; }
-      .intro { margin-top: 24px; }
-      .gallery { gap: 9px; }
-      .door { min-height: 180px; }
-      .door-content { padding: 15px 13px 17px; }
-      .door h2 { font-size: clamp(13px, 3.5vw, 20px); }
-      .door p { display: none; }
-      .door::after { right: 13px; width: 4px; height: 4px; }
+      .masthead { padding-right: 0; margin-bottom: 40px; }
+      .masthead .eyebrow { padding-right: 70px; }
+      .door { padding: 6px 2px 6px; }
+      .orb { margin-bottom: 12px; }
       .number { font-size: 8px; letter-spacing: .08em; }
+      .door h2 { font-size: clamp(12px, 3.4vw, 17px); }
+      .door p { display: none; }
+      .disc.glyph svg { width: 64%; height: 64%; }
+      .disc.glyph.wide svg { width: 72%; height: 72%; }
+      .footer { margin-top: 44px; }
     }
-
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
+    @media (max-width: 460px) {
+      .return-label { display: none; }
+      .return-link { padding: 10px 13px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
   </style>
 </head>
 <body>
-  <a class="return-link" href="./index.html"> ← </a>
+  <a class="return-link" href="./index.html" aria-label="Return to the intro">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>
+    <span class="return-label">Intro</span>
+  </a>
+
   <main class="shell">
     <header class="masthead">
-      <div><p class="eyebrow">Beyond the singularity</p><h1>Project rooms</h1></div>
-      <p class="intro">Doors for projects and works in progress.</p>
+      <p class="eyebrow" id="eyebrow">Beyond the singularity</p>
+      <h1 id="page-title">Project rooms</h1>
+      <p class="intro" id="page-intro">Doors for projects and works in progress.</p>
     </header>
 
     <section class="gallery" aria-label="Project rooms">
-      <a class="door live" href="api-experiment.html"><span class="door-content"><span class="number"></span><h2>Cycle Signals</h2><p>Weather, rest and the daily ride.</p></span></a>
-      <a class="door live" href="human-perspective.html"><span class="door-content"><span class="number"></span><h2>Human Perspective</h2><p>An interactive timeline of human capability.</p></span></a>
-      <div class="door"><span class="door-content"><span class="number"></span><h2>Unoccupied</h2><p>Awaiting an idea.</p></span></div>
-      <div class="door"><span class="door-content"><span class="number"></span><h2>Unoccupied</h2><p>Awaiting an idea.</p></span></div>
-      <div class="door"><span class="door-content"><span class="number"></span><h2>Unoccupied</h2><p>Awaiting an idea.</p></span></div>
-      <div class="door"><span class="door-content"><span class="number"></span><h2>Unoccupied</h2><p>Awaiting an idea.</p></span></div>
-      <div class="door"><span class="door-content"><span class="number"></span><h2>Unoccupied</h2><p>Awaiting an idea.</p></span></div>
-      <div class="door"><span class="door-content"><span class="number"></span><h2>Unoccupied</h2><p>Awaiting an idea.</p></span></div>
-      <div class="door"><span class="door-content"><span class="number"></span><h2>Unoccupied</h2><p>Awaiting an idea.</p></span></div>
-      <div class="door"><span class="door-content"><span class="number"></span><h2>Unoccupied</h2><p>Awaiting an idea.</p></span></div>
-      <div class="door"><span class="door-content"><span class="number"></span><h2>Unoccupied</h2><p>Awaiting an idea.</p></span></div>
-      <div class="door"><span class="door-content"><span class="number"></span><h2>Unoccupied</h2><p>Awaiting an idea.</p></span></div>
-      <div class="door"><span class="door-content"><span class="number"></span><h2>Unoccupied</h2><p>Awaiting an idea.</p></span></div>
-      <div class="door"><span class="door-content"><span class="number"></span><h2>Unoccupied</h2><p>Awaiting an idea.</p></span></div>
-      <div class="door"><span class="door-content"><span class="number"></span><h2>Unoccupied</h2><p>Awaiting an idea.</p></span></div>
-      <div class="door"><span class="door-content"><span class="number"></span><h2>Unoccupied</h2><p>Awaiting an idea.</p></span></div>
+      <a class="door live" href="api-experiment.html"><span class="orb"><span class="disc glyph wide"><svg viewBox="-10 -10 20 20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="-5.2" cy="3" r="4"></circle><circle cx="5.2" cy="3" r="4"></circle><path d="M-5.2 3H-.3L-2.4-3.2M-5.2 3L-2.4-3.2M-.3 3L3.3-2.4M3.6-3.4L5.2 3M-2.4-3.2L-2.8-4.6M-4.3-4.8H-1.6M3.6-3.4L3.2-5.2H5.1"></path><path d="M-2.4-3.2H-.5L.3-5.8L1.3-.9L2.1-3.3H3.6"></path></g><circle cx="-5.2" cy="3" r=".9" fill="currentColor"></circle><circle cx="5.2" cy="3" r=".9" fill="currentColor"></circle></svg></span></span><span class="number"></span><h2 id="room-title-1">Cycle Signals</h2><p id="room-desc-1">Weather, rest and the daily ride.</p></a>
+      <a class="door live" href="human-perspective.html"><span class="orb"><span class="disc glyph"><svg viewBox="-9.5 -10 19 19" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M-8 1C-8-5.5-4.5-9 0-9S8-5.5 8 1C8 3.5 6.5 4.8 5 5.4V8H-5V5.4C-6.5 4.8-8 3.5-8 1ZM-5.2 .6A2.3 2.3 0 1 0-.6 .6A2.3 2.3 0 1 0-5.2 .6ZM.6 .6A2.3 2.3 0 1 0 5.2 .6A2.3 2.3 0 1 0 .6 .6ZM0 3L-1.1 4.9H1.1ZM-1.9 6H-1V8H-1.9ZM1 6H1.9V8H1Z"></path></svg></span></span><span class="number"></span><h2 id="room-title-2">Human Perspective</h2><p id="room-desc-2">An interactive timeline of human capability.</p></a>
+      <div class="door"><span class="orb"><span class="disc"></span></span><span class="number"></span><h2 id="room-title-3">Unoccupied</h2><p id="room-desc-3">Awaiting an idea.</p></div>
+      <div class="door"><span class="orb"><span class="disc"></span></span><span class="number"></span><h2 id="room-title-4">Unoccupied</h2><p id="room-desc-4">Awaiting an idea.</p></div>
+      <div class="door"><span class="orb"><span class="disc"></span></span><span class="number"></span><h2 id="room-title-5">Unoccupied</h2><p id="room-desc-5">Awaiting an idea.</p></div>
+      <div class="door"><span class="orb"><span class="disc"></span></span><span class="number"></span><h2 id="room-title-6">Unoccupied</h2><p id="room-desc-6">Awaiting an idea.</p></div>
+      <div class="door"><span class="orb"><span class="disc"></span></span><span class="number"></span><h2 id="room-title-7">Unoccupied</h2><p id="room-desc-7">Awaiting an idea.</p></div>
+      <div class="door"><span class="orb"><span class="disc"></span></span><span class="number"></span><h2 id="room-title-8">Unoccupied</h2><p id="room-desc-8">Awaiting an idea.</p></div>
+      <div class="door"><span class="orb"><span class="disc"></span></span><span class="number"></span><h2 id="room-title-9">Unoccupied</h2><p id="room-desc-9">Awaiting an idea.</p></div>
+      <div class="door"><span class="orb"><span class="disc"></span></span><span class="number"></span><h2 id="room-title-10">Unoccupied</h2><p id="room-desc-10">Awaiting an idea.</p></div>
+      <div class="door"><span class="orb"><span class="disc"></span></span><span class="number"></span><h2 id="room-title-11">Unoccupied</h2><p id="room-desc-11">Awaiting an idea.</p></div>
+      <div class="door"><span class="orb"><span class="disc"></span></span><span class="number"></span><h2 id="room-title-12">Unoccupied</h2><p id="room-desc-12">Awaiting an idea.</p></div>
+      <div class="door"><span class="orb"><span class="disc"></span></span><span class="number"></span><h2 id="room-title-13">Unoccupied</h2><p id="room-desc-13">Awaiting an idea.</p></div>
+      <div class="door"><span class="orb"><span class="disc"></span></span><span class="number"></span><h2 id="room-title-14">Unoccupied</h2><p id="room-desc-14">Awaiting an idea.</p></div>
+      <div class="door"><span class="orb"><span class="disc"></span></span><span class="number"></span><h2 id="room-title-15">Unoccupied</h2><p id="room-desc-15">Awaiting an idea.</p></div>
+      <div class="door"><span class="orb"><span class="disc"></span></span><span class="number"></span><h2 id="room-title-16">Unoccupied</h2><p id="room-desc-16">Awaiting an idea.</p></div>
     </section>
-    <div class="status">2 of 16 rooms open</div>
+
+    <footer class="footer">
+      <div class="footer-right">
+        <p class="status" id="room-status">2 of 16 rooms open</p>
+        <div class="progress-track" aria-hidden="true"><i></i></div>
+      </div>
+    </footer>
   </main>
-</body>
-</html>
+
+</body></html>
