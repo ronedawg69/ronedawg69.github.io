@@ -1,11 +1,11 @@
 # Next session handoff
 
-Read [current status](APPLICATION_TRACKER.md#current-status), [learning outcomes](LEARNING_TRACKER.md), and [the connector map](CONNECTOR_MAP.md). Inspect actual GitHub state before implementation.
+Read [current status](APPLICATION_TRACKER.md#current-status), [learning outcomes](LEARNING_TRACKER.md), and [the connector map](CONNECTOR_MAP.md).
 
 ## Single next action
 
-Review and merge the Lesson 5 documentation PR linked in the application tracker. After a reported merge, verify GitHub and update records before Lesson 6. The next lesson starts with resolving the [open privacy/access decisions](PROJECT_BRIEF.md#open-decisions-before-lesson-6), teaching the synthetic server request/response flow, and checking newly taught concepts before building. Do not repeat the correctly answered browser-token, authentication/authorization or runtime checks. Provider blockers remain documented; no live accounts or billing are authorized.
+Review and merge the Lesson 6 PR for the synthetic server and updated records. After a reported merge, verify GitHub and reconcile records. Then complete the hosted synthetic preview: select/confirm the server account and access approach, check current terms, and demonstrate the browser-to-server request. Do not start Lesson 7 or repeat correctly answered concept checks. Lesson 6 remains active until hosted-preview work is resolved or explicitly deferred by Ronan.
 
-## Guardrails
+## Direction and guardrails
 
-Follow [AGENTS.md](../AGENTS.md) for privacy, account authorization, cost, branch safety and reporting. Use the [publication vocabulary](CODEBOOK.md#git-and-publication-vocabulary); a PR is not a deployment.
+Private real-data dashboard first; selected public summaries/insights later. Lesson 6 is synthetic plumbing only. No live accounts, secrets, private records, paid services or billing are authorized. Follow [AGENTS.md](../AGENTS.md). A merged PR does not deploy the Worker. See [server preview instructions](LESSON_6.md).

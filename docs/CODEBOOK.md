@@ -376,3 +376,13 @@ These first-party documentation reads update feasibility, not account access. No
 Authentication establishes who requests data; authorization establishes whether that identity may access those data. Server-side credentials protect provider access; endpoint checks separately protect returned records. Static hosting delivers inspectable files; a runtime executes private code; a database persists information. CORS controls browser cross-origin behavior, not who can call an endpoint.
 
 The [connector map](CONNECTOR_MAP.md) documents the proposed flows and unresolved retention, audience and access mechanisms. These remain design questions; documentation reads cannot establish account eligibility or deployment.
+
+## Lesson 6: the request and reply (2026-10-03)
+
+- **Endpoint:** an address for requesting data, here `/api/dashboard`.
+- **JSON:** text containing labelled values that browser code can read.
+- **Request/response:** browser asks; server replies; browser validates and displays. No usable reply means error; a successful empty collection means empty.
+- **Local adapter:** `server/dev.mjs` runs the same Worker handler through Node HTTP on loopback. This checks actual HTTP without publishing or connecting accounts. It is not a Cloudflare-runtime deployment test.
+- **Private boundary:** tokens kept on a server do not protect returned data. Real-data access still requires authentication and authorization. CORS does not provide those checks.
+
+Cloudflare's [fetch handler](https://developers.cloudflare.com/workers/runtime-apis/handlers/fetch/) and [Wrangler configuration](https://developers.cloudflare.com/workers/wrangler/configuration/) were read on 2026-10-03 for handler/config structure. Pricing, account eligibility and hosted runtime behavior were not verified here. No deployment was performed.

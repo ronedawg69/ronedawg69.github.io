@@ -76,8 +76,8 @@ Open-Meteo documentation for the existing weather request was recorded in `docs/
 
 ## Open decisions before Lesson 6
 
-These remain unresolved; this cleanup makes no selection.
+Audience resolved on 2026-10-03. Access implementation and provider eligibility remain open.
 
-- Who can see the published dashboard: only Ronan with real data, or a public dashboard with fictional data only?
-- How will the server endpoint authenticate and authorize requests so strangers cannot fetch Ronan's ride/sleep data?
+- **Selected direction:** build Ronan's private dashboard with real data first. Later add a public page with deliberately selected summaries, relationships and insights; a fictional demo can follow. Private routes, exact timestamps and raw provider responses stay private. Public release is a later selection, not permission to expose all data.
+- **Access requirement:** login and server-side authorization before any real-data endpoint is enabled. The precise mechanism remains to be selected. Lesson 6's synthetic-only endpoint is not an authenticated private dashboard.
 - Fitbit / Google Health: re-check replacement API access, consent, scopes and required sleep/activity fields before implementation. Google documents legacy Fitbit support ending 2026-09-30 and API turn-off on 2026-10-30; [first-party migration guide](https://developers.google.com/health/migration), checked 2026-10-02. The guide also says new projects are not currently being onboarded. Lesson 8 may need redesigning; eligibility and the replacement path remain undecided. See the codebook's **needs re-check** row.

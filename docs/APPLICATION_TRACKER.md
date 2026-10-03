@@ -2,16 +2,16 @@
 
 ## Current status
 
-- **Checked on:** 2026-10-02 (UTC).
+- **Checked on:** 2026-10-03 (UTC), GitHub integration and local checks.
 - **Repository/default branch:** [ronedawg69/ronedawg69.github.io](https://github.com/ronedawg69/ronedawg69.github.io), `main`.
-- **Verified main:** `9eea29d8e76cf48e457badfe24c7a18c2e6010b7` (GitHub ref read before this documentation change). PR #24 teaching-rule records are merged; the separate Human Perspective update on main is preserved. Documentation cleanup [PR #22](https://github.com/ronedawg69/ronedawg69.github.io/pull/22) is merged. Lesson 3 fixture and seconds renderer are present at this baseline.
-- **Lesson stage:** Lessons 1–3 outcomes preserved. Lesson 4 implementation and controlled checks complete; the brief explanation covers loading, absence, failure and recovery. A follow-up code walkthrough was delivered after Ronan reported insufficient teaching. The follow-up concept answers were assessed as correct on 2026-10-02; no corrective check is needed. No new misconception is inferred. Lesson 5 concepts were taught and answers assessed correctly; connector map and first-party checks complete on the lesson branch, awaiting PR review/merge. Lesson 6 has not started.
-- **Lesson 4 publication:** [PR #23](https://github.com/ronedawg69/ronedawg69.github.io/pull/23) verified closed and merged into `main` at `126794d0e04fee482dfd08c7f2e769a1ae5ba332`. No further merge action is needed for that PR.
-- **Deployed baseline:** The previously checked GitHub Pages workflow for Lesson 4 commit `126794d0e04fee482dfd08c7f2e769a1ae5ba332` completed successfully. This is the last independently checked deployment here; deployment of the newer main revision has not been checked in this lesson. Earlier HTTP verification confirmed the served scenario selector and timeout code. Ronan reported trying the scenarios; this is user-reported behavior, not an independent browser audit.
-- **Local validation:** `node tests/lesson4-states.cjs` passed against the Lesson 4 application/test bytes. Tests execute the actual inline JavaScript with a controlled DOM and fictional responses; check ready/loading/empty/error, malformed or missing data, retry, stale-value clearing, delayed responses, weather independence, HTTP failure, invalid response and timeout.
-- **Limitations:** Chromium is absent; its install download returned an invalid archive. No browser rendering, mobile layout or accessibility audit was completed. Semantic labels, live status regions, busy states and keyboard-native controls are implemented; independent browser layout/accessibility verification remains outstanding; Ronan's reported use is recorded separately.
-- **Workspace:** no Git checkout exists here; read-only Git commands confirmed that local branch/HEAD/remotes/status are unavailable. Sources were fetched from GitHub at the verified baseline. Lesson 4 application/test changes are on main. This records update is a separate documentation PR, not automatically merged.
-- **Scope:** static HTML/CSS/browser JavaScript; existing public generic-London weather request and invented fixture only. Lesson 4 adds a ride status panel, labelled fictional scenario previews, validation/retry and a weather timeout. No private account, server, storage, credential, billing or additional provider was introduced.
+- **Verified main:** `f0c23c46e3ed73228da17569a33b4d0e0f9df005`. Lesson 5 PR #25 is merged at `fa62545f8479958670342e774dc6ded3feaf8311`; the later Human Perspective change is preserved. No open PR existed before this session's publication.
+- **Lesson stage:** Lessons 1–5 learning outcomes complete. Lesson 6 concepts assessed; synthetic server and local browser connection implemented and controlled checks passed. Hosted preview remains outstanding; Lesson 6 stays active. Lesson 7 has not started.
+- **Publication:** Lesson 6 changes will be published on a separate branch/PR; see the Lesson 6 publication record below for verified identity. They are not merged or deployed.
+- **Validation:** `node tests/lesson4-states.cjs` and `node tests/lesson6-server.cjs` passed on the session source. Worker routing/JSON and actual browser script checks include errors, empty results, timeout, retry, stale responses and weather independence. Local HTTP smoke evidence is recorded below after checking.
+- **Deployment:** no Worker deployment, account connection or billing. Newer Pages deployment was not checked; prior Lesson 4 deployment evidence below remains historical.
+- **Workspace:** no Git checkout in this session; read-only Git inspection returned not a repository. Sources fetched through GitHub; files used locally for checks. Branch/HEAD/remotes do not exist locally.
+- **Direction:** private dashboard with real data first, optional selected public summaries/relationships/insights later. Login and access implementation remain unresolved. The Lesson 6 endpoint contains invented data only and is not a protected real-data endpoint.
+- **Limitations:** no independent visual browser audit or Cloudflare runtime test. The server option works in the local adapter; it is not yet available on GitHub Pages. Default fixture and independent weather behavior remain.
 
 This is the single current-status record. Other documents link here. Learning outcomes are in [LEARNING_TRACKER.md](LEARNING_TRACKER.md); publication terms are defined in the [codebook](CODEBOOK.md#git-and-publication-vocabulary).
 
@@ -71,4 +71,10 @@ GitHub integration verified main and the lesson branch on 2026-10-02. They diver
 
 [CONNECTOR_MAP.md](CONNECTOR_MAP.md) records minimum candidate fields, boundaries, hosting alternatives, unresolved retention/access choices and provider blockers. First-party checks are dated in the codebook; actual answers are in the learning tracker. Documentation consistency and the changed-file scope are checked; no application test or deployment is claimed for this docs-only lesson.
 
-Lesson 5 publication: [PR #25](https://github.com/ronedawg69/ronedawg69.github.io/pull/25), verified open with head `codex/lesson-5-connectors` and base `main`; not merged or deployed. GitHub reported a clean, mergeable PR. All five changed files are documentation; no application bytes differ from main.
+Lesson 5 publication: [PR #25](https://github.com/ronedawg69/ronedawg69.github.io/pull/25), verified merged into `main` on 2026-10-03 (merge occurred 2026-10-02). Head `codex/lesson-5-connectors` at `08372720cc91754fe1e63b68da86c8262b65df32`, merge `fa62545f8479958670342e774dc6ded3feaf8311`. Earlier awaiting-merge status is superseded.
+
+## Lesson 6 evidence: 2026-10-03
+
+Local HTTP smoke check started `node server/dev.mjs`, requested the actual `/api/dashboard` endpoint, verified 200, no-store and the approved synthetic values, and fetched the dashboard HTML. It passed. An earlier attempt found no running process; starting and querying within one process resolved it. This is local HTTP evidence, not hosted or visual-browser evidence.
+
+Publication: branch `codex/lesson-6-tiny-server`, base `main` at `f0c23c46e3ed73228da17569a33b4d0e0f9df005`. PR identity is added after creation and verification.

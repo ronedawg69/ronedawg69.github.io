@@ -20,7 +20,7 @@ Ronan reported insufficient teaching and requested concept tests before executio
 
 ## Where Lesson 6 starts
 
-Use the application tracker for publication status. Lesson 5's [connector map](CONNECTOR_MAP.md) records browser/server/provider roles and the hosting comparison. Teach the synthetic endpoint request/response flow and check understanding before Lesson 6 implementation. Confirm the unresolved dashboard visibility, endpoint protection and Google Health access questions in the project brief; do not connect real accounts or activate billing without authorization.
+Use the application tracker for publication status. Lesson 5's [connector map](CONNECTOR_MAP.md) records browser/server/provider roles and the hosting comparison. The request/response explanation and concept check were completed on 2026-10-03. Dashboard direction is now private real data first, selected public insights later. Authentication implementation and Google Health access remain unresolved; these do not block a synthetic-only local server.
 
 ## Curriculum outcomes
 
@@ -33,7 +33,7 @@ The [11-lesson plan](PROJECT_BRIEF.md#remaining-course-lessons-411) defines scop
 | 3. Render one signal | Complete; script order, fixture access, DOM assignment and units. |
 | 4. Make failure states helpful | Implemented and checked; loading, empty, error and recovery outcomes recorded above. Publication is tracked separately. |
 | 5. Pick the connectors and home | Complete; connector map, provider checks and boundary concepts recorded. Publication is tracked separately. |
-| 6. Add a tiny server | Planned; see the application tracker for current stage. |
+| 6. Add a tiny server | Implemented with synthetic endpoint and local preview; controlled checks passed. Hosting is outstanding; see the application tracker. |
 | 7. Bring in rides | Planned; see the application tracker for current stage. |
 | 8. Bring in sleep and activity | Planned; see the application tracker for current stage. |
 | 9. Add weather context | Planned; see the application tracker for current stage. |
@@ -56,3 +56,9 @@ Lesson 5 answers and assessment follow.
 
 - Runtime role: Ronan answered “Server runtime, as the static hosting won't and we need to ensure authorisations and authenctication”. Assessment: correct; the runtime executes identity/access checks and private provider calls. Static hosting delivers files; a database persists data.
 - Codex completed the [connector map](CONNECTOR_MAP.md) after assessing these answers. No corrective check remains for the tested concepts. The map keeps provider eligibility, dashboard audience and access mechanism unresolved; these answers do not approve account connection or deployment.
+
+## Lesson 6 concept check: 2026-10-03
+
+- Browser role: Ronan answered “The browser reads the package and displays based on the states that have already been built”. Assessment: correct; the response does not render itself.
+- Failed request: Ronan answered “The dashboard should show the error state, as it was a failure on the server side, not a lack of data”. Assessment: error versus empty is correct. Clarified that the cause can be the server or the connection, so a missing reply does not prove server failure. No repeated check required.
+- Taught endpoint as a data-request address and JSON as labelled text data. Implemented the synthetic Worker handler, local adapter and browser server scenario after assessment. No real accounts or login implementation is claimed.
