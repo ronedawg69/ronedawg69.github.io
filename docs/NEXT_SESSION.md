@@ -1,11 +1,11 @@
 # Next session handoff
 
-Read [current status](APPLICATION_TRACKER.md#current-status), [learning outcomes](LEARNING_TRACKER.md), and [the connector map](CONNECTOR_MAP.md).
+See [current status](APPLICATION_TRACKER.md#current-status) and [learning outcomes](LEARNING_TRACKER.md).
 
 ## Single next action
 
-Review and merge the Lesson 6 PR for the synthetic server and updated records. After a reported merge, verify GitHub and reconcile records. Then complete the hosted synthetic preview: select/confirm the server account and access approach, check current terms, and demonstrate the browser-to-server request. Do not start Lesson 7 or repeat correctly answered concept checks. Lesson 6 remains active until hosted-preview work is resolved or explicitly deferred by Ronan.
+Review and merge the hosted synthetic connection PR. Verify GitHub identity/head/base before relying on it. After merge, verify Pages and Cloudflare deployments and test `api-experiment.html`: select **Ask the server · fictional sample**, expect **Server replied!** and **1440 seconds**. Record the checked URLs and versions. Do not claim Lesson 6 complete until the live browser journey is verified or Ronan explicitly defers it.
 
-## Direction and guardrails
+## Boundaries
 
-Private real-data dashboard first; selected public summaries/insights later. Lesson 6 is synthetic plumbing only. No live accounts, secrets, private records, paid services or billing are authorized. Follow [AGENTS.md](../AGENTS.md). A merged PR does not deploy the Worker. See [server preview instructions](LESSON_6.md).
+Lesson 6 remains active; no repeated concept gate is needed. No Lesson 7, real provider connections, private records, billing or login implementation is included. Public synthetic endpoint only. GitHub configuration enables workers.dev to match Ronan's dashboard choice. See [AGENTS.md](../AGENTS.md).

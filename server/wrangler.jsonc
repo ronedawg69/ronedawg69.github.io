@@ -2,5 +2,6 @@
   "name": "cycle-signals-synthetic",
   "main": "worker.mjs",
   "compatibility_date": "2026-10-03",
-  "workers_dev": false
+  "workers_dev": true,
+  "preview_urls": false
 }

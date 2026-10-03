@@ -3,8 +3,12 @@ const records = [{period:"sample-01",ride_duration_seconds:1440,sleep_duration_h
 export default {
   async fetch(request) {
     const url = new URL(request.url);
+    // Browser read permission only: this is NOT authentication or authorization.
+    const allowedOrigin = "https://ronedawg69.github.io";
+    const cors = request.headers.get("Origin") === allowedOrigin
+      ? {"Access-Control-Allow-Origin": allowedOrigin} : {};
     const reply = (body, status=200, extra={}) => new Response(JSON.stringify(body), {
-      status, headers: {"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store",...extra}
+      status, headers: {"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store","Vary":"Origin",...cors,...extra}
     });
     if (url.pathname !== "/api/dashboard") return reply({error:"Not found"},404);
     if (request.method !== "GET") return reply({error:"Use GET"},405,{Allow:"GET"});
