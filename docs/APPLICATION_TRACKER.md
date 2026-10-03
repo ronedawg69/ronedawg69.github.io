@@ -4,9 +4,9 @@
 
 - **Checked on:** 2026-10-03 (UTC), GitHub integration and local checks.
 - **Repository/default branch:** [ronedawg69/ronedawg69.github.io](https://github.com/ronedawg69/ronedawg69.github.io), `main`.
-- **Verified main:** `f0c23c46e3ed73228da17569a33b4d0e0f9df005`. Lesson 5 PR #25 is merged at `fa62545f8479958670342e774dc6ded3feaf8311`; the later Human Perspective change is preserved. No open PR existed before this session's publication.
+- **Verified main:** `0a1dc7b8e9b6cee21b09c19efaa2cdb83513ff26` before the rooms update. GitHub confirms Lesson 6 PR #26 merged; hosted Worker preview remains outstanding.
 - **Lesson stage:** Lessons 1–5 learning outcomes complete. Lesson 6 concepts assessed; synthetic server and local browser connection implemented and controlled checks passed. Hosted preview remains outstanding; Lesson 6 stays active. Lesson 7 has not started.
-- **Publication:** Lesson 6 changes will be published on a separate branch/PR; see the Lesson 6 publication record below for verified identity. They are not merged or deployed.
+- **Publication:** Lesson 6 PR #26 is merged into main. The rooms update is prepared on a separate branch for publication; see its record below. Merge does not establish deployment.
 - **Validation:** `node tests/lesson4-states.cjs` and `node tests/lesson6-server.cjs` passed on the session source. Worker routing/JSON and actual browser script checks include errors, empty results, timeout, retry, stale responses and weather independence. Local HTTP smoke evidence is recorded below after checking.
 - **Deployment:** no Worker deployment, account connection or billing. Newer Pages deployment was not checked; prior Lesson 4 deployment evidence below remains historical.
 - **Workspace:** no Git checkout in this session; read-only Git inspection returned not a repository. Sources fetched through GitHub; files used locally for checks. Branch/HEAD/remotes do not exist locally.
@@ -78,3 +78,7 @@ Lesson 5 publication: [PR #25](https://github.com/ronedawg69/ronedawg69.github.i
 Local HTTP smoke check started `node server/dev.mjs`, requested the actual `/api/dashboard` endpoint, verified 200, no-store and the approved synthetic values, and fetched the dashboard HTML. It passed. An earlier attempt found no running process; starting and querying within one process resolved it. This is local HTTP evidence, not hosted or visual-browser evidence.
 
 Publication: branch `codex/lesson-6-tiny-server`, base `main` at `f0c23c46e3ed73228da17569a33b4d0e0f9df005`. [PR #26](https://github.com/ronedawg69/ronedawg69.github.io/pull/26) verified open and mergeable, head `codex/lesson-6-tiny-server` at implementation commit `267b8b83fa1fbc6f2f94a602e19fc488929c4006`, base `main`. A subsequent documentation-only commit records this identity. Ready for review and merge; not merged or deployed.
+
+## Project rooms update: 2026-10-03
+
+Replace root `projects.html` with Ronan's supplied Project Rooms page. Replace preview-only opening HTML tags with `<!doctype html>` and `<html lang="en">` in projects and Human Perspective. Human Perspective content after its opening tag is preserved exactly. GitHub main already uses the exact filenames `api-experiment.html`, `human-perspective.html` and `index.html`; no rename required. All three rooms links resolve to files in the same root directory. Validation: complete documents and doctype/header checks passed; linked paths verified against GitHub's tree. No independent visual browser check or deployment evidence is claimed here. This maintenance request does not advance the lesson.
