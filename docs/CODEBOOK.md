@@ -399,3 +399,7 @@ Cloudflare first-party references checked on 2026-10-03:
 - [Build root and deploy command](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/).
 
 Dashboard production URL enablement is matched by `workers_dev: true`; version preview URLs are disabled. This prevents the next Wrangler deployment from restoring the old disabled setting. No provider logging-retention guarantee or new pricing claim is made.
+
+### Lesson 6 verification boundary
+
+Opening `/api/dashboard` verifies a direct data reply. A successful dashboard server selection additionally verifies that its browser request and renderer work together. Ronan's 2026-10-03 screenshot supplies that end-to-end evidence for the invented-data path. It does not establish login, authorization, real-provider access, or an independent network audit. Current evidence is maintained in the application tracker.

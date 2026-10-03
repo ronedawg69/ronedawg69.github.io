@@ -20,6 +20,6 @@ On `ronedawg69.github.io`, the browser requests `https://cycle-signals-synthetic
 
 The browser sends a request to Cloudflare only when the server scenario is selected or retried (12-second timeout, no automatic polling). It sends no personal records or credentials. The response contains one invented sample. Worker application code stores no requests or records and writes no logs; provider infrastructure logging/retention is not established here, so do not assume zero retention. Keep the Free plan; no billing change is included. Shutoff: disable the Production URL and restore `workers_dev: false` before another deployment. The default local fixture remains available.
 
-Merge triggers the connected deployment pipelines; confirm their success and the live dashboard separately. Direct endpoint HTTP success is established; hosted browser rendering remains outstanding. See the application tracker for evidence.
+Merge triggers the connected deployment pipelines; confirm their success and the live dashboard separately. Direct endpoint HTTP/JSON/CORS success is established; Ronan's screenshot verifies hosted browser rendering after PR #28. Lesson 6 is complete. See the application tracker for evidence.
 
 Before adding real records, implement login and server-side authorization, reviewed logging/retention and private response handling. Never replace these invented records with real data in source. Private dashboard first; public selected insights later.

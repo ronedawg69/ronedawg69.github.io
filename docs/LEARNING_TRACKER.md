@@ -33,7 +33,7 @@ The [11-lesson plan](PROJECT_BRIEF.md#remaining-course-lessons-411) defines scop
 | 3. Render one signal | Complete; script order, fixture access, DOM assignment and units. |
 | 4. Make failure states helpful | Implemented and checked; loading, empty, error and recovery outcomes recorded above. Publication is tracked separately. |
 | 5. Pick the connectors and home | Complete; connector map, provider checks and boundary concepts recorded. Publication is tracked separately. |
-| 6. Add a tiny server | Implemented with synthetic endpoint and local preview; controlled checks passed. Hosting is outstanding; see the application tracker. |
+| 6. Add a tiny server | Complete; synthetic endpoint, local preview and hosted browser journey verified. See the application tracker for publication/deployment evidence. |
 | 7. Bring in rides | Planned; see the application tracker for current stage. |
 | 8. Bring in sleep and activity | Planned; see the application tracker for current stage. |
 | 9. Add weather context | Planned; see the application tracker for current stage. |
@@ -68,3 +68,7 @@ Lesson 5 answers and assessment follow.
 - Ronan correctly explained that direct endpoint success does not prove the dashboard works: browser/site failures can stop the data reaching the display. Assessment: correct; verify the whole request/render journey.
 - Ronan initially understood the server as authorizing access to GitHub. Clarified that GitHub Pages serves public files; our server checks access to data. Ronan then correctly explained that browser source checks can be bypassed and private credentials stay server-side. Refined that approved response data does reach the browser while provider credentials stay on the server. No corrective gate remains for these concepts.
 - Implementation continues the synthetic hosted preview only; actual login and authorization are still not implemented.
+
+## Lesson 6 completion: 2026-10-03
+
+Ronan supplied a browser screenshot with the server scenario selected and **Server replied!** / **1440 seconds** displayed. Independent weather remained visible. Combined with live HTTP checks and verified PR #28 merge/Pages workflow, this closes the hosted synthetic preview. Lesson 6 is complete; no unresolved corrective concept gate remains. Lesson 7 has not started and must begin with protected Strava access planning, not immediate real-data publication.

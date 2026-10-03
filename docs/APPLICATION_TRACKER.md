@@ -2,15 +2,21 @@
 
 ## Current status
 
-- **Checked on:** 2026-10-03, GitHub integration, clean cloned checkout and HTTP endpoint check.
-- **Repository/default branch:** `ronedawg69/ronedawg69.github.io`, `main`; verified baseline `e11bd79239ca55dfbbef8688c0dcf04e480ecc27`.
-- **Lesson stage:** Lesson 6 active. Synthetic server is hosted; dashboard connection changes are prepared on `codex/lesson-6-hosted-connection`. Lesson 7 has not started.
-- **Publication:** baseline is on GitHub main. This branch adds the hosted endpoint selection, exact-origin CORS and enabled workers.dev configuration; it must be reviewed and merged before these changes are live.
-- **Validation:** Lesson 4 and Lesson 6 controlled checks passed, including hosted/local endpoint selection, exact-origin CORS, server rendering, errors, empty, timeout, retry and stale replies. These checks do not establish live browser behavior.
-- **Deployment evidence:** Ronan's Cloudflare screenshot shows successful build `45f8b1ad`, version `2153b53c-f2a0-4ac4-9f47-0dd51eff1060`. Ronan enabled the Production URL and reported the expected JSON. Independent HTTP GET to `https://cycle-signals-synthetic.ronan-d-keogh.workers.dev/api/dashboard` returned 200, JSON with the expected invented record and `Cache-Control: no-store`. The screenshot does not identify the full source commit.
-- **Outstanding:** merge this connection change, verify both Pages and Worker deployment, then test the live dashboard selector end to end. Existing hosted Worker has no CORS permission yet; direct URL success does not prove browser fetch success.
-- **Privacy:** public invented records only; no real accounts, login, private credentials or personal records. CORS is browser read permission, not authorization. Real-data access remains blocked until server-side access controls and provider connection work are implemented.
-- **Workspace:** clean checkout cloned from origin at the verified baseline, then separate feature branch created; no existing user work overwritten.
+- **Checked on:** 2026-10-03, GitHub integration, live HTTP checks and Ronan's browser screenshot.
+- **Verified main:** `b3dab26d1b0d54b2dc8fe57bc2302a4e72ad6223` in `ronedawg69/ronedawg69.github.io`; default branch `main`.
+- **Lesson stage:** Lessons 1–6 complete. Lesson 6's hosted synthetic request/render journey is verified by Ronan's screenshot. Lesson 7 has not started; no further Lesson 6 concept gate is needed.
+- **Publication:** [PR #28](https://github.com/ronedawg69/ronedawg69.github.io/pull/28) merged, head `65586ccaaebf9690099e77d791b4b4c667cbb23d`, base `main`. This documentation closeout is prepared separately for review.
+- **Pages deployment:** [workflow run](https://github.com/ronedawg69/ronedawg69.github.io/actions/runs/37127515995) completed successfully for the verified main commit. Live HTML at `https://ronedawg69.github.io/api-experiment.html?v=lesson6-closeout` contains the hosted endpoint and updated selector.
+- **Worker behavior:** independent GET to `https://cycle-signals-synthetic.ronan-d-keogh.workers.dev/api/dashboard` with Pages Origin returned 200, expected invented JSON, `Access-Control-Allow-Origin: https://ronedawg69.github.io`, `Vary: Origin` and `Cache-Control: no-store`. Exact current Worker version ID was not queried; behavior is verified separately from source attribution.
+- **Browser evidence:** Ronan's 2026-10-03 screenshot after opening the PR #28 cache-busted link shows **Ask the server · fictional sample**, **Server replied! Fictional ride duration:** and **1440 seconds**, with independent weather visible. This is user-provided end-to-end evidence; no independent browser/network audit is claimed.
+- **Validation:** Lesson 4 and Lesson 6 controlled checks passed before PR #28, including hosted/local routing, exact-origin CORS, rendering, invalid replies, empty/error/timeout, retry and stale replies. Documentation-only closeout does not change application code.
+- **Next:** teach and plan protected Strava access, including app login/server authorization, scoped provider consent and secret handling, before real records are enabled. Do not automatically begin Lesson 7.
+- **Privacy/direction:** private real-data dashboard first, selected public insights later. Current endpoint is public invented data only: no provider account, login, private credentials or personal records. CORS is not authorization. Billing is not enabled by this work.
+- **Workspace:** separate closeout worktree based on verified main; earlier feature work preserved.
+
+## Lesson 6 hosted closeout evidence
+
+Initial Cloudflare screenshot: successful build `45f8b1ad`, version `2153b53c-f2a0-4ac4-9f47-0dd51eff1060`; full source commit was not visible. Ronan enabled the Production workers.dev URL. PR #28 aligned the configuration and connected the browser with exact-origin CORS. Live HTTP and user-provided browser evidence above establish the successful synthetic journey. Login, real accounts, protected endpoints and private-data retention remain future work.
 
 This is the single current-status record. Other documents link here. Learning outcomes are in [LEARNING_TRACKER.md](LEARNING_TRACKER.md); publication terms are defined in the [codebook](CODEBOOK.md#git-and-publication-vocabulary).
 
