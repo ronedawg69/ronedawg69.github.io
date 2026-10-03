@@ -4,7 +4,7 @@ See [current status and publication evidence](APPLICATION_TRACKER.md#current-sta
 
 ## Purpose
 
-Cycle Signals is a small static website used to learn how a web application can combine weather with fictional cycling and sleep signals. The teaching goal is for Ronan to understand each layer before adding the next one.
+Cycle Signals combines a static dashboard with a Cloudflare Worker, currently using live public weather and fictional cycling/sleep signals. The teaching goal is for Ronan to understand each layer before adding the next one.
 
 ## Project structure
 
@@ -49,7 +49,7 @@ Every lesson PR includes the working change, a short explanation of the key idea
 ## Scope and cost guardrails
 
 - Open-Meteo is the existing public weather source. Strava and Fitbit are planned integrations to verify and authorize; they are not yet connected.
-- Cloudflare Workers + D1 is the leading free server candidate from the dated 2026-09-24 documentation check. The lesson verifies current terms and account requirements before deployment.
+- Cloudflare Workers is selected and hosts the invented-data endpoint. D1 has not been added; any storage choice and current terms remain to be reviewed before private data.
 - Keep the prototype at $0. Do not activate billing or a paid tier without Ronan's explicit approval. Free quotas and plans can change.
 - Use minimum necessary data, coarse weather location, no public ride routes, and no repository copies of real ride, sleep, or health records.
 - Keep provider tokens server-side. Ask Ronan to enter any secrets directly into the chosen provider's secret settings, not into GitHub source or chat.
@@ -76,7 +76,7 @@ Open-Meteo documentation for the existing weather request was recorded in `docs/
 
 ## Open decisions before Lesson 6
 
-Audience resolved on 2026-10-03. Access implementation and provider eligibility remain open.
+Audience and Cloudflare hosting resolved on 2026-10-03. Lesson 6 is complete; see the application tracker for evidence. Access implementation and provider eligibility remain open.
 
 - **Selected direction:** build Ronan's private dashboard with real data first. Later add a public page with deliberately selected summaries, relationships and insights; a fictional demo can follow. Private routes, exact timestamps and raw provider responses stay private. Public release is a later selection, not permission to expose all data.
 - **Access requirement:** login and server-side authorization before any real-data endpoint is enabled. The precise mechanism remains to be selected. Lesson 6's synthetic-only endpoint is not an authenticated private dashboard.

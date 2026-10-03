@@ -57,4 +57,4 @@ Before activation, define rate limits, bounded caching (never publicly cache pri
 
 ## Before Lesson 6
 
-Audience is resolved in the [project brief](PROJECT_BRIEF.md#open-decisions-before-lesson-6). Request/response concepts are assessed. Lesson 6 now supplies a synthetic-only endpoint and a local browser preview; real-data access protection, hosted account setup and replacement sleep-source feasibility remain open. See [Lesson 6](LESSON_6.md). No database or provider call is needed for this step.
+Audience is resolved in the [project brief](PROJECT_BRIEF.md#open-decisions-before-lesson-6). Request/response concepts are assessed. Lesson 6 now supplies a synthetic-only endpoint and a local browser preview; Cloudflare account setup and the hosted synthetic browser journey are complete. Real-data access protection and replacement sleep-source feasibility remain open. See [Lesson 6](LESSON_6.md). No database or provider call is needed for this step.
