@@ -10,7 +10,7 @@ For lesson/publication status see [the application tracker](APPLICATION_TRACKER.
 | Server runtime (candidate: Worker) | Execute code: authenticate the requester, authorize access, call providers privately, validate and return approved fields. |
 | Database (candidate: D1) | Persist agreed information between requests. Storage does not replace access checks. |
 
-Proposed future boundary, not an activated integration:
+Selected product direction (2026-10-03): private real-data dashboard first; a public page of chosen summaries and insights later. The diagram remains a future real-data boundary, not an activated integration:
 
 ```mermaid
 flowchart TD
@@ -57,4 +57,4 @@ Before activation, define rate limits, bounded caching (never publicly cache pri
 
 ## Before Lesson 6
 
-Resolve the [open decisions](PROJECT_BRIEF.md#open-decisions-before-lesson-6): real dashboard audience, endpoint access protection, and replacement sleep-source feasibility. Lesson 6 begins with teaching the request/response boundary and a concept check, then a synthetic-only endpoint. These answers do not authorize account connections.
+Audience is resolved in the [project brief](PROJECT_BRIEF.md#open-decisions-before-lesson-6). Request/response concepts are assessed. Lesson 6 now supplies a synthetic-only endpoint and a local browser preview; real-data access protection, hosted account setup and replacement sleep-source feasibility remain open. See [Lesson 6](LESSON_6.md). No database or provider call is needed for this step.

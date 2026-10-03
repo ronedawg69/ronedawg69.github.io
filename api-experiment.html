@@ -89,6 +89,7 @@
             <label for="ride-preview">Try a fictional scenario</label>
             <select id="ride-preview">
               <option value="sample">Loaded sample</option>
+              <option value="server">Ask the server · local preview</option>
               <option value="loading">Preview: loading</option>
               <option value="empty">Preview: no rides</option>
               <option value="error">Preview: loading failed</option>
@@ -130,6 +131,7 @@
       const rideValue = document.getElementById("ride_duration_seconds");
       const rideRetry = document.getElementById("ride-retry");
       const ridePreview = document.getElementById("ride-preview");
+      const DASHBOARD_ENDPOINT = "/api/dashboard";
       let fixtureRequest;
       let rideRun = 0;
 
@@ -141,7 +143,7 @@
         rideValue.hidden = state !== "ready";
         rideRetry.hidden = state !== "error" && state !== "empty";
         rideRetry.disabled = state === "loading";
-        rideRetry.textContent = ridePreview.value === "sample" ? "Try again" : "Load the sample";
+        rideRetry.textContent = ["sample", "server"].includes(ridePreview.value) ? "Try again" : "Load the sample";
       }
 
       // Load once, share an in-flight request, and allow retry after a failed load.
@@ -164,6 +166,20 @@
           document.body.appendChild(script);
         }).catch((error) => { fixtureRequest = undefined; throw error; });
         return fixtureRequest;
+      }
+
+      async function loadServerRecords() {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 12000);
+        try {
+          const response = await fetch(DASHBOARD_ENDPOINT, {signal: controller.signal, cache: "no-store"});
+          if (!response.ok) throw new Error("Server request failed");
+          const data = await response.json();
+          if (!data || data.source !== "synthetic-server" || !Array.isArray(data.records)) {
+            throw new Error("Invalid server reply");
+          }
+          return data.records;
+        } finally { clearTimeout(timeout); }
       }
 
       function renderRides(records) {
@@ -189,12 +205,14 @@
         try {
           if (scenario === "empty") { renderRides([]); return; }
           if (scenario === "error") throw new Error("Simulated failure");
-          const records = await loadFixture();
+          const records = scenario === "server" ? await loadServerRecords() : await loadFixture();
           if (run !== rideRun) return; // An older response must not replace a newer view.
           renderRides(records);
+          if (scenario === "server" && records.length) rideStatus.textContent = "Server replied! Fictional ride duration:";
         } catch (error) {
           if (run !== rideRun) return;
-          setRideState("error", scenario === "error" ?
+          setRideState("error", scenario === "server" ?
+            "The server could not return a usable reply. This option needs the local server preview; it is not hosted yet. Try again." : scenario === "error" ?
             "Preview: the fictional sample could not load. Load the sample to try again." :
             "The fictional ride sample could not load. Check your connection and try again.");
         }
@@ -202,7 +220,7 @@
 
       ridePreview.addEventListener("change", loadRides);
       rideRetry.addEventListener("click", () => {
-        ridePreview.value = "sample";
+        if (ridePreview.value !== "server") ridePreview.value = "sample";
         loadRides();
       });
       loadRides();
