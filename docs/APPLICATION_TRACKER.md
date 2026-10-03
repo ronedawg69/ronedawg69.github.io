@@ -77,4 +77,4 @@ Lesson 5 publication: [PR #25](https://github.com/ronedawg69/ronedawg69.github.i
 
 Local HTTP smoke check started `node server/dev.mjs`, requested the actual `/api/dashboard` endpoint, verified 200, no-store and the approved synthetic values, and fetched the dashboard HTML. It passed. An earlier attempt found no running process; starting and querying within one process resolved it. This is local HTTP evidence, not hosted or visual-browser evidence.
 
-Publication: branch `codex/lesson-6-tiny-server`, base `main` at `f0c23c46e3ed73228da17569a33b4d0e0f9df005`. PR identity is added after creation and verification.
+Publication: branch `codex/lesson-6-tiny-server`, base `main` at `f0c23c46e3ed73228da17569a33b4d0e0f9df005`. [PR #26](https://github.com/ronedawg69/ronedawg69.github.io/pull/26) verified open and mergeable, head `codex/lesson-6-tiny-server` at implementation commit `267b8b83fa1fbc6f2f94a602e19fc488929c4006`, base `main`. A subsequent documentation-only commit records this identity. Ready for review and merge; not merged or deployed.
