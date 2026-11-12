@@ -139,13 +139,7 @@ button:focus-visible,input:focus-visible{outline:5px solid #141414;outline-offse
     </div>
     <h3 id="local-h" class="label">Local stations</h3>
     <div id="local" class="grid g4"></div>
-    <h3 id="more-h" class="label">Other Overground stations</h3>
-    <div id="more" class="grid g5"></div>
-    <form id="search" autocomplete="off">
-      <input id="q" type="search" placeholder="Search any station" aria-label="Search any Overground station">
-      <button class="btn" type="submit">Search</button>
-      <div id="results"></div>
-    </form>
+
   </div>
 </div>
 
@@ -155,7 +149,7 @@ const CFG={postcode:'E58DJ',fallback:{lat:51.5567,lon:-0.0568},tflKey:'',refresh
 const OG=['liberty','lioness','mildmay','suffragette','weaver','windrush'];
 const LINE={liberty:'Liberty',lioness:'Lioness',mildmay:'Mildmay',suffragette:'Suffragette',weaver:'Weaver',windrush:'Windrush'};
 const LOCAL=['Hackney Downs','Hackney Central','Dalston Junction','Dalston Kingsland'];
-const MORE=['Liverpool Street','Stratford','Highbury & Islington','Canada Water','Bethnal Green','Cambridge Heath','London Fields','Rectory Road','Stoke Newington','Clapton','Walthamstow Central','Chingford','Enfield Town','Cheshunt','Homerton','Hackney Wick','Canonbury','Camden Road','Richmond','Shoreditch High Street','Whitechapel','New Cross Gate','Crystal Palace','West Croydon','Clapham Junction'];
+const MORE=[];
 const DEFAULT={o:'Hackney Downs',x:'Liverpool Street'};
 const WMO={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Freezing fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',56:'Freezing drizzle',57:'Freezing drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',66:'Freezing rain',67:'Freezing rain',71:'Light snow',73:'Snow',75:'Heavy snow',77:'Snow grains',80:'Light showers',81:'Showers',82:'Violent showers',85:'Snow showers',86:'Heavy snow showers',95:'Thunderstorm',96:'Thunder & hail',99:'Thunder & hail'};
 
@@ -183,7 +177,7 @@ const tfl=p=>get('https://api.tfl.gov.uk'+p+(CFG.tflKey?(p.includes('?')?'&':'?'
 /* ---------- state ---------- */
 const S={j:store.get('journey',DEFAULT),saved:store.get('saved',[]),wx:null,wxOk:0,wxErr:'',
   route:null,tr:null,trOk:0,trErr:'',st:null,stOk:0,stErr:'',loading:false};
-if(!S.j||!S.j.o||!S.j.x)S.j={...DEFAULT};
+if(!S.j||!LOCAL.includes(S.j.o)||!['Liverpool Street',...LOCAL].includes(S.j.x))S.j={...DEFAULT};
 
 /* ---------- scaling ---------- */
 function fit(){const s=Math.min(innerWidth/1872,innerHeight/1404);$('stage').style.transform='scale('+s+')'}
@@ -386,7 +380,7 @@ function renderStamps(){stamp('wx-stamp',S.wxOk,S.wxErr);stamp('tr-stamp',S.trOk
 
 /* ---------- journeys ---------- */
 const same=(a,b)=>a.o===b.o&&a.x===b.x;
-function setJourney(o,x){S.j={o,x};store.set('journey',S.j);S.route=null;S.tr=null;S.trErr='';S.st=null;renderTransport();loadTrains()}
+function setJourney(o,x){if(!LOCAL.includes(o)||!['Liverpool Street',...LOCAL].includes(x))return;S.j={o,x};store.set('journey',S.j);S.route=null;S.tr=null;S.trErr='';S.st=null;renderTransport();loadTrains()}
 function renderTabs(){
   const t=$('tabs');t.replaceChildren();
   const def=el('button','tab'+(same(S.j,DEFAULT)?' on':''),'⌂ Default commute');def.type='button';
@@ -411,10 +405,9 @@ function optBtn(name,cls){
   return b;
 }
 function openPicker(which){
-  pickFor=which;$('sheet-title').textContent=which==='o'?'Departing from':'Travelling to';
-  $('local').replaceChildren(...LOCAL.map(n=>optBtn(n,'local')));
-  $('more').replaceChildren(...MORE.map(n=>optBtn(n,'')));
-  $('results').replaceChildren();$('q').value='';
+  pickFor=which;$('sheet-title').textContent=which==='o'?'Choose local departure':'Choose destination';
+  $('local').replaceChildren(...(which==='x'?['Liverpool Street',...LOCAL]:LOCAL).map(n=>optBtn(n,'local')));
+
   $('sheet').hidden=false;
 }
 function closePicker(){$('sheet').hidden=true}
