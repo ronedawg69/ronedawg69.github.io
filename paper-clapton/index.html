@@ -1,7 +1,452 @@
-<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Paper / Hackney — Touch concept</title><style>body{font:15px Arial;background:#e9e8e3;color:#222;margin:24px}header,.panel{max-width:800px;margin:0 auto 18px}header{display:flex;justify-content:space-between;align-items:center}.panel{background:#faf9f2;padding:30px;box-sizing:border-box;border:8px solid #ddd9d0;min-height:480px}h1{font-size:28px}h2{font-size:12px;letter-spacing:2px}.cols{display:grid;grid-template-columns:1fr 1fr;gap:25px}.temp{font-size:76px;margin:20px 0}.train{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid #bbb}.meta{font-size:12px;color:#666}.error{color:#a33}button,select{padding:9px;background:white;border:1px solid #aaa}footer{border-top:1px solid #aaa;margin-top:35px;padding-top:15px;font-size:11px}@media(max-width:600px){.cols{grid-template-columns:1fr}.temp{font-size:54px}.panel{min-height:0}} #station-picker{background:#f0eee6;border:2px solid #222;padding:14px;margin:12px 0}#station-picker[hidden]{display:none}#station-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}#station-options button{min-height:54px;text-align:left;font-size:14px;border:1px solid #777}#station-options button.active{background:#222;color:white}.picker-heading{font-size:13px;font-weight:bold}.route-controls select{min-height:50px;cursor:pointer}.route-controls button{min-height:50px;cursor:pointer} .route-controls{display:flex;align-items:end;gap:7px;flex-wrap:wrap;margin:12px 0}.route-controls label{font-size:10px;letter-spacing:1px;flex:1;min-width:125px}.route-controls select{display:block;width:100%;font-size:13px;margin-top:5px}.route-controls button{font-size:20px}.panel{max-width:1000px;min-height:540px}.cols{gap:40px}.train{font-size:13px} </style><header><h1>paper / hackney</h1><button id="reload">Refresh live data</button></header><main class="panel"><div class="meta" id="date"></div><div class="cols"><section><h2>WEATHER · E5 8DJ</h2><div class="temp" id="temp">—°</div><p id="weather">Loading live forecast…</p><p class="meta" id="forecast"></p></section><section><h2>LONDON OVERGROUND · LIVE</h2><div class="route-controls"><label>FROM <select id="origin"><option>Hackney Downs</option><option>Hackney Central</option><option>Dalston Junction</option><option>Dalston Kingsland</option></select></label><button id="swap" aria-label="Swap stations">⇅</button><label>TO <select id="destination"><option>Liverpool Street</option><option>Stratford</option><option>Highbury &amp; Islington</option><option>Canada Water</option><option>Hackney Downs</option><option>Hackney Central</option><option>Dalston Junction</option><option>Dalston Kingsland</option></select></label></div><div id="station-picker" hidden><div class="picker-heading" id="picker-heading">Choose station</div><div id="station-options"></div><button id="cancel-picker" type="button">Cancel</button></div><div id="trains">Loading live predictions…</div><p class="meta" id="status"></p></section></div><footer id="updated">Waiting for API responses</footer></main><div class="meta" style="max-width:800px;margin:auto"><p>Proof of concept using real Open-Meteo and TfL API responses. Missing or blocked data is reported, never simulated. Predictions are not guaranteed departures.</p><p id="diagnostics"></p><a href="../projects.html">← Projects</a></div><script>
-const $=id=>document.getElementById(id);const fmt=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/London'});const safe=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));const get=async u=>{const c=new AbortController,t=setTimeout(()=>c.abort(),12000);try{const r=await fetch(u,{signal:c.signal,cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(t)}};const conditions=c=>c===0?'Clear':c<=3?'Cloudy':c<=48?'Fog':c<=67?'Rain':c<=77?'Snow':c<=82?'Showers':'Variable';
-async function weather(){try{const d=await get('https://api.open-meteo.com/v1/forecast?latitude=51.556694&longitude=-0.056791&current=temperature_2m,weather_code&hourly=temperature_2m,precipitation_probability,weather_code&daily=temperature_2m_max,temperature_2m_min&forecast_days=2&timezone=Europe%2FLondon');$('temp').textContent=Math.round(d.current.temperature_2m)+'°';$('weather').textContent=conditions(d.current.weather_code);const current=d.current.time.slice(0,13);const ix=d.hourly.time.findIndex(t=>t.slice(0,13)>current);$('forecast').textContent=ix>=0?'Next hour: '+Math.round(d.hourly.temperature_2m[ix])+'° · '+conditions(d.hourly.weather_code[ix])+' · Rain '+d.hourly.precipitation_probability[ix]+'%':'Next-hour forecast unavailable';return 'Weather: connected'}catch(e){$('weather').textContent='Forecast unavailable';return 'Weather: '+e.message}}
-async function trains(){const origin=$('origin').value,destination=$('destination').value;$('trains').textContent='Checking route and live predictions…';try{if(origin===destination){$('trains').textContent='Choose different stations.';return 'Journey: same origin and destination'}const journey=await get('https://api.tfl.gov.uk/Journey/JourneyResults/'+encodeURIComponent(origin)+'/to/'+encodeURIComponent(destination)+'?mode=overground');const valid=(journey.journeys||[]).filter(j=>j.legs?.some(l=>/overground/i.test(l.mode?.name||'')));if(!valid.length){$('trains').textContent='No Overground journey found by TfL. Try another destination.';return 'Journey Planner: no matching route'}const selected=valid.sort((a,b)=>a.duration-b.duration)[0];const changes=selected.legs.filter(l=>/overground/i.test(l.mode?.name||''));const search=await get('https://api.tfl.gov.uk/StopPoint/Search/'+encodeURIComponent(origin)+'?modes=overground');const station=search.matches.find(x=>(x.name||x.commonName||'').toLowerCase().includes(origin.toLowerCase()));if(!station)throw Error('Departure station not found');const arrivals=await get('https://api.tfl.gov.uk/StopPoint/'+encodeURIComponent(station.id)+'/Arrivals');const first=changes[0];const toward=(first.arrivalPoint?.commonName||'').toLowerCase();const predictions=arrivals.filter(x=>Number.isFinite(x.timeToStation)&&(/overground|weaver|mildmay|windrush/i.test(x.lineName||x.lineId||''))).filter(x=>{const dest=(x.destinationName||'').toLowerCase();return dest.includes(destination.toLowerCase())||dest.includes(toward.replace(/ station$/,''))}).sort((a,b)=>a.timeToStation-b.timeToStation).slice(0,4);const summary=document.createElement('p');summary.className='meta';summary.textContent=selected.duration+' min journey · '+(changes.length>1?'Interchange required':'Direct Overground journey');$('trains').replaceChildren(summary);if(!predictions.length){const p=document.createElement('p');p.className='meta';p.textContent='Route found, but no matching live train predictions returned.';$('trains').append(p)}for(const x of predictions){const row=document.createElement('div');row.className='train';const a=document.createElement('span');a.textContent=x.destinationName||'Overground';const b=document.createElement('b');b.textContent=x.timeToStation<60?'Due':Math.ceil(x.timeToStation/60)+' min';row.append(a,b);$('trains').append(row)}return 'TfL journey: connected · '+predictions.length+' live predictions'}catch(e){$('trains').textContent='Journey data unavailable. Check TfL directly.';return 'TfL journey: '+e.message}}
-async function status(){try{const d=await get('https://api.tfl.gov.uk/Line/weaver,mildmay,windrush/Status');$('status').textContent=d.map(x=>x.name+': '+(x.lineStatuses||[]).map(y=>y.statusSeverityDescription).join(', ')).join(' · ');return 'TfL status: connected'}catch(e){$('status').textContent='Service status unavailable';return 'TfL status: '+e.message}}
-async function refresh(){$('date').textContent=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',timeZone:'Europe/London'}).toUpperCase();const results=await Promise.all([weather(),trains(),status()]);$('updated').textContent='Checked '+fmt.format(new Date())+' · Live API prototype';$('diagnostics').textContent=results.join(' | ')}const stationNames=['Hackney Downs','Hackney Central','Dalston Junction','Dalston Kingsland','Liverpool Street','Stratford','Highbury & Islington','Canada Water'];let pickerTarget=null;function openPicker(which){pickerTarget=which;$('picker-heading').textContent=which==='origin'?'Choose departure station':'Choose destination';const container=$('station-options');container.replaceChildren();stationNames.forEach(name=>{const btn=document.createElement('button');btn.type='button';btn.textContent=name;btn.className=$(which).value===name?'active':'';btn.onclick=()=>{const select=$(which);if(!Array.from(select.options).some(o=>o.value===name)){const opt=document.createElement('option');opt.value=name;opt.textContent=name;select.add(opt)}select.value=name;localStorage.setItem('paper-hackney-'+which,name);$('station-picker').hidden=true;refresh()};container.append(btn)});$('station-picker').hidden=false}for(const which of ['origin','destination']){const sel=$(which),saved=localStorage.getItem('paper-hackney-'+which);if(saved&&stationNames.includes(saved)){if(!Array.from(sel.options).some(o=>o.value===saved)){const opt=document.createElement('option');opt.value=saved;opt.textContent=saved;sel.add(opt)}sel.value=saved}sel.onchange=()=>{localStorage.setItem('paper-hackney-'+which,sel.value);refresh()};sel.addEventListener('pointerdown',e=>{e.preventDefault();openPicker(which)})}$('cancel-picker').onclick=()=>{$('station-picker').hidden=true};$('reload').onclick=refresh;$('swap').onclick=()=>{const a=$('origin'),b=$('destination');if(!Array.from(a.options).some(o=>o.value===b.value)){const opt=document.createElement('option');opt.value=b.value;opt.textContent=b.value;a.append(opt)}if(!Array.from(b.options).some(o=>o.value===a.value)){const opt=document.createElement('option');opt.value=a.value;opt.textContent=a.value;b.append(opt)}const v=a.value;a.value=b.value;b.value=v;localStorage.setItem('paper-hackney-origin',a.value);localStorage.setItem('paper-hackney-destination',b.value);refresh()};refresh();setInterval(refresh,120000);
-</script></html>
+<html data-type="html" data-identifier="54a9e40e-5c1a-4eea-9b07-afe6aa4bc88d" data-title="Paper / Hackney — E-Ink Touch Dashboard" data-version="1" width="1872" height="1404"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Paper / Hackney</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#d8d5cd}
+body{display:flex;align-items:center;justify-content:center;overflow:hidden;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#141414;-webkit-font-smoothing:antialiased}
+#stage{width:1872px;height:1404px;flex:none;background:#f4f1ea;position:relative;transform-origin:center center;padding:52px 72px 48px;display:grid;grid-template-rows:auto 1fr auto;overflow:hidden}
+.serif{font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif}
+button,input{font:inherit;color:inherit}
+button{background:#f4f1ea;border:0;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible{outline:5px solid #141414;outline-offset:5px}
+.label{font-size:24px;letter-spacing:.2em;text-transform:uppercase;font-weight:700}
+.muted{color:#5c5850}
+.inv{background:#141414!important;color:#f4f1ea!important}
+.chip{display:inline-block;font-size:22px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;padding:9px 16px;border:3px solid #141414;white-space:nowrap}
+.stamp{font-size:22px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;padding:6px 12px}
+.btn{border:3px solid #141414;min-height:96px;padding:0 34px;font-size:28px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;gap:14px}
+.btn:active,.btn.on{background:#141414;color:#f4f1ea}
+
+#mast{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:6px solid #141414;padding-bottom:22px}
+#brand{font-size:66px;font-weight:400;letter-spacing:-.01em;line-height:1}
+#brand em{font-style:italic}
+#date{font-size:26px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;margin-top:14px}
+#mast-right{display:flex;align-items:flex-end;gap:44px}
+#clock{font-size:110px;font-weight:300;line-height:.85;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+
+#body{display:grid;grid-template-columns:590px 1fr;min-height:0}
+#wx{padding:36px 60px 0 0;border-right:2px solid #141414;display:flex;flex-direction:column;min-height:0}
+.headrow{display:flex;justify-content:space-between;align-items:center}
+#temp{font-size:300px;line-height:.82;font-weight:200;letter-spacing:-.05em;margin-top:40px;font-variant-numeric:tabular-nums}
+#temp .deg{font-size:130px;vertical-align:top;position:relative;top:14px;letter-spacing:0}
+#cond{font-size:58px;margin-top:26px;line-height:1.05}
+#feels{font-size:26px;margin-top:12px;letter-spacing:.04em}
+.wxrow{display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid #141414;padding:20px 0 16px;font-size:28px}
+.wxrow b{font-size:46px;font-weight:500;font-variant-numeric:tabular-nums}
+#wxrows{margin-top:36px}
+#rainbar{height:20px;border:2px solid #141414;margin:0 0 20px;position:relative}
+#rainfill{position:absolute;left:0;top:0;bottom:0;background:#141414;width:0}
+#hours{margin-top:auto;display:grid;grid-template-columns:repeat(6,1fr);border-top:2px solid #141414;padding-top:16px}
+.hr{text-align:center;font-variant-numeric:tabular-nums}
+.hr .h{font-size:22px;letter-spacing:.1em}
+.hr .t{font-size:40px;margin:6px 0 2px}
+.hr .p{font-size:22px}
+
+#tr{padding:36px 0 0 64px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+#route{display:grid;grid-template-columns:1fr 128px 1fr;gap:22px;margin-top:24px}
+.field{border:3px solid #141414;height:146px;padding:18px 28px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.field .name{font-size:52px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.1}
+.field:active{background:#141414;color:#f4f1ea}
+#swap{border:3px solid #141414;height:146px;font-size:64px;line-height:1}
+#swap:active{background:#141414;color:#f4f1ea}
+#routeinfo{display:flex;gap:20px;align-items:center;margin-top:22px;font-size:28px;min-height:54px;line-height:1.25}
+#dephead{display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-bottom:12px}
+.dep{display:grid;grid-template-columns:210px 1fr auto;align-items:center;gap:34px;border-top:2px solid #141414;height:112px}
+.dep:last-child{border-bottom:2px solid #141414}
+.mins{font-size:84px;font-weight:300;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.mins small{font-size:28px;letter-spacing:.08em;margin-left:8px;font-weight:600}
+.dest{font-size:42px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sub{font-size:23px;letter-spacing:.08em;margin-top:6px;text-transform:uppercase;font-weight:600}
+.dep.cx .mins{text-decoration:line-through}
+.msg{border-top:2px solid #141414;border-bottom:2px solid #141414;padding:36px 0;font-size:34px;line-height:1.35}
+#status{margin-top:auto;border:2px solid #141414;padding:18px 24px;font-size:26px;line-height:1.35;max-height:120px;overflow:hidden}
+
+#foot{display:flex;justify-content:space-between;align-items:center;border-top:6px solid #141414;padding-top:22px;margin-top:26px;gap:30px}
+#tabs{display:flex;gap:14px;flex-wrap:nowrap;overflow:hidden}
+.tab{border:3px solid #141414;min-height:92px;padding:0 26px;font-size:26px;font-weight:600;white-space:nowrap}
+.tab.on{background:#141414;color:#f4f1ea}
+#credits{font-size:19px;letter-spacing:.06em;text-align:right;line-height:1.5;max-width:520px}
+
+#sheet{position:absolute;inset:0;background:#f4f1ea;padding:52px 72px;display:flex;flex-direction:column;gap:26px;z-index:5}
+#sheet[hidden]{display:none}
+#sheet-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:6px solid #141414;padding-bottom:20px}
+#sheet-title{font-size:72px;font-weight:400;line-height:1}
+.grid{display:grid;gap:14px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g5{grid-template-columns:repeat(5,1fr)}
+.opt{border:3px solid #141414;min-height:108px;padding:0 22px;font-size:32px;text-align:left;line-height:1.1}
+.opt.local{min-height:124px;font-size:38px}
+.opt.sel{background:#141414;color:#f4f1ea}
+.opt.same{border-style:dashed}
+#search{display:flex;gap:14px;align-items:stretch}
+#q{flex:0 0 560px;border:3px solid #141414;background:#fff;height:100px;font-size:34px;padding:0 24px;border-radius:0}
+#results{display:flex;gap:14px;flex:1;overflow:hidden;align-items:center}
+#results .opt{min-height:100px;font-size:28px}
+</style>
+</head>
+<body>
+<div id="stage">
+  <header id="mast">
+    <div>
+      <h1 id="brand" class="serif">Paper <em>/</em> Hackney</h1>
+      <div id="date">—</div>
+    </div>
+    <div id="mast-right">
+      <button id="refresh" class="btn" type="button">↻ Refresh</button>
+      <div id="clock" aria-live="polite">--:--</div>
+    </div>
+  </header>
+
+  <main id="body">
+    <section id="wx" aria-labelledby="wx-h">
+      <div class="headrow"><h2 id="wx-h" class="label">Weather · E5 8DJ</h2><span id="wx-stamp" class="stamp">Waiting…</span></div>
+      <div id="temp">—<span class="deg">°</span></div>
+      <p id="cond" class="serif">Loading forecast…</p>
+      <p id="feels" class="muted">&nbsp;</p>
+      <div id="wxrows">
+        <div class="wxrow"><span id="nh-l">Next hour</span><b id="nh">—</b></div>
+        <div class="wxrow"><span id="rain-l">Chance of rain</span><b id="rain">—</b></div>
+        <div id="rainbar" aria-hidden="true"><div id="rainfill"></div></div>
+      </div>
+      <div id="hours" aria-label="Next six hours"></div>
+    </section>
+
+    <section id="tr" aria-labelledby="tr-h">
+      <div class="headrow"><h2 id="tr-h" class="label">London Overground</h2><span id="tr-stamp" class="stamp">Waiting…</span></div>
+      <div id="route">
+        <button id="from" class="field" type="button" aria-label="Change departure station"><span class="label">From</span><span id="from-n" class="name serif">—</span></button>
+        <button id="swap" type="button" aria-label="Reverse journey">⇄</button>
+        <button id="to" class="field" type="button" aria-label="Change destination"><span class="label">To</span><span id="to-n" class="name serif">—</span></button>
+      </div>
+      <div id="routeinfo"></div>
+      <div id="dephead"><h3 id="dep-h" class="label">Next trains</h3><span id="dep-src" class="label muted"></span></div>
+      <div id="deps"></div>
+      <div id="status">Checking line status…</div>
+    </section>
+  </main>
+
+  <footer id="foot">
+    <div id="tabs"></div>
+    <p id="credits" class="muted">Live data: TfL Unified API · Open-Meteo · postcodes.io. Predictions are estimates, not guaranteed departures. Missing data is shown as missing, never invented.</p>
+  </footer>
+
+  <div id="sheet" hidden="" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+    <div id="sheet-head">
+      <h2 id="sheet-title" class="serif">Choose station</h2>
+      <button id="close" class="btn" type="button">✕ Close</button>
+    </div>
+    <h3 id="local-h" class="label">Local stations</h3>
+    <div id="local" class="grid g4"></div>
+    <h3 id="more-h" class="label">Other Overground stations</h3>
+    <div id="more" class="grid g5"></div>
+    <form id="search" autocomplete="off">
+      <input id="q" type="search" placeholder="Search any station" aria-label="Search any Overground station">
+      <button class="btn" type="submit">Search</button>
+      <div id="results"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+(()=>{
+const CFG={postcode:'E58DJ',fallback:{lat:51.5567,lon:-0.0568},tflKey:'',refreshMs:120000,staleMs:300000,dropMs:600000};
+const OG=['liberty','lioness','mildmay','suffragette','weaver','windrush'];
+const LINE={liberty:'Liberty',lioness:'Lioness',mildmay:'Mildmay',suffragette:'Suffragette',weaver:'Weaver',windrush:'Windrush'};
+const LOCAL=['Hackney Downs','Hackney Central','Dalston Junction','Dalston Kingsland'];
+const MORE=['Liverpool Street','Stratford','Highbury & Islington','Canada Water','Bethnal Green','Cambridge Heath','London Fields','Rectory Road','Stoke Newington','Clapton','Walthamstow Central','Chingford','Enfield Town','Cheshunt','Homerton','Hackney Wick','Canonbury','Camden Road','Richmond','Shoreditch High Street','Whitechapel','New Cross Gate','Crystal Palace','West Croydon','Clapham Junction'];
+const DEFAULT={o:'Hackney Downs',x:'Liverpool Street'};
+const WMO={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Freezing fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',56:'Freezing drizzle',57:'Freezing drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',66:'Freezing rain',67:'Freezing rain',71:'Light snow',73:'Snow',75:'Heavy snow',77:'Snow grains',80:'Light showers',81:'Showers',82:'Violent showers',85:'Snow showers',86:'Heavy snow showers',95:'Thunderstorm',96:'Thunder & hail',99:'Thunder & hail'};
+
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem('ph:'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('ph:'+k,JSON.stringify(v))}catch(e){}}};
+const HM=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/London'});
+const hm=t=>HM.format(new Date(t));
+const clean=s=>String(s||'').replace(/\s+(Rail|Underground|DLR)?\s*Station$/i,'').replace(/\s+\(London\)$/,'').trim();
+const norm=s=>clean(s).toLowerCase().replace(/&/g,' and ').replace(/\b(rail|station|london overground|overground)\b/g,'').replace(/[^a-z]/g,'');
+function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+const validTime=s=>{const t=Date.parse(s);return isFinite(t)&&t>946684800000?t:null};
+
+async function get(url,ms=12000){
+  const c=new AbortController();const t=setTimeout(()=>c.abort(),ms);
+  try{const r=await fetch(url,{signal:c.signal,cache:'no-store'});
+    if(r.status===300)throw new Error('TfL could not identify the station');
+    if(r.status===429)throw new Error('TfL rate limit reached');
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    return await r.json();
+  }catch(e){throw e.name==='AbortError'?new Error('Request timed out'):(e.message==='Failed to fetch'?new Error('Network unavailable'):e)}
+  finally{clearTimeout(t)}
+}
+const tfl=p=>get('https://api.tfl.gov.uk'+p+(CFG.tflKey?(p.includes('?')?'&':'?')+'app_key='+encodeURIComponent(CFG.tflKey):''));
+
+/* ---------- state ---------- */
+const S={j:store.get('journey',DEFAULT),saved:store.get('saved',[]),wx:null,wxOk:0,wxErr:'',
+  route:null,tr:null,trOk:0,trErr:'',st:null,stOk:0,stErr:'',loading:false};
+if(!S.j||!S.j.o||!S.j.x)S.j={...DEFAULT};
+
+/* ---------- scaling ---------- */
+function fit(){const s=Math.min(innerWidth/1872,innerHeight/1404);$('stage').style.transform='scale('+s+')'}
+addEventListener('resize',fit);fit();
+
+/* ---------- clock (minute resolution: e-ink friendly) ---------- */
+function tick(){
+  const n=new Date();
+  $('clock').textContent=hm(n);
+  $('date').textContent=n.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',timeZone:'Europe/London'});
+  renderDeps();renderStamps();
+  setTimeout(tick,60000-(Date.now()%60000)+80);
+}
+
+/* ---------- weather ---------- */
+async function coords(){
+  const c=store.get('coords');if(c&&c.pc===CFG.postcode)return c;
+  try{const d=await get('https://api.postcodes.io/postcodes/'+CFG.postcode);
+    const v={pc:CFG.postcode,lat:d.result.latitude,lon:d.result.longitude};store.set('coords',v);return v}
+  catch(e){return {...CFG.fallback}}
+}
+async function loadWeather(){
+  try{
+    const c=await coords();
+    const d=await get(`https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&hourly=temperature_2m,precipitation_probability,weather_code&forecast_days=2&timezone=Europe%2FLondon&wind_speed_unit=mph`);
+    if(!d.current||typeof d.current.temperature_2m!=='number')throw new Error('No current conditions returned');
+    const H=d.hourly||{time:[]};const i=H.time.findIndex(t=>t>d.current.time);
+    S.wx={cur:d.current,hours:i<0?[]:H.time.slice(i,i+6).map((t,k)=>({t,temp:H.temperature_2m[i+k],p:H.precipitation_probability[i+k],code:H.weather_code[i+k]}))};
+    S.wxOk=Date.now();S.wxErr='';
+  }catch(e){S.wxErr=e.message}
+  renderWeather();renderStamps();
+}
+function renderWeather(){
+  const w=S.wx;
+  if(!w){$('temp').firstChild.nodeValue='—';$('cond').textContent=S.wxErr?'Forecast unavailable':'Loading forecast…';$('feels').textContent=S.wxErr||'\u00a0';return}
+  const c=w.cur;
+  $('temp').firstChild.nodeValue=String(Math.round(c.temperature_2m));
+  $('cond').textContent=WMO[c.weather_code]||'Conditions unknown';
+  const bits=[];if(typeof c.apparent_temperature==='number')bits.push('Feels like '+Math.round(c.apparent_temperature)+'°');
+  if(typeof c.wind_speed_10m==='number')bits.push('Wind '+Math.round(c.wind_speed_10m)+' mph');
+  $('feels').textContent=bits.join(' · ')||'\u00a0';
+  const n=w.hours[0];
+  $('nh').textContent=n&&typeof n.temp==='number'?Math.round(n.temp)+'° '+(WMO[n.code]?'· '+WMO[n.code].split(' ').slice(-1)[0].toLowerCase():''):'Unavailable';
+  const p=n&&typeof n.p==='number'?n.p:null;
+  $('rain').textContent=p==null?'Unavailable':p+'%';
+  $('rainfill').style.width=(p||0)+'%';
+  const hs=$('hours');hs.replaceChildren();
+  for(const h of w.hours){const d=el('div','hr');d.append(el('div','h muted',h.t.slice(11,16)),el('div','t',typeof h.temp==='number'?Math.round(h.temp)+'°':'—'),el('div','p muted',typeof h.p==='number'?h.p+'%':'—'));hs.append(d)}
+}
+
+/* ---------- TfL: stations, lines, routes ---------- */
+const ids=store.get('ids',{});
+function railChild(sp){
+  if(!sp)return null;
+  const id=sp.id||sp.naptanId||'';
+  if(/^910G/.test(id)&&(!sp.modes||sp.modes.includes('overground')))return id;
+  for(const c of sp.children||[]){const r=railChild(c);if(r)return r}
+  return null;
+}
+async function resolve(name){
+  if(ids[name])return ids[name];
+  const r=await tfl('/StopPoint/Search/'+encodeURIComponent(name)+'?modes=overground&maxResults=10');
+  const ms=r.matches||[];const n=norm(name);
+  const m=ms.find(x=>norm(x.name)===n)||ms.find(x=>norm(x.name).startsWith(n));
+  if(!m)throw new Error('Station not found: '+name);
+  let id=/^910G/.test(m.id)?m.id:null;
+  if(!id)id=railChild(await tfl('/StopPoint/'+encodeURIComponent(m.id)));
+  if(!id)throw new Error('No Overground platforms found at '+name);
+  ids[name]=id;store.set('ids',ids);return id;
+}
+async function cached(key,fn){const v=store.get(key);if(v&&Date.now()-v.t<864e5)return v.v;const d=await fn();store.set(key,{t:Date.now(),v:d});return d}
+const stopLines=id=>cached('lines:'+id,async()=>((await tfl('/StopPoint/'+id)).lines||[]).map(l=>l.id).filter(l=>OG.includes(l)));
+const lineRoutes=line=>cached('seq:'+line,async()=>((await tfl('/Line/'+line+'/Route/Sequence/all?excludeCrowding=true')).orderedLineRoutes||[]).map(r=>r.naptanIds||[]));
+const reaches=(routes,a,b)=>routes.some(r=>{const i=r.indexOf(a),j=r.indexOf(b);return i>=0&&j>i});
+const serves=(routes,O,T,D)=>!!D&&routes.some(r=>{const i=r.indexOf(O),j=r.indexOf(T),k=r.lastIndexOf(D);return i>=0&&j>i&&k>=j});
+
+async function plan(o,x){
+  const [O,X]=await Promise.all([resolve(o),resolve(x)]);
+  const lines=await stopLines(O);
+  const rs={};await Promise.all(lines.map(async l=>{rs[l]=await lineRoutes(l)}));
+  const direct=lines.filter(l=>reaches(rs[l],O,X));
+  if(direct.length)return {kind:'direct',O,X,target:X,lines:direct,rs};
+  const jr=await tfl(`/Journey/JourneyResults/${O}/to/${X}?mode=overground,walking`);
+  const js=(jr.journeys||[]).filter(q=>(q.legs||[]).some(l=>l.mode&&l.mode.id==='overground'));
+  if(!js.length)return {kind:'none',O,X,lines,rs};
+  const best=js.slice().sort((a,b)=>a.duration-b.duration)[0];
+  const ride=best.legs.filter(l=>l.mode&&l.mode.id!=='walking');
+  const first=ride[0];
+  const startsHere=first&&first.departurePoint&&first.departurePoint.naptanId===O&&first.mode.id==='overground';
+  const T=startsHere?first.arrivalPoint.naptanId:null;
+  const fl=T?lines.filter(l=>reaches(rs[l],O,T)):[];
+  return {kind:'change',O,X,target:fl.length?T:null,targetName:first?clean(first.arrivalPoint.commonName):'',
+    lines:fl,rs,duration:best.duration,walkFirst:!startsHere&&first?clean(first.departurePoint.commonName):'',
+    changes:ride.slice(0,-1).map(l=>clean(l.arrivalPoint.commonName)),
+    legLines:ride.map(l=>(l.routeOptions&&l.routeOptions[0]&&l.routeOptions[0].lineIdentifier&&l.routeOptions[0].lineIdentifier.id)||'').filter(Boolean)};
+}
+
+async function predictions(p){
+  if(!p.target||!p.lines.length)return {list:[],src:''};
+  let raw=[],src='';
+  try{
+    const d=await tfl(`/StopPoint/${p.O}/ArrivalDepartures?lineIds=${p.lines.join(',')}`);
+    raw=(Array.isArray(d)?d:[]).map(a=>({line:a.lineId||'',dest:a.destinationName,destId:a.destinationNaptanId,
+      exp:validTime(a.estimatedTimeOfDeparture)||validTime(a.scheduledTimeOfDeparture),sch:validTime(a.scheduledTimeOfDeparture),
+      plat:a.platformName,status:a.departureStatus||'',key:(a.vehicleId||a.tripId||'')+'|'+a.scheduledTimeOfDeparture}));
+    src='TfL departure board';
+  }catch(e){raw=[]}
+  if(!raw.length){
+    const d=await tfl(`/StopPoint/${p.O}/Arrivals`);
+    raw=(Array.isArray(d)?d:[]).filter(a=>a.modeName==='overground').map(a=>({line:a.lineId,dest:a.destinationName,destId:a.destinationNaptanId,
+      exp:validTime(a.expectedArrival),sch:null,plat:a.platformName,status:'',key:(a.vehicleId||a.id)+'|'+a.expectedArrival}));
+    src='TfL arrival predictions';
+  }
+  const seen=new Set();const now=Date.now();
+  const list=raw.filter(a=>{
+    if(!a.exp||a.exp<now-60000||a.destId===p.O||a.status==='NotStoppingAtStation')return false;
+    const ls=a.line&&p.rs[a.line]?[a.line]:p.lines;
+    if(!ls.some(l=>serves(p.rs[l]||[],p.O,p.target,a.destId)))return false;
+    if(seen.has(a.key))return false;seen.add(a.key);return true;
+  }).sort((a,b)=>a.exp-b.exp).slice(0,4);
+  return {list,src};
+}
+
+async function loadStatus(lines){
+  const ls=[...new Set(lines.filter(l=>OG.includes(l)))];
+  const d=await tfl('/Line/'+(ls.length?ls:OG).join(',')+'/Status');
+  S.st=d.map(l=>({name:l.name,items:(l.lineStatuses||[]).map(s=>({sev:s.statusSeverity,desc:s.statusSeverityDescription,reason:s.reason||''}))}));
+  S.stOk=Date.now();S.stErr='';
+}
+
+let gen=0;
+async function loadTrains(){
+  const my=++gen;const {o,x}=S.j;S.loading=true;renderTransport();
+  if(o===x){S.route={kind:'same'};S.loading=false;renderTransport();return}
+  try{
+    const p=await plan(o,x);if(my!==gen)return;
+    S.route=p;
+    const [pr,st]=await Promise.allSettled([predictions(p),loadStatus([...(p.lines||[]),...(p.legLines||[])])]);
+    if(my!==gen)return;
+    if(pr.status==='fulfilled'){S.tr={...pr.value};S.trOk=Date.now();S.trErr=''}else S.trErr=pr.reason.message;
+    if(st.status==='rejected')S.stErr=st.reason.message;
+  }catch(e){if(my!==gen)return;S.trErr=e.message}
+  S.loading=false;renderTransport();renderStamps();
+}
+
+/* ---------- transport rendering ---------- */
+function renderTransport(){
+  $('from-n').textContent=S.j.o;$('to-n').textContent=S.j.x;
+  const ri=$('routeinfo');ri.replaceChildren();const r=S.route;
+  if(r&&r.kind==='direct'){ri.append(el('span','chip inv','Direct'),el('span','',r.lines.map(l=>LINE[l]+' line').join(' / ')))}
+  else if(r&&r.kind==='change'){
+    ri.append(el('span','chip inv',r.changes.length+(r.changes.length===1?' change':' changes')));
+    ri.append(el('span','',(r.walkFirst?'Walk to '+r.walkFirst+' first · ':'')+(r.changes.length?'Change at '+r.changes.join(', ')+' · ':'')+'~'+r.duration+' min planned (timetable estimate)'));
+  }else if(r&&r.kind==='none'){ri.append(el('span','chip','No route'),el('span','','TfL found no Overground journey for this pair'))}
+  else if(S.loading){ri.append(el('span','muted','Validating route…'))}
+  else if(S.trErr){ri.append(el('span','chip inv','Error'),el('span','',S.trErr))}
+  $('dep-h').textContent=r&&r.kind==='change'&&r.target?'First leg · trains calling at '+r.targetName:'Trains calling at '+S.j.x;
+  renderDeps();renderStatus();renderTabs();
+}
+function renderDeps(){
+  const box=$('deps');if(!box)return;box.replaceChildren();const r=S.route;const now=Date.now();
+  $('dep-src').textContent=S.tr&&S.tr.src?'Live · '+S.tr.src:'';
+  const msg=t=>box.append(el('div','msg serif',t));
+  if(r&&r.kind==='same')return msg('Departure and destination are the same. Choose a different station.');
+  if(r&&r.kind==='none')return msg('No Overground route between these stations. Choose another destination.');
+  if(r&&r.kind==='change'&&!r.target)return msg(r.walkFirst?'This journey starts with a walk to '+r.walkFirst+'. Switch your departure there for live trains.':'Live predictions are not available for the first leg of this journey.');
+  if(!S.tr){if(S.trErr)return msg('Live predictions unavailable: '+S.trErr+'. Nothing is shown rather than a guess.');return msg('Checking live predictions…')}
+  if(S.trErr&&now-S.trOk>CFG.dropMs){return msg('Live predictions unavailable for over 10 minutes: '+S.trErr+'.')}
+  const list=S.tr.list.filter(a=>a.exp>now-60000);
+  if(!list.length)return msg('TfL is not currently returning live predictions for trains calling at this destination.');
+  for(const a of list){
+    const cx=a.status==='Cancelled',dl=a.status==='Delayed';
+    const row=el('div','dep'+(cx?' cx':''));
+    const m=Math.round((a.exp-now)/60000);
+    const mins=el('div','mins');
+    if(m<=0)mins.textContent='Due';else{mins.textContent=String(m);mins.append(el('small','','min'))}
+    const mid=el('div','');mid.style.minWidth='0';
+    mid.append(el('div','dest serif','to '+clean(a.dest||'destination unknown')));
+    const sub=[a.line&&LINE[a.line]?LINE[a.line]:'',a.plat&&a.plat!=='null'?'Platform '+String(a.plat).replace(/^Platform\s*/i,''):'',hm(a.exp)+(a.sch&&Math.abs(a.sch-a.exp)>=60000?' (sched '+hm(a.sch)+')':'')].filter(Boolean).join(' · ');
+    mid.append(el('div','sub muted',sub));
+    const st=cx?el('span','chip inv','Cancelled'):dl?el('span','chip inv','Delayed'):a.status==='OnTime'?el('span','chip','On time'):el('span','chip','Live');
+    row.append(mins,mid,st);box.append(row);
+  }
+}
+function renderStatus(){
+  const s=$('status');s.classList.remove('inv');
+  if(!S.st){s.textContent=S.stErr?'Line status unavailable: '+S.stErr:'Checking line status…';return}
+  const bad=S.st.filter(l=>l.items.some(i=>i.sev!==10));
+  if(!bad.length){s.textContent='Good service · '+S.st.map(l=>l.name).join(', ');return}
+  s.classList.add('inv');
+  s.textContent=bad.map(l=>{const i=l.items.find(x=>x.sev!==10);const why=(i.reason||'').replace(/^[^:]*:\s*/,'');return l.name+': '+i.desc+(why?' — '+(why.length>150?why.slice(0,147)+'…':why):'')}).join('  ·  ');
+}
+function stamp(id,ok,err){
+  const e=$(id);e.classList.remove('inv');
+  if(!ok){e.textContent=err?'Unavailable':'Waiting…';if(err)e.classList.add('inv');return}
+  const old=Date.now()-ok>CFG.staleMs;
+  e.textContent=(old||err?'Stale · ':'Updated ')+hm(ok);if(old||err)e.classList.add('inv');
+}
+function renderStamps(){stamp('wx-stamp',S.wxOk,S.wxErr);stamp('tr-stamp',S.trOk,S.trErr)}
+
+/* ---------- journeys ---------- */
+const same=(a,b)=>a.o===b.o&&a.x===b.x;
+function setJourney(o,x){S.j={o,x};store.set('journey',S.j);S.route=null;S.tr=null;S.trErr='';S.st=null;renderTransport();loadTrains()}
+function renderTabs(){
+  const t=$('tabs');t.replaceChildren();
+  const def=el('button','tab'+(same(S.j,DEFAULT)?' on':''),'⌂ Default commute');def.type='button';
+  def.addEventListener('click',()=>setJourney(DEFAULT.o,DEFAULT.x));t.append(def);
+  for(const s of S.saved){if(same(s,DEFAULT))continue;const b=el('button','tab'+(same(s,S.j)?' on':''),s.o+' → '+s.x);b.type='button';b.addEventListener('click',()=>setJourney(s.o,s.x));t.append(b)}
+  const isSaved=S.saved.some(s=>same(s,S.j))||same(S.j,DEFAULT);
+  const sv=el('button','tab',isSaved?(same(S.j,DEFAULT)?'★ Default':'✕ Forget this'):'☆ Save journey');sv.type='button';
+  sv.disabled=same(S.j,DEFAULT);
+  sv.addEventListener('click',()=>{
+    if(S.saved.some(s=>same(s,S.j)))S.saved=S.saved.filter(s=>!same(s,S.j));
+    else{S.saved.push({...S.j});if(S.saved.length>3)S.saved.shift()}
+    store.set('saved',S.saved);renderTabs();
+  });t.append(sv);
+}
+
+/* ---------- picker ---------- */
+let pickFor='o';
+function optBtn(name,cls){
+  const cur=pickFor==='o'?S.j.o:S.j.x,other=pickFor==='o'?S.j.x:S.j.o;
+  const b=el('button','opt '+cls+(name===cur?' sel':'')+(name===other?' same':''),name);b.type='button';
+  b.addEventListener('click',()=>{closePicker();pickFor==='o'?setJourney(name,S.j.x):setJourney(S.j.o,name)});
+  return b;
+}
+function openPicker(which){
+  pickFor=which;$('sheet-title').textContent=which==='o'?'Departing from':'Travelling to';
+  $('local').replaceChildren(...LOCAL.map(n=>optBtn(n,'local')));
+  $('more').replaceChildren(...MORE.map(n=>optBtn(n,'')));
+  $('results').replaceChildren();$('q').value='';
+  $('sheet').hidden=false;
+}
+function closePicker(){$('sheet').hidden=true}
+$('search').addEventListener('submit',async e=>{
+  e.preventDefault();const q=$('q').value.trim();const res=$('results');if(q.length<2)return;
+  res.replaceChildren(el('span','label muted','Searching…'));
+  try{
+    const r=await tfl('/StopPoint/Search/'+encodeURIComponent(q)+'?modes=overground&maxResults=6');
+    const ms=(r.matches||[]).slice(0,4);
+    if(!ms.length){res.replaceChildren(el('span','label muted','No Overground stations found'));return}
+    res.replaceChildren(...ms.map(m=>{const n=clean(m.name);if(/^910G/.test(m.id)&&!ids[n]){ids[n]=m.id;store.set('ids',ids)}return optBtn(n,'')}));
+  }catch(err){res.replaceChildren(el('span','label','Search failed: '+err.message))}
+});
+
+/* ---------- wiring ---------- */
+$('from').addEventListener('click',()=>openPicker('o'));
+$('to').addEventListener('click',()=>openPicker('x'));
+$('swap').addEventListener('click',()=>setJourney(S.j.x,S.j.o));
+$('close').addEventListener('click',closePicker);
+addEventListener('keydown',e=>{if(e.key==='Escape')closePicker()});
+let busy=false;
+async function refreshAll(){
+  if(busy)return;busy=true;const b=$('refresh');b.classList.add('on');b.textContent='Refreshing…';
+  await Promise.allSettled([loadWeather(),loadTrains()]);
+  b.classList.remove('on');b.textContent='↻ Refresh';busy=false;
+}
+$('refresh').addEventListener('click',refreshAll);
+addEventListener('online',refreshAll);
+setInterval(()=>{if(!document.hidden)refreshAll()},CFG.refreshMs);
+
+renderTransport();tick();refreshAll();
+})();
+</script>
+
+</body></html>
