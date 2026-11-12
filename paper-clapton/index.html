@@ -411,17 +411,6 @@ function openPicker(which){
   $('sheet').hidden=false;
 }
 function closePicker(){$('sheet').hidden=true}
-$('search').addEventListener('submit',async e=>{
-  e.preventDefault();const q=$('q').value.trim();const res=$('results');if(q.length<2)return;
-  res.replaceChildren(el('span','label muted','Searching…'));
-  try{
-    const r=await tfl('/StopPoint/Search/'+encodeURIComponent(q)+'?modes=overground&maxResults=6');
-    const ms=(r.matches||[]).slice(0,4);
-    if(!ms.length){res.replaceChildren(el('span','label muted','No Overground stations found'));return}
-    res.replaceChildren(...ms.map(m=>{const n=clean(m.name);if(/^910G/.test(m.id)&&!ids[n]){ids[n]=m.id;store.set('ids',ids)}return optBtn(n,'')}));
-  }catch(err){res.replaceChildren(el('span','label','Search failed: '+err.message))}
-});
-
 /* ---------- wiring ---------- */
 $('from').addEventListener('click',()=>openPicker('o'));
 $('to').addEventListener('click',()=>openPicker('x'));
