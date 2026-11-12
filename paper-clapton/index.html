@@ -144,6 +144,16 @@ button:focus-visible,input:focus-visible{outline:5px solid #141414;outline-offse
 </div>
 
 <script>
+window.addEventListener('error',function(e){
+  var s=document.getElementById('status');
+  if(s)s.textContent='JavaScript error: '+(e.message||'unknown')+' (line '+(e.lineno||'?')+')';
+});
+window.addEventListener('unhandledrejection',function(e){
+  var s=document.getElementById('status');
+  if(s)s.textContent='Request error: '+String(e.reason&&e.reason.message||e.reason||'unknown');
+});
+</script>
+<script>
 (()=>{
 const CFG={postcode:'E58DJ',fallback:{lat:51.5567,lon:-0.0568},tflKey:'',refreshMs:120000,staleMs:300000,dropMs:600000};
 const OG=['liberty','lioness','mildmay','suffragette','weaver','windrush'];
@@ -178,6 +188,8 @@ const tfl=p=>get('https://api.tfl.gov.uk'+p+(CFG.tflKey?(p.includes('?')?'&':'?'
 const S={j:store.get('journey',DEFAULT),saved:store.get('saved',[]),wx:null,wxOk:0,wxErr:'',
   route:null,tr:null,trOk:0,trErr:'',st:null,stOk:0,stErr:'',loading:false};
 if(!S.j||!LOCAL.includes(S.j.o)||!['Liverpool Street',...LOCAL].includes(S.j.x))S.j={...DEFAULT};
+if(!Array.isArray(S.saved))S.saved=[];
+S.saved=S.saved.filter(s=>s&&LOCAL.includes(s.o)&&['Liverpool Street',...LOCAL].includes(s.x));
 
 /* ---------- scaling ---------- */
 function fit(){const s=Math.min(innerWidth/1872,innerHeight/1404);$('stage').style.transform='scale('+s+')'}
@@ -427,7 +439,22 @@ $('refresh').addEventListener('click',refreshAll);
 addEventListener('online',refreshAll);
 setInterval(()=>{if(!document.hidden)refreshAll()},CFG.refreshMs);
 
-renderTransport();tick();refreshAll();
+function bootError(phase,e){
+  const message=(e&&e.message)||String(e);
+  const s=$('status');
+  if(s)s.textContent='Dashboard error ('+phase+'): '+message;
+  console.error('Paper / Hackney '+phase,e);
+}
+try{renderTransport()}catch(e){
+  $('from-n').textContent=S.j.o;
+  $('to-n').textContent=S.j.x;
+  bootError('stations',e);
+}
+try{tick()}catch(e){
+  $('clock').textContent=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  bootError('clock',e);
+}
+refreshAll().catch(e=>bootError('refresh',e));
 })();
 </script>
 
