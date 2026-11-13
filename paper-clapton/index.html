@@ -79,7 +79,6 @@ button:focus-visible,input:focus-visible{outline:5px solid #141414;outline-offse
 .opt{border:3px solid #141414;min-height:108px;padding:0 22px;font-size:32px;text-align:left;line-height:1.1}
 .opt.local{min-height:124px;font-size:38px}
 .opt.sel{background:#141414;color:#f4f1ea}
-.opt.same{border-style:dashed}
 #search{display:flex;gap:14px;align-items:stretch}
 #q{flex:0 0 560px;border:3px solid #141414;background:#fff;height:100px;font-size:34px;padding:0 24px;border-radius:0}
 #results{display:flex;gap:14px;flex:1;overflow:hidden;align-items:center}
@@ -159,8 +158,19 @@ const CFG={postcode:'E58DJ',fallback:{lat:51.5567,lon:-0.0568},tflKey:'',refresh
 const OG=['liberty','lioness','mildmay','suffragette','weaver','windrush'];
 const LINE={liberty:'Liberty',lioness:'Lioness',mildmay:'Mildmay',suffragette:'Suffragette',weaver:'Weaver',windrush:'Windrush'};
 const LOCAL=['Hackney Downs','Hackney Central','Dalston Junction','Dalston Kingsland'];
-const MORE=[];
 const DEFAULT={o:'Hackney Downs',x:'Liverpool Street'};
+// A short list of direct stops on each line served by the four local stations.
+const ROUTE_STATIONS=[
+  ['Hackney Downs','Liverpool Street'],
+  ['Hackney Central','Dalston Kingsland','Stratford','Highbury & Islington'],
+  ['Dalston Junction','Highbury & Islington','Canada Water']
+];
+function destinationsFrom(origin){
+  const stops=ROUTE_STATIONS.filter(route=>route.includes(origin)).flat();
+  const isLocal=LOCAL.includes(origin);
+  return [...new Set(stops)].filter(stop=>stop!==origin&&(isLocal||LOCAL.includes(stop)));
+}
+const validJourney=j=>j&&destinationsFrom(j.o).includes(j.x);
 const WMO={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Freezing fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',56:'Freezing drizzle',57:'Freezing drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',66:'Freezing rain',67:'Freezing rain',71:'Light snow',73:'Snow',75:'Heavy snow',77:'Snow grains',80:'Light showers',81:'Showers',82:'Violent showers',85:'Snow showers',86:'Heavy snow showers',95:'Thunderstorm',96:'Thunder & hail',99:'Thunder & hail'};
 
 const $=id=>document.getElementById(id);
@@ -186,10 +196,10 @@ const tfl=p=>get('https://api.tfl.gov.uk'+p+(CFG.tflKey?(p.includes('?')?'&':'?'
 
 /* ---------- state ---------- */
 const S={j:store.get('journey',DEFAULT),saved:store.get('saved',[]),wx:null,wxOk:0,wxErr:'',
-  route:null,tr:null,trOk:0,trErr:'',st:null,stOk:0,stErr:'',loading:false};
-if(!S.j||!LOCAL.includes(S.j.o)||!['Liverpool Street',...LOCAL].includes(S.j.x))S.j={...DEFAULT};
+  route:null,tr:null,trOk:0,trErr:'',st:null,stErr:'',loading:false};
+if(!validJourney(S.j))S.j={...DEFAULT};
 if(!Array.isArray(S.saved))S.saved=[];
-S.saved=S.saved.filter(s=>s&&LOCAL.includes(s.o)&&['Liverpool Street',...LOCAL].includes(s.x));
+S.saved=S.saved.filter(validJourney);
 
 /* ---------- scaling ---------- */
 function fit(){const s=Math.min(innerWidth/1872,innerHeight/1404);$('stage').style.transform='scale('+s+')'}
@@ -316,21 +326,19 @@ async function predictions(p){
 async function loadStatus(lines){
   const ls=[...new Set(lines.filter(l=>OG.includes(l)))];
   const d=await tfl('/Line/'+(ls.length?ls:OG).join(',')+'/Status');
-  S.st=d.map(l=>({name:l.name,items:(l.lineStatuses||[]).map(s=>({sev:s.statusSeverity,desc:s.statusSeverityDescription,reason:s.reason||''}))}));
-  S.stOk=Date.now();S.stErr='';
+  return d.map(l=>({name:l.name,items:(l.lineStatuses||[]).map(s=>({sev:s.statusSeverity,desc:s.statusSeverityDescription,reason:s.reason||''}))}));
 }
 
 let gen=0;
 async function loadTrains(){
   const my=++gen;const {o,x}=S.j;S.loading=true;renderTransport();
-  if(o===x){S.route={kind:'same'};S.loading=false;renderTransport();return}
   try{
     const p=await plan(o,x);if(my!==gen)return;
     S.route=p;
     const [pr,st]=await Promise.allSettled([predictions(p),loadStatus([...(p.lines||[]),...(p.legLines||[])])]);
     if(my!==gen)return;
     if(pr.status==='fulfilled'){S.tr={...pr.value};S.trOk=Date.now();S.trErr=''}else S.trErr=pr.reason.message;
-    if(st.status==='rejected')S.stErr=st.reason.message;
+    if(st.status==='fulfilled'){S.st=st.value;S.stErr=''}else S.stErr=st.reason.message;
   }catch(e){if(my!==gen)return;S.trErr=e.message}
   S.loading=false;renderTransport();renderStamps();
 }
@@ -353,7 +361,6 @@ function renderDeps(){
   const box=$('deps');if(!box)return;box.replaceChildren();const r=S.route;const now=Date.now();
   $('dep-src').textContent=S.tr&&S.tr.src?'Live · '+S.tr.src:'';
   const msg=t=>box.append(el('div','msg serif',t));
-  if(r&&r.kind==='same')return msg('Departure and destination are the same. Choose a different station.');
   if(r&&r.kind==='none')return msg('No Overground route between these stations. Choose another destination.');
   if(r&&r.kind==='change'&&!r.target)return msg(r.walkFirst?'This journey starts with a walk to '+r.walkFirst+'. Switch your departure there for live trains.':'Live predictions are not available for the first leg of this journey.');
   if(!S.tr){if(S.trErr)return msg('Live predictions unavailable: '+S.trErr+'. Nothing is shown rather than a guess.');return msg('Checking live predictions…')}
@@ -392,7 +399,20 @@ function renderStamps(){stamp('wx-stamp',S.wxOk,S.wxErr);stamp('tr-stamp',S.trOk
 
 /* ---------- journeys ---------- */
 const same=(a,b)=>a.o===b.o&&a.x===b.x;
-function setJourney(o,x){if(!LOCAL.includes(o)||!['Liverpool Street',...LOCAL].includes(x))return;S.j={o,x};store.set('journey',S.j);S.route=null;S.tr=null;S.trErr='';S.st=null;renderTransport();loadTrains()}
+function setJourney(o,x){
+  const journey={o,x};
+  if(!validJourney(journey)||same(journey,S.j))return;
+  S.j=journey;
+  store.set('journey',S.j);
+  S.route=null;
+  S.tr=null;
+  S.trOk=0;
+  S.trErr='';
+  S.st=null;
+  S.stErr='';
+  renderStamps();
+  loadTrains();
+}
 function renderTabs(){
   const t=$('tabs');t.replaceChildren();
   const def=el('button','tab'+(same(S.j,DEFAULT)?' on':''),'⌂ Default commute');def.type='button';
@@ -409,17 +429,22 @@ function renderTabs(){
 }
 
 /* ---------- picker ---------- */
-let pickFor='o';
-function optBtn(name,cls){
-  const cur=pickFor==='o'?S.j.o:S.j.x,other=pickFor==='o'?S.j.x:S.j.o;
-  const b=el('button','opt '+cls+(name===cur?' sel':'')+(name===other?' same':''),name);b.type='button';
-  b.addEventListener('click',()=>{closePicker();pickFor==='o'?setJourney(name,S.j.x):setJourney(S.j.o,name)});
+function optBtn(name,which){
+  const b=el('button','opt local'+(name===S.j[which]?' sel':''),name);b.type='button';
+  b.addEventListener('click',()=>{
+    closePicker();
+    if(which==='x'){setJourney(S.j.o,name);return}
+    const stops=destinationsFrom(name);
+    setJourney(name,stops.includes(S.j.x)?S.j.x:stops[0]);
+  });
   return b;
 }
 function openPicker(which){
-  pickFor=which;$('sheet-title').textContent=which==='o'?'Choose local departure':'Choose destination';
-  $('local').replaceChildren(...(which==='x'?['Liverpool Street',...LOCAL]:LOCAL).map(n=>optBtn(n,'local')));
-
+  const departure=which==='o';
+  $('sheet-title').textContent=departure?'Choose local departure':'Choose destination';
+  $('local-h').textContent=departure?'Local stations':'Direct trains from '+S.j.o;
+  const options=departure?LOCAL:destinationsFrom(S.j.o);
+  $('local').replaceChildren(...options.map(name=>optBtn(name,which)));
   $('sheet').hidden=false;
 }
 function closePicker(){$('sheet').hidden=true}
