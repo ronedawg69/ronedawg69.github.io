@@ -50,20 +50,20 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:#f4f1ea;bo
 
 #tr{position:absolute;left:590px;right:0;top:0;bottom:0;padding:36px 0 0 64px;overflow:hidden}
 #route{position:relative;margin-top:24px;height:146px}
-.field{position:absolute;top:0;width:451px;height:146px;border:3px solid #141414;padding:18px 28px;text-align:left}
+.field{position:absolute;top:0;width:42%;height:146px;border:3px solid #141414;padding:18px 28px;text-align:left}
 #from{left:0}
-#to{left:623px}
+#to{right:0}
 .field .label{display:block}
-.field .name{display:block;margin-top:16px;font-size:52px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.1}
+.field .name{display:block;margin-top:8px;font-size:41px;white-space:normal;line-height:1.05}
 .field:active{background:#141414;color:#f4f1ea}
-#swap{position:absolute;top:0;left:473px;width:128px;height:146px;border:3px solid #141414;font-size:64px;line-height:1}
+#swap{position:absolute;top:0;left:44%;width:12%;height:146px;border:3px solid #141414;font-size:64px;line-height:1}
 #swap:active{background:#141414;color:#f4f1ea}
 #walk-time{display:inline-block;margin-top:14px;padding:8px 16px;border:2px solid #141414;font-size:30px;font-weight:700;line-height:1.2}
 #routeinfo{margin-top:22px;font-size:28px;min-height:54px;max-height:72px;overflow:hidden;line-height:1.25}
 #routeinfo span{margin-right:20px;vertical-align:middle}
 #dephead{position:relative;margin-top:22px;height:52px}
-#dephead h3{line-height:40px;position:absolute;left:0;top:0;right:420px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#dep-src{position:absolute;right:0;top:0;line-height:40px}
+#dephead h3{line-height:40px;position:absolute;left:0;top:0;right:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#dep-src{position:absolute;right:0;top:-25px;line-height:25px}
 .dep{position:relative;border-top:2px solid #141414;height:104px}
 .dep:last-child{border-bottom:2px solid #141414}
 .dep .mins{position:absolute;left:0;top:50%;margin-top:-42px;width:210px;font-size:84px;font-weight:300;line-height:84px;letter-spacing:-.02em;white-space:nowrap}
@@ -323,18 +323,22 @@ S.saved=S.saved.filter(function(j){return validJourney(j)});
 /* ---------- scaling + forced landscape ---------- */
 var ROT=store.get('rot',90);if(ROT!==90&&ROT!==-90)ROT=90;
 function fit(){
-  var W=window.innerWidth||document.documentElement.clientWidth;
-  var H=window.innerHeight||document.documentElement.clientHeight;
-  var st=$('stage'),tf,s,w,h,ox,oy;
-  if(H>W){
-    s=Math.min(W/1404,H/1872);w=1404*s;h=1872*s;ox=(W-w)/2;oy=(H-h)/2;
-    tf=ROT===90?'translate('+(ox+w)+'px,'+oy+'px) rotate(90deg) scale('+s+')':'translate('+ox+'px,'+(oy+h)+'px) rotate(-90deg) scale('+s+')';
-  }else{
-    s=Math.min(W/1872,H/1404);ox=(W-1872*s)/2;oy=(H-1404*s)/2;
-    tf='translate('+ox+'px,'+oy+'px) scale('+s+')';
+  var root=document.documentElement;
+  var W=root.clientWidth||window.innerWidth;
+  var H=root.clientHeight||window.innerHeight;
+  if(!W||!H)return;
+  var st=$('stage'),rotated=H>W;
+  var width=rotated?H:W,height=rotated?W:H;
+  var scale=Math.min(width/1872,height/1404);
+  st.style.width=width/scale+'px';
+  st.style.height=height/scale+'px';
+  var tf='scale('+scale+')';
+  if(rotated){
+    tf=(ROT===90?'translate('+W+'px,0) rotate(90deg)':
+      'translate(0,'+H+'px) rotate(-90deg)')+' '+tf;
   }
   st.style.webkitTransform=tf;st.style.transform=tf;
-  show($('turn'),H>W);
+  show($('turn'),rotated);
 }
 window.addEventListener('resize',fit);
 window.addEventListener('orientationchange',function(){setTimeout(fit,300)});
