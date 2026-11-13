@@ -1,10 +1,12 @@
 <html data-type="html" data-identifier="54a9e40e-5c1a-4eea-9b07-afe6aa4bc88d" data-title="Paper / Hackney — E-Ink Touch Dashboard" data-version="2" width="1872" height="1404"><head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <title>Paper / Hackney</title>
 <style>
 *{-webkit-box-sizing:border-box;box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;height:100%;background:#d8d5cd;overflow:hidden}
+html,body{width:100%;height:100%;background:#f4f1ea;overflow:hidden;position:fixed;left:0;top:0}
 body{position:relative;font-family:Helvetica,Arial,sans-serif;color:#141414}
 #stage{position:absolute;left:0;top:0;width:1872px;height:1404px;background:#f4f1ea;overflow:hidden;-webkit-transform-origin:0 0;transform-origin:0 0}
 .serif{font-family:Georgia,"Bookerly","Palatino Linotype",Palatino,serif}
@@ -18,7 +20,7 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:#f4f1ea;bo
 .btn{display:inline-block;vertical-align:bottom;border:3px solid #141414;height:96px;line-height:90px;padding:0 34px;font-size:28px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
 .btn:active,.btn.on{background:#141414;color:#f4f1ea}
 
-#mast{position:absolute;left:72px;right:72px;top:52px;height:150px;border-bottom:6px solid #141414}
+#mast{position:absolute;left:44px;right:44px;top:28px;height:150px;border-bottom:6px solid #141414}
 #mast-left{position:absolute;left:0;bottom:22px}
 #brand{font-size:66px;font-weight:400;line-height:1}
 #brand em{font-style:italic}
@@ -27,7 +29,7 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:#f4f1ea;bo
 #mast-right .btn{margin-right:16px}
 #clock{display:inline-block;vertical-align:bottom;margin-left:28px;font-size:110px;font-weight:300;line-height:94px;letter-spacing:-.02em}
 
-#body{position:absolute;left:72px;right:72px;top:202px;bottom:196px}
+#body{position:absolute;left:44px;right:44px;top:178px;bottom:164px}
 #wx{position:absolute;left:0;top:0;bottom:0;width:590px;padding:36px 60px 0 0;border-right:2px solid #141414}
 .headrow{position:relative;height:40px}
 .headrow h2,.headrow h3{line-height:40px}
@@ -76,7 +78,7 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:#f4f1ea;bo
 .msg{border-top:2px solid #141414;border-bottom:2px solid #141414;padding:36px 0;font-size:34px;line-height:1.35}
 #status{position:absolute;left:64px;right:0;bottom:0;border:2px solid #141414;padding:18px 24px;font-size:26px;line-height:1.35;max-height:120px;overflow:hidden}
 
-#foot{position:absolute;left:72px;right:72px;bottom:48px;height:122px;border-top:6px solid #141414}
+#foot{position:absolute;left:44px;right:44px;bottom:20px;height:122px;border-top:6px solid #141414}
 #tabs{position:absolute;left:0;top:22px;right:550px;height:92px;overflow:hidden;white-space:nowrap}
 .tab{display:inline-block;vertical-align:top;border:3px solid #141414;height:92px;line-height:86px;padding:0 26px;font-size:26px;font-weight:600;white-space:nowrap;margin-right:14px}
 .tab.on{background:#141414;color:#f4f1ea}
@@ -101,7 +103,7 @@ button{font-family:inherit;font-size:inherit;color:inherit;background:#f4f1ea;bo
       <h1 id="brand" class="serif">Paper <em>/</em> Hackney</h1>
       <div id="date">—</div>
     </div>
-    <div id="mast-right"><button id="turn" class="btn" type="button">Turn</button><button id="refresh" class="btn" type="button">Refresh</button><div id="clock">--:--</div></div>
+    <div id="mast-right"><button id="fs" class="btn" type="button">Full screen</button><button id="turn" class="btn" type="button">Turn</button><button id="refresh" class="btn" type="button">Refresh</button><div id="clock">--:--</div></div>
   </div>
 
   <div id="body">
@@ -341,6 +343,30 @@ function fit(){
   show($('turn'),rotated);
 }
 window.addEventListener('resize',fit);
+/* ---------- full screen (hides the Kindle browser toolbar where supported) ---------- */
+var DE=document.documentElement;
+function fsEl(){return document.fullscreenElement||document.webkitFullscreenElement||document.webkitCurrentFullScreenElement||null}
+function fsOk(){return !!(DE.requestFullscreen||DE.webkitRequestFullscreen||DE.webkitRequestFullScreen)}
+function enterFS(){
+  try{
+    var r=DE.requestFullscreen?DE.requestFullscreen():DE.webkitRequestFullscreen?DE.webkitRequestFullscreen():DE.webkitRequestFullScreen?DE.webkitRequestFullScreen():null;
+    if(r&&r.then)r.then(null,function(){});
+  }catch(e){}
+  try{window.scrollTo(0,1)}catch(e){}
+}
+function exitFS(){try{(document.exitFullscreen||document.webkitExitFullscreen||document.webkitCancelFullScreen).call(document)}catch(e){}}
+function fsLabel(){var b=$('fs');if(b){b.textContent=fsEl()?'Exit full':'Full screen';show(b,fsOk())}}
+function onFS(){fsLabel();setTimeout(fit,50);setTimeout(fit,400)}
+document.addEventListener('fullscreenchange',onFS);
+document.addEventListener('webkitfullscreenchange',onFS);
+$('fs').addEventListener('click',function(e){e.stopPropagation();if(fsEl())exitFS();else enterFS()});
+/* first tap anywhere goes full screen (browsers only allow it after a tap) */
+var autoFS=store.get('autofs',true);
+document.addEventListener('click',function first(){
+  document.removeEventListener('click',first,true);
+  if(autoFS&&!fsEl()&&fsOk())enterFS();
+},true);
+fsLabel();
 window.addEventListener('orientationchange',function(){setTimeout(fit,300)});
 fit();
 $('turn').addEventListener('click',function(){ROT=-ROT;store.set('rot',ROT);fit()});
