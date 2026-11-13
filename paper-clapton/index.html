@@ -84,6 +84,59 @@ button:focus-visible,input:focus-visible{outline:5px solid #141414;outline-offse
 #q{flex:0 0 560px;border:3px solid #141414;background:#fff;height:100px;font-size:34px;padding:0 24px;border-radius:0}
 #results{display:flex;gap:14px;flex:1;overflow:hidden;align-items:center}
 #results .opt{min-height:100px;font-size:28px}
+@media (orientation:portrait) and (max-width:900px){
+  html,body{height:auto;background:#fff}
+  body{display:block;overflow:auto}
+  #stage{width:auto;height:auto;padding:12px;display:block;overflow:visible;background:#fff}
+  #mast,#mast-right,#body,#tr,#wx,#foot{display:block}
+  #mast{position:relative;padding-bottom:8px;border-width:2px}
+  #brand{font-size:26px}
+  #date,#credits{font-size:10px}
+  #mast-right{margin-top:6px}
+  #clock{display:inline-block;margin-left:10px;font-size:26px;vertical-align:middle}
+  #body{display:flex;flex-direction:column}
+  #tr{order:-1;padding:12px 0;overflow:visible}
+  #wx{border:0;padding:12px 0;border-top:2px solid}
+  .label,.stamp,.chip{font-size:10px;letter-spacing:.06em}
+  .btn,.tab{min-height:32px;padding:0 8px;font-size:12px}
+  #route{display:flex;margin-top:8px}
+  .field{display:block;flex:1 1 0%;height:auto;min-height:46px;padding:5px 7px;border-width:1px}
+  .field span{display:block}
+  .field .name{font-size:17px;white-space:normal}
+  #swap{margin:0 5px;width:36px;height:auto;font-size:24px;border-width:1px}
+  #walk-time,#routeinfo,#dephead{margin-top:7px}
+  #walk-time,#routeinfo,#status,.msg{font-size:13px;padding:4px 6px;min-height:0}
+  #walk-time{display:inline-block}
+  #walk-time[hidden]{display:none}
+  #dephead{padding-bottom:4px}
+  .dep{display:flex;align-items:center;height:auto;min-height:39px;padding:3px 0}
+  .mins{min-width:54px;font-size:23px}
+  .mins small,.sub{font-size:9px}
+  .dest{font-size:15px}
+  .dep .chip{margin-left:auto}
+  #status{margin-top:7px;border-width:1px}
+  #temp{font-size:40px;margin-top:8px}
+  #temp .deg{font-size:20px;top:0}
+  #cond{font-size:19px;margin-top:6px}
+  #feels,.wxrow{font-size:12px}
+  #wxrows{margin-top:8px}
+  .wxrow{padding:4px 0}
+  .wxrow b{font-size:17px}
+  #rainbar{height:8px;margin-bottom:7px}
+  #hours{display:flex;padding-top:5px}
+  .hr{flex:1}
+  .hr .h,.hr .p{font-size:10px}
+  .hr .t{font-size:16px}
+  #foot{margin-top:6px;padding-top:6px;border-width:2px}
+  #tabs{display:flex;flex-wrap:wrap}
+  #credits{margin-top:5px;text-align:left}
+  #sheet{position:fixed;top:0;right:0;bottom:0;left:0;padding:15px;display:block;overflow:auto}
+  #sheet-head{display:flex;align-items:center;border-width:2px;padding-bottom:8px}
+  #sheet-title{font-size:24px}
+  #local-h{margin:12px 0 5px}
+  #local{display:block}
+  .opt.local{display:block;width:100%;min-height:42px;margin-bottom:5px;font-size:17px;border-width:1px}
+}
 </style>
 </head>
 <body>
@@ -175,7 +228,7 @@ const ROUTE_STATIONS=[
   ['Dalston Junction','Highbury & Islington','Canada Water']
 ];
 function destinationsFrom(origin){
-  const stops=ROUTE_STATIONS.filter(route=>route.includes(origin)).flat();
+  const stops=[].concat(...ROUTE_STATIONS.filter(route=>route.includes(origin)));
   const isLocal=LOCAL.includes(origin);
   return [...new Set(stops)].filter(stop=>stop!==origin&&(isLocal||LOCAL.includes(stop)));
 }
@@ -183,6 +236,12 @@ const validJourney=j=>j&&destinationsFrom(j.o).includes(j.x);
 const WMO={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Freezing fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',56:'Freezing drizzle',57:'Freezing drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',66:'Freezing rain',67:'Freezing rain',71:'Light snow',73:'Snow',75:'Heavy snow',77:'Snow grains',80:'Light showers',81:'Showers',82:'Violent showers',85:'Snow showers',86:'Heavy snow showers',95:'Thunderstorm',96:'Thunder & hail',99:'Thunder & hail'};
 
 const $=id=>document.getElementById(id);
+function append(parent,...children){for(const child of children)parent.appendChild(child)}
+function replaceChildren(parent,...children){parent.textContent='';append(parent,...children)}
+const settle=tasks=>Promise.all(tasks.map(task=>task.then(
+  value=>({status:'fulfilled',value}),
+  reason=>({status:'rejected',reason})
+)));
 const store={get(k,d){try{const v=localStorage.getItem('ph:'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('ph:'+k,JSON.stringify(v))}catch(e){}}};
 const HM=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/London'});
 const hm=t=>HM.format(new Date(t));
@@ -191,12 +250,29 @@ const norm=s=>clean(s).toLowerCase().replace(/&/g,' and ').replace(/\b(rail|stat
 function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
 const validTime=s=>{const t=Date.parse(s);return isFinite(t)&&t>946684800000?t:null};
 
+function checkStatus(status){
+  if(status===300)throw new Error('TfL could not identify the station');
+  if(status===429)throw new Error('TfL rate limit reached');
+  if(status<200||status>=300)throw new Error('HTTP '+status);
+}
 async function get(url,ms=12000){
+  if(typeof fetch!=='function'||typeof AbortController!=='function'){
+    return new Promise((resolve,reject)=>{
+      const request=new XMLHttpRequest();
+      request.open('GET',url);
+      request.timeout=ms;
+      request.onload=()=>{
+        try{checkStatus(request.status);resolve(JSON.parse(request.responseText))}
+        catch(e){reject(e)}
+      };
+      request.onerror=()=>reject(new Error('Network unavailable'));
+      request.ontimeout=()=>reject(new Error('Request timed out'));
+      request.send();
+    });
+  }
   const c=new AbortController();const t=setTimeout(()=>c.abort(),ms);
   try{const r=await fetch(url,{signal:c.signal,cache:'no-store'});
-    if(r.status===300)throw new Error('TfL could not identify the station');
-    if(r.status===429)throw new Error('TfL rate limit reached');
-    if(!r.ok)throw new Error('HTTP '+r.status);
+    checkStatus(r.status);
     return await r.json();
   }catch(e){throw e.name==='AbortError'?new Error('Request timed out'):(e.message==='Failed to fetch'?new Error('Network unavailable'):e)}
   finally{clearTimeout(t)}
@@ -211,7 +287,9 @@ if(!Array.isArray(S.saved))S.saved=[];
 S.saved=S.saved.filter(validJourney);
 
 /* ---------- scaling ---------- */
-function fit(){const s=Math.min(innerWidth/1872,innerHeight/1404);$('stage').style.transform='scale('+s+')'}
+function fit(){
+  if(matchMedia('(orientation:portrait) and (max-width:900px)').matches){$('stage').style.transform='';return}
+  const s=Math.min(innerWidth/1872,innerHeight/1404);$('stage').style.transform='scale('+s+')'}
 addEventListener('resize',fit);fit();
 
 /* ---------- clock (minute resolution: e-ink friendly) ---------- */
@@ -255,8 +333,8 @@ function renderWeather(){
   const p=n&&typeof n.p==='number'?n.p:null;
   $('rain').textContent=p==null?'Unavailable':p+'%';
   $('rainfill').style.width=(p||0)+'%';
-  const hs=$('hours');hs.replaceChildren();
-  for(const h of w.hours){const d=el('div','hr');d.append(el('div','h muted',h.t.slice(11,16)),el('div','t',typeof h.temp==='number'?Math.round(h.temp)+'°':'—'),el('div','p muted',typeof h.p==='number'?h.p+'%':'—'));hs.append(d)}
+  const hs=$('hours');replaceChildren(hs);
+  for(const h of w.hours){const d=el('div','hr');append(d,el('div','h muted',h.t.slice(11,16)),el('div','t',typeof h.temp==='number'?Math.round(h.temp)+'°':'—'),el('div','p muted',typeof h.p==='number'?h.p+'%':'—'));append(hs,d)}
 }
 
 /* ---------- TfL: stations, lines, routes ---------- */
@@ -344,7 +422,7 @@ async function loadTrains(){
   try{
     const p=await plan(o,x);if(my!==gen)return;
     S.route=p;
-    const [pr,st]=await Promise.allSettled([predictions(p),loadStatus([...(p.lines||[]),...(p.legLines||[])])]);
+    const [pr,st]=await settle([predictions(p),loadStatus([...(p.lines||[]),...(p.legLines||[])])]);
     if(my!==gen)return;
     if(pr.status==='fulfilled'){S.tr={...pr.value};S.trOk=Date.now();S.trErr=''}else S.trErr=pr.reason.message;
     if(st.status==='fulfilled'){S.st=st.value;S.stErr=''}else S.stErr=st.reason.message;
@@ -360,21 +438,21 @@ function renderTransport(){
   const estimate=minutes===undefined?'':'~'+minutes+' min walk to station';
   walk.hidden=minutes===undefined;
   if(walk.textContent!==estimate)walk.textContent=estimate;
-  const ri=$('routeinfo');ri.replaceChildren();const r=S.route;
-  if(r&&r.kind==='direct'){ri.append(el('span','chip inv','Direct'),el('span','',r.lines.map(l=>LINE[l]+' line').join(' / ')))}
+  const ri=$('routeinfo');replaceChildren(ri);const r=S.route;
+  if(r&&r.kind==='direct'){append(ri,el('span','chip inv','Direct'),el('span','',r.lines.map(l=>LINE[l]+' line').join(' / ')))}
   else if(r&&r.kind==='change'){
-    ri.append(el('span','chip inv',r.changes.length+(r.changes.length===1?' change':' changes')));
-    ri.append(el('span','',(r.walkFirst?'Walk to '+r.walkFirst+' first · ':'')+(r.changes.length?'Change at '+r.changes.join(', ')+' · ':'')+'~'+r.duration+' min planned (timetable estimate)'));
-  }else if(r&&r.kind==='none'){ri.append(el('span','chip','No route'),el('span','','TfL found no Overground journey for this pair'))}
-  else if(S.loading){ri.append(el('span','muted','Validating route…'))}
-  else if(S.trErr){ri.append(el('span','chip inv','Error'),el('span','',S.trErr))}
+    append(ri,el('span','chip inv',r.changes.length+(r.changes.length===1?' change':' changes')));
+    append(ri,el('span','',(r.walkFirst?'Walk to '+r.walkFirst+' first · ':'')+(r.changes.length?'Change at '+r.changes.join(', ')+' · ':'')+'~'+r.duration+' min planned (timetable estimate)'));
+  }else if(r&&r.kind==='none'){append(ri,el('span','chip','No route'),el('span','','TfL found no Overground journey for this pair'))}
+  else if(S.loading){append(ri,el('span','muted','Validating route…'))}
+  else if(S.trErr){append(ri,el('span','chip inv','Error'),el('span','',S.trErr))}
   $('dep-h').textContent=r&&r.kind==='change'&&r.target?'First leg · trains calling at '+r.targetName:'Trains calling at '+S.j.x;
   renderDeps();renderStatus();renderTabs();
 }
 function renderDeps(){
-  const box=$('deps');if(!box)return;box.replaceChildren();const r=S.route;const now=Date.now();
+  const box=$('deps');if(!box)return;replaceChildren(box);const r=S.route;const now=Date.now();
   $('dep-src').textContent=S.tr&&S.tr.src?'Live · '+S.tr.src:'';
-  const msg=t=>box.append(el('div','msg serif',t));
+  const msg=t=>append(box,el('div','msg serif',t));
   if(r&&r.kind==='none')return msg('No Overground route between these stations. Choose another destination.');
   if(r&&r.kind==='change'&&!r.target)return msg(r.walkFirst?'This journey starts with a walk to '+r.walkFirst+'. Switch your departure there for live trains.':'Live predictions are not available for the first leg of this journey.');
   if(!S.tr){if(S.trErr)return msg('Live predictions unavailable: '+S.trErr+'. Nothing is shown rather than a guess.');return msg('Checking live predictions…')}
@@ -386,13 +464,13 @@ function renderDeps(){
     const row=el('div','dep'+(cx?' cx':''));
     const m=Math.round((a.exp-now)/60000);
     const mins=el('div','mins');
-    if(m<=0)mins.textContent='Due';else{mins.textContent=String(m);mins.append(el('small','','min'))}
+    if(m<=0)mins.textContent='Due';else{mins.textContent=String(m);append(mins,el('small','','min'))}
     const mid=el('div','');mid.style.minWidth='0';
-    mid.append(el('div','dest serif','to '+clean(a.dest||'destination unknown')));
+    append(mid,el('div','dest serif','to '+clean(a.dest||'destination unknown')));
     const sub=[a.line&&LINE[a.line]?LINE[a.line]:'',a.plat&&a.plat!=='null'?'Platform '+String(a.plat).replace(/^Platform\s*/i,''):'',hm(a.exp)+(a.sch&&Math.abs(a.sch-a.exp)>=60000?' (sched '+hm(a.sch)+')':'')].filter(Boolean).join(' · ');
-    mid.append(el('div','sub muted',sub));
+    append(mid,el('div','sub muted',sub));
     const st=cx?el('span','chip inv','Cancelled'):dl?el('span','chip inv','Delayed'):a.status==='OnTime'?el('span','chip','On time'):el('span','chip','Live');
-    row.append(mins,mid,st);box.append(row);
+    append(row,mins,mid,st);append(box,row);
   }
 }
 function renderStatus(){
@@ -428,10 +506,10 @@ function setJourney(o,x){
   loadTrains();
 }
 function renderTabs(){
-  const t=$('tabs');t.replaceChildren();
+  const t=$('tabs');replaceChildren(t);
   const def=el('button','tab'+(same(S.j,DEFAULT)?' on':''),'⌂ Default commute');def.type='button';
-  def.addEventListener('click',()=>setJourney(DEFAULT.o,DEFAULT.x));t.append(def);
-  for(const s of S.saved){if(same(s,DEFAULT))continue;const b=el('button','tab'+(same(s,S.j)?' on':''),s.o+' → '+s.x);b.type='button';b.addEventListener('click',()=>setJourney(s.o,s.x));t.append(b)}
+  def.addEventListener('click',()=>setJourney(DEFAULT.o,DEFAULT.x));append(t,def);
+  for(const s of S.saved){if(same(s,DEFAULT))continue;const b=el('button','tab'+(same(s,S.j)?' on':''),s.o+' → '+s.x);b.type='button';b.addEventListener('click',()=>setJourney(s.o,s.x));append(t,b)}
   const isSaved=S.saved.some(s=>same(s,S.j))||same(S.j,DEFAULT);
   const sv=el('button','tab',isSaved?(same(S.j,DEFAULT)?'★ Default':'✕ Forget this'):'☆ Save journey');sv.type='button';
   sv.disabled=same(S.j,DEFAULT);
@@ -439,7 +517,7 @@ function renderTabs(){
     if(S.saved.some(s=>same(s,S.j)))S.saved=S.saved.filter(s=>!same(s,S.j));
     else{S.saved.push({...S.j});if(S.saved.length>3)S.saved.shift()}
     store.set('saved',S.saved);renderTabs();
-  });t.append(sv);
+  });append(t,sv);
 }
 
 /* ---------- picker ---------- */
@@ -458,7 +536,7 @@ function openPicker(which){
   $('sheet-title').textContent=departure?'Choose local departure':'Choose destination';
   $('local-h').textContent=departure?'Local stations':'Direct trains from '+S.j.o;
   const options=departure?LOCAL:destinationsFrom(S.j.o);
-  $('local').replaceChildren(...options.map(name=>optBtn(name,which)));
+  replaceChildren($('local'),...options.map(name=>optBtn(name,which)));
   $('sheet').hidden=false;
 }
 function closePicker(){$('sheet').hidden=true}
@@ -471,7 +549,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape')closePicker()});
 let busy=false;
 async function refreshAll(){
   if(busy)return;busy=true;const b=$('refresh');b.classList.add('on');b.textContent='Refreshing…';
-  await Promise.allSettled([loadWeather(),loadTrains()]);
+  await settle([loadWeather(),loadTrains()]);
   b.classList.remove('on');b.textContent='↻ Refresh';busy=false;
 }
 $('refresh').addEventListener('click',refreshAll);
