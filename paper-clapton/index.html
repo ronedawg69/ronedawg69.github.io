@@ -51,6 +51,7 @@ button:focus-visible,input:focus-visible{outline:5px solid #141414;outline-offse
 .field:active{background:#141414;color:#f4f1ea}
 #swap{border:3px solid #141414;height:146px;font-size:64px;line-height:1}
 #swap:active{background:#141414;color:#f4f1ea}
+#walk-time{align-self:flex-start;margin-top:14px;padding:8px 16px;border:2px solid #141414;font-size:30px;font-weight:700;line-height:1.2}
 #routeinfo{display:flex;gap:20px;align-items:center;margin-top:22px;font-size:28px;min-height:54px;line-height:1.25}
 #dephead{display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-bottom:12px}
 .dep{display:grid;grid-template-columns:210px 1fr auto;align-items:center;gap:34px;border-top:2px solid #141414;height:112px}
@@ -119,6 +120,7 @@ button:focus-visible,input:focus-visible{outline:5px solid #141414;outline-offse
         <button id="swap" type="button" aria-label="Reverse journey">⇄</button>
         <button id="to" class="field" type="button" aria-label="Change destination"><span class="label">To</span><span id="to-n" class="name serif">—</span></button>
       </div>
+      <p id="walk-time" aria-live="polite" hidden></p>
       <div id="routeinfo"></div>
       <div id="dephead"><h3 id="dep-h" class="label">Next trains</h3><span id="dep-src" class="label muted"></span></div>
       <div id="deps"></div>
@@ -158,6 +160,13 @@ const CFG={postcode:'E58DJ',fallback:{lat:51.5567,lon:-0.0568},tflKey:'',refresh
 const OG=['liberty','lioness','mildmay','suffragette','weaver','windrush'];
 const LINE={liberty:'Liberty',lioness:'Lioness',mildmay:'Mildmay',suffragette:'Suffragette',weaver:'Weaver',windrush:'Windrush'};
 const LOCAL=['Hackney Downs','Hackney Central','Dalston Junction','Dalston Kingsland'];
+// TfL Journey Planner, average walking pace from the dashboard's postcode centre.
+const WALK_MINUTES=new Map([
+  ['Hackney Downs',13],
+  ['Hackney Central',17],
+  ['Dalston Junction',28],
+  ['Dalston Kingsland',26]
+]);
 const DEFAULT={o:'Hackney Downs',x:'Liverpool Street'};
 // A short list of direct stops on each line served by the four local stations.
 const ROUTE_STATIONS=[
@@ -346,6 +355,11 @@ async function loadTrains(){
 /* ---------- transport rendering ---------- */
 function renderTransport(){
   $('from-n').textContent=S.j.o;$('to-n').textContent=S.j.x;
+  const walk=$('walk-time');
+  const minutes=WALK_MINUTES.get(S.j.o);
+  const estimate=minutes===undefined?'':'~'+minutes+' min walk to station';
+  walk.hidden=minutes===undefined;
+  if(walk.textContent!==estimate)walk.textContent=estimate;
   const ri=$('routeinfo');ri.replaceChildren();const r=S.route;
   if(r&&r.kind==='direct'){ri.append(el('span','chip inv','Direct'),el('span','',r.lines.map(l=>LINE[l]+' line').join(' / ')))}
   else if(r&&r.kind==='change'){
